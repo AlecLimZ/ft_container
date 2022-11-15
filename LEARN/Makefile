@@ -2,12 +2,12 @@ NAME			=	main
 SRC				=	main.cc
 OBJ				=	$(SRC:%.cc=%.o)
 H				=	-I.
-CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++11
+CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
 
 all:		$(NAME)
 
 $(NAME):	$(OBJ)
-			$(CXX) $(CXXFLAGS) $^ -o $@ -fsanitize=address
+			$(CXX) $(CXXFLAGS) $^ -o $@
 
 clean:
 			rm -rf $(OBJ)

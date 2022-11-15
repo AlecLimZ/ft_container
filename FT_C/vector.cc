@@ -6,22 +6,26 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 15:16:09 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/14 16:23:34 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:45:09 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "myvector.hpp"
 
-template <>
-ft_vector::vector<int>::vector(void)
+template <typename T, typename Allocator>
+ft_vector::vector<T, Allocator>::vector(const Allocator & alloc): capacity(0)
 {
-	std::cout << "myvector int is constructed" << std::endl;
+	std::allocator<T> tmp = alloc;
+	v = tmp.allocate(capacity);
 }
 
-template <>
-ft_vector::vector<float>::vector(void)
+template <typename T, typename Allocator>
+ft_vector::vector<T, Allocator>::vector(size_t count, const T & value, const Allocator & alloc): capacity(count)
 {
-	std::cout << "myvector float is constructed" << std::endl;
+	std::allocator<T> tmp = alloc;
+	v = tmp.allocate(capacity);
+	for (size_t i = 0; i < capacity; i++)
+		tmp.construct(v + i, value);
 }
 
 template <typename T, typename Allocator>

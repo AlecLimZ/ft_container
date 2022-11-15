@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/14 15:51:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/15 15:46:42 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ int	doc(int *ac, char **av)
 
 int	main(int argc, char **argv)
 {
-	ft_vector::vector<float> lol;
+	ft_vector::vector<int> first;
+	std::vector<int> first2;
+	std::vector<int> second2(2, 44);
+
+	cout << first2.capacity() << endl;
+	cout << first2.empty() << endl;
+	cout << first2.max_size() << endl;
+	for (std::vector<int>::iterator it = second2.begin(); it != second2.end(); it++)
+		cout << *it << endl;
 	return (doc(&argc, argv));
 }
