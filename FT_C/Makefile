@@ -1,17 +1,18 @@
 NAME			=	main
-SRC				=	main.cc vector.cc
-OBJ				=	$(SRC:%.cc=%.o)
+SRC				=	main.cc
+OBJ				=	main.o
 H				=	-I.
 CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
 
 all:		$(NAME)
 
+-include $(OBJ:.o=.d)
+
+%.o:		%.cc vector.hpp
+			$(CXX) $(CXXFLAGS) -o $@ -c $<
+
 $(NAME):	$(OBJ)
 			$(CXX) $(CXXFLAGS) $^ -o $@
-
-nomain:		$(OBJ)
-			$(CXX) nomain.cc -c
-			$(CXX) $(CXXFLAGS) $^ nomain.o -o $(NAME)
 
 clean:
 			rm -rf $(OBJ)

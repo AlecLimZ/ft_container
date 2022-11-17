@@ -6,13 +6,13 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/15 19:21:26 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/17 19:36:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "lib.hpp"
-#include "myvector.hpp"
+#include "vector.hpp"
 #include "doctest.hpp"
 
 int	doc(int *ac, char **av)
@@ -32,13 +32,12 @@ int	doc(int *ac, char **av)
 
 int	main(int argc, char **argv)
 {
-	std::allocator<int> lol;
-	ft_vector::vector<int> first;
-	std::vector<int> first2;
-	ft_vector::vector<int> second(4, 44, lol);
+//	ft::vector<int> first;
+//	std::vector<int> first2;
+	ft::vector<int> second(4, 44);
 
-	cout << first2.capacity() << endl;
-	cout << first2.empty() << endl;
-	cout << first2.max_size() << endl;
+//	cout << first2.capacity() << endl;
+//	cout << first2.empty() << endl;
+//	cout << first2.max_size() << endl;
 	return (doc(&argc, argv));
 }
