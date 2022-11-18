@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/17 19:57:21 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/18 17:41:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,42 +25,44 @@ namespace	ft
 	class vector
 	{
 		/*** MEMBER TYPES ***/
-		typedef T						value_type;
-		typedef Allocator				allocator_type;
-		typedef allocator_type&			reference;
-		typedef const allocator_type&	const_reference;
-		typedef allocator_type*			pointer;
-		typedef const allocator_type*	const_pointer;
-		typedef size_t					size_type;
+		typedef T											value_type;
+		typedef Allocator									allocator_type;
+		typedef typename allocator_type::reference			reference;
+		typedef typename allocator_type::const_reference	const_reference;
+		typedef typename allocator_type::pointer			pointer;
+		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef ptrdiff_t				difference_type;
+		typedef size_t					size_type;
 		/*** END OF MEMBER TYPES ***/
 		
 		/*** ATTRIBUTES ***/
-		size_type		capacity;
-		allocator_type	myalloc;
+		size_type		_capacity;
+		size_type		_size;
+		allocator_type	_myalloc;
 		/*** END OF ATTRIBUTES ***/
 		
 		public:
-			value_type	*myar;
+			//value_type	*_vec;
+			pointer _vec;
 			/*** MEMBER FUNCTIONS ***/
 
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
-				: capacity(0), myalloc(alloc)
+				: _capacity(0), _size(0), _myalloc(alloc), _vec(0)
 			{
-				myar = myalloc.allocate(capacity);
 			}
 
 			explicit vector(size_type count,
 					const value_type & value = value_type(),
 					const Allocator & alloc = allocator_type())
-				: capacity(count), myalloc(alloc)
+				: _capacity(count), _size(0), _myalloc(alloc)
 			{
-				myar = myalloc.allocate(capacity);
-				for (size_type i = 0; i < count; i++)
-					myalloc.construct(myar + i, value);
-				cout << "capacity: " << capacity << endl;
-				cout << "myar[0]: " << myar[0] << endl;
+				_vec = _myalloc.allocate(_capacity);
+				for (size_type i = 0; i < count; ++i)
+				{
+					_myalloc.construct(_vec + i, value);
+					_size++;
+				}
 			}
 
 //			template<class InputIterator>
@@ -78,7 +80,11 @@ namespace	ft
 			}
 
 			// destructor
-			~vector(void) { cout << "destructor" << endl; }
+			~vector(void) { 
+				for (size_type i = 0; i < _size; ++i)
+					_myalloc.destroy(_vec + i);
+				_myalloc.deallocate(_vec, _capacity);
+				cout << "destructor" << endl; }
 
 			// operator=
 			vector & operator=(vector const & rhs);
@@ -88,6 +94,36 @@ namespace	ft
 			/*** END OF ITERATORS ***/
 
 			/*** CAPACITY ***/
+			size_type size() const { return (_size); }
+			size_type max_size() const { return (_myalloc.max_size()); }
+			void resize(size_type n, value_type val = value_type())
+			{
+				if (n < _size)
+					for (size_type i = _size - 1; i >= n; --i)
+						_myalloc.destroy(_vec + i);
+				else if (n > _size)
+				{
+					pointer tmp = NULL;
+					if (n > _capacity)
+					{
+						tmp = _vec;
+						_vec = _myalloc.allocate(n);
+						_capacity = n > _capacity * 2 ? n : _capacity * 2;
+						for (size_type i = 0; i < _size; ++i)
+						{
+							_myalloc.construct(_vec + i, tmp[i]);
+							_myalloc.destroy(tmp + i);
+						}
+						_myalloc.deallocate(tmp, _capacity);
+						for (size_type i = _size; i < n; ++i)
+							_myalloc.construct(_vec + i, val);
+					}
+					else
+						for (size_type i = _size; i < n; ++i)
+							_myalloc.construct(_vec + i, val);
+				}
+				_size = n;
+			}
 			/*** END OF CAPACITY ***/
 			
 			/*** ELEMENT ACCESS ***/
