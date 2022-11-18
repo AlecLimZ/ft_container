@@ -6,43 +6,45 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/17 16:37:32 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:16:21 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "TestClass1.hpp"
+#include "myclass.hpp"
+#include <iostream>
 #include <vector>
+#include <list>
+#include <iterator>
+#include <unordered_map>
 
-using std::allocator;
+using std::cout;
+using std::endl;
+using std::cin;
 using std::vector;
-using std::string;
+using std::iterator_traits;
+using std::list;
+using std::unordered_map;
 
-void	test(void)
+int main()
 {
-	allocator<string> myAllocator;
+	vector<int> values;
 
-	string *str = myAllocator.allocate(3);
+	for (int i = 1; i <= 5; i++)
+		values.push_back(i);
+	for (int i = 0; i < 5; i++)
+		cout << values[i] << " ";
+	cout << endl;
+	for (vector<int>::iterator it = values.begin(); it != values.end(); it++)
+		cout << *it << endl;
 
-	myAllocator.construct(str, "Geeks");
-	myAllocator.construct(str + 1, "for");
-	myAllocator.construct(str + 2, "Geeks");
-	str[3] = "WORK?";
+	typedef unordered_map<std::string, int> ScoreMap;
+	ScoreMap map;
+	map["Cherno"] = 5;
+	map["C++"] = 2;
 
-	cout << str[0] << str[1] << str[2] << str[3];
-
-	cout << "max size: " << myAllocator.max_size() << endl;
-	myAllocator.destroy(str);
-	myAllocator.destroy(str + 1);
-	myAllocator.destroy(str + 2);
-	myAllocator.destroy(str + 3);
-
-	cout << "max size: " << myAllocator.max_size() << endl;
-	myAllocator.deallocate(str, 4);
-}
-
-int	main(void)
-{
-	test();
-//	system("leaks main");
-	return (0);
+	for (ScoreMap::const_iterator it = map.begin(); it != map.end(); it++)
+	{
+		cout << it->first << " ";
+		cout << it->second << endl;
+	}
 }
