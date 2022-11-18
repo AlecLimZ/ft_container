@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/18 17:41:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/18 18:50:57 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,13 @@ namespace	ft
 			void resize(size_type n, value_type val = value_type())
 			{
 				if (n < _size)
-					for (size_type i = _size - 1; i >= n; --i)
+					for (size_type i = n; i < _size; ++i)
 						_myalloc.destroy(_vec + i);
 				else if (n > _size)
 				{
-					pointer tmp = NULL;
 					if (n > _capacity)
 					{
-						tmp = _vec;
+						pointer tmp = _vec;
 						_vec = _myalloc.allocate(n);
 						_capacity = n > _capacity * 2 ? n : _capacity * 2;
 						for (size_type i = 0; i < _size; ++i)
@@ -124,6 +123,38 @@ namespace	ft
 				}
 				_size = n;
 			}
+			size_type capacity() const { return (_capacity); }
+			bool empty() const { return (_size == 0); }
+			void reserve(size_type n)
+			{
+				if (n > _capacity)
+				{
+					pointer tmp = _vec;
+					_vec = _myalloc.allocate(n);
+					for (size_type i = 0; i < _size; ++i)
+					{
+						_myalloc.construct(_vec + i, tmp[i]);
+						_myalloc.destroy(tmp + i);
+					}
+					_myalloc.deallocate(tmp, _capacity);
+					_capacity = n;
+				}
+			}
+			void	shrink_to_fit()
+			{
+				if (_capacity > _size)
+				{
+					pointer tmp = _vec;
+					_vec = _myalloc.allocate(_size);
+					for (size_type i = 0; i < _size; ++i)
+					{
+						_myalloc.construct(_vec + i, tmp[i]);
+						_myalloc.destroy(tmp + i);
+					}
+					_myalloc.deallocate(tmp, _capacity);
+					_capacity = _size;
+				}
+			}
 			/*** END OF CAPACITY ***/
 			
 			/*** ELEMENT ACCESS ***/
@@ -139,4 +170,5 @@ namespace	ft
 			/*** END OF NON-MEMBER FUNCTION OVERLOADS ***/
 	};
 }
+
 #endif

@@ -12,7 +12,7 @@ all:		$(NAME)
 			$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(NAME):	$(OBJ)
-			$(CXX) $(CXXFLAGS) $^ -o $@
+			$(CXX) $(CXXFLAGS) $^ -o $@ -fsanitize=address
 
 clean:
 			rm -rf $(OBJ)
