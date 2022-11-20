@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/18 18:50:57 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/20 20:20:23 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define VECTOR_HPP
 
 # include <iostream>
+# include <cstddef> // for linux ptrdiff_t
+# include <stdexcept>
 
 using std::cout;
 using std::endl;
@@ -39,11 +41,10 @@ namespace	ft
 		size_type		_capacity;
 		size_type		_size;
 		allocator_type	_myalloc;
+		pointer _vec;
 		/*** END OF ATTRIBUTES ***/
 		
 		public:
-			//value_type	*_vec;
-			pointer _vec;
 			/*** MEMBER FUNCTIONS ***/
 
 			// constructor
@@ -158,6 +159,26 @@ namespace	ft
 			/*** END OF CAPACITY ***/
 			
 			/*** ELEMENT ACCESS ***/
+			reference operator[] (size_type n) { return (_vec[n]); }
+			const_reference operator[] (size_type n) const { return (_vec[n]); }
+			reference at (size_type n)
+			{
+				if (n >= _size)
+					throw (std::out_of_range("out of range"));
+				return (_vec[n]);
+			}
+			const_reference at (size_type n) const
+			{
+				if (n >= _size)
+					throw (std::out_of_range("out of range"));
+				return (_vec[n]);
+			}
+			reference front() { return (_vec[0]); }
+			const_reference front() const { return (_vec[0]); }
+			reference back() { return (_vec[_size - 1]); }
+			const_reference back() const { return (_vec[_size - 1]); }
+			value_type *data() { return (_vec); }
+			value_type *data() const { return (_vec); }
 			/*** END OF ELEMENT ACCESS ***/
 
 			/*** MODIFIERS ***/

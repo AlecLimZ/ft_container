@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/18 18:27:53 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/20 20:21:35 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,12 @@ int	doc(int *ac, char **av)
 
 void	test(void)
 {
-//	ft::vector<int> first;
-//	std::vector<int> first2;
-	ft::vector<int> mysecond(5, 44);
-	std::vector<int> stsecond(5, 44);
+	ft::vector<int> first(5, 44);
+	std::vector<int> first2(5, 44);
 
-	mysecond.resize(1, 33);
-	cout << "size2: " << stsecond.size() << endl;
-	cout << "capacity2: " << stsecond.capacity() << endl;
-	mysecond.resize(10, 33);
-	mysecond.resize(7, 33);
+	int *test = first2.data();
+	for (int i = 0; i < 5; i++)
+		cout << test[i] << endl;
 }
 
 int main(int argc, char **argv)
