@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/20 20:20:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:00:56 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ namespace	ft
 			/*** END OF MODIFIERS ***/
 
 			/*** ALLOCATOR ***/
+			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
 			/*** END OF ALLOCATOR ***/
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/

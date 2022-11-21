@@ -3,6 +3,7 @@ SRC				=	main.cc
 OBJ				=	main.o
 H				=	-I.
 CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
+D				=	-Dnoasan=42
 
 all:		$(NAME)
 
@@ -13,6 +14,10 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			$(CXX) $(CXXFLAGS) $^ -o $@ -fsanitize=address
+
+noasan:		vector.hpp
+			$(CXX) $(CXXFLAGS) -c $(SRC) $(D)
+			$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
 clean:
 			rm -rf $(OBJ)

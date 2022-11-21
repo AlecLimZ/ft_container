@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/20 20:21:35 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:27:39 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,31 @@ int	doc(int *ac, char **av)
 
 void	test(void)
 {
-	ft::vector<int> first(5, 44);
-	std::vector<int> first2(5, 44);
+	ft::vector<int> myvector;
+	std::vector<int> stdvector;
+	int *p;
+	unsigned int i;
 
-	int *test = first2.data();
-	for (int i = 0; i < 5; i++)
-		cout << test[i] << endl;
+	p = myvector.get_allocator().allocate(5);
+
+	for (i = 0; i < 5; i++)
+		myvector.get_allocator().construct(&p[i], i);
+
+	std::cout << "The allocated array contains:";
+	for (i = 0; i < 5; i++) std::cout << ' ' << p[i];
+	std::cout << '\n';
+
+	for (i = 0; i < 5; i++)
+		myvector.get_allocator().destroy(&p[i]);
+	myvector.get_allocator().deallocate(p, 5);
+
 }
 
 int main(int argc, char **argv)
 {
 	test();
-//	system("leaks main");
+#ifdef noasan
+	system("leaks main");
+#endif
 	return (doc(&argc, argv));
 }
