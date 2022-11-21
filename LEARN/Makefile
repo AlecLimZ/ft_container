@@ -2,7 +2,7 @@ NAME			=	main
 SRC				=	main.cc myclass.cc
 OBJ				=	$(SRC:%.cc=%.o)
 H				=	-I.
-CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
+CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++17
 
 all:		$(NAME)
 
