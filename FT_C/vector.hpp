@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/21 10:46:56 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/29 16:58:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ namespace	ft
 					const Allocator & alloc = allocator_type())
 				: _capacity(count), _size(0), _myalloc(alloc)
 			{
+				cout << "YAYA ENTER!!" << endl;
 				_vec = _myalloc.allocate(_capacity);
 				for (size_type i = 0; i < count; ++i)
 				{
@@ -66,14 +67,15 @@ namespace	ft
 				}
 			}
 
-//			template<class InputIterator>
-//				vector( InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type())
-//				{
-//					cout << "enter here?" << endl;
-//					(void)first;
-//					(void)last;
-//					(void)alloc;
-//				}
+			template<class InputIterator,
+				typename std::enable_if<!std::is_same<typename std::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
+				vector( InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type())
+				{
+					cout << "enter here?" << endl;
+					(void)first;
+					(void)last;
+					(void)alloc;
+				}
 
 			vector(vector const & x)
 			{
