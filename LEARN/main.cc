@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/28 19:06:42 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/29 16:17:39 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <unordered_map>
 #include <memory> // for unique make
 #include <type_traits> // for enable_if
+#include <numeric> // for std::reduce
 
 using std::cout;
 using std::endl;
@@ -27,51 +28,30 @@ using std::iterator_traits;
 using std::list;
 using std::unordered_map;
 using std::string;
-using std::enable_if;
 using std::ostream;
 
-// non-type template parameter
+template<typename _Iterator>
+struct iterator_traits
+{
+	typedef typename _Iterator::iterator_category iterator_category;
+	typedef typename _Iterator::value_type value_type;
+	typedef typename _Iterator::difference_type difference_type;
+	typedef typename _Iterator::pointer pointer;
+	typedef typename _Iterator::reference reference;
+};
 
-template <int N>
-class A
+class MyIterator
 {
 	public:
-	int v{N};
-	template<int J> friend ostream& operator<< (ostream &,A<J>&);
+		using iterator_category = std::forward_iterator_tag;
+		using value_type = int;
+		using difference_type = int;
+		using pointer = int*;
+		using refernece = int&;
 };
 
-template <int N = 10>
-class B
-{
-	int v{N};
-};
-
-template <int = 10>
-class C
-{
-	int v{0};
-};
-
-template <int>
-class D
-{
-	int v{0};
-};
-
-template <int, int>
-class E
-{
-	int v{0};
-};
-
-template<int J> ostream& operator<< (ostream & o,A<J> & a)
-{
-	o << "A: " << a.v;
-	return (o);
-}
 int main()
 {
-	A<19> a{};
-	cout << a << endl;
-	return (0);
+	vector<int> numbers = {};
+	cout << std::reduce(begin(numbers), end(numbers)) << endl;
 }
