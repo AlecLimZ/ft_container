@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:59:53 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/30 16:46:12 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,18 @@ using std::random_access_iterator_tag;
 
 namespace ft
 {
+
+	// enable_if
+	template<bool, class T>
+	struct enable_if
+	{};
+
+	template<class T>
+	struct enable_if<true, T>
+	{
+		typedef T value_type;
+	};
+
 	// iterator_traits template class
 	template <class Iterator>
 	struct iterator_traits
@@ -51,6 +63,13 @@ namespace ft
 		typedef const T&						reference;
 		typedef random_access_iterator_tag	iterator_category;
 	};
+
+	// is_same
+	template <class T, class U>
+	struct is_same : std::false_type {};
+	
+	template<class T>
+	struct is_same<T, T> : std::true_type {};
 }
 
 #endif

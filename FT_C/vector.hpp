@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:57:40 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/30 17:33:52 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace	ft
 			}
 
 			template<class InputIterator,
-				typename std::enable_if<!std::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
+				typename ft::enable_if<!ft::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
 				vector( InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type())
 				{
 					cout << YLW"constructor with iterator first & second"DEF << endl;
