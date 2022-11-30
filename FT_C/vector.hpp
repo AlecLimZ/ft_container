@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/29 16:58:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/11/30 15:57:40 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <iostream>
 # include <cstddef> // for linux ptrdiff_t
 # include <stdexcept>
+# include "color.hpp"
+# include "myiterator.hpp"
 
 using std::cout;
 using std::endl;
@@ -45,12 +47,13 @@ namespace	ft
 		/*** END OF ATTRIBUTES ***/
 		
 		public:
+			class iterator;
 			/*** MEMBER FUNCTIONS ***/
-
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
 				: _capacity(0), _size(0), _myalloc(alloc), _vec(0)
 			{
+				cout << YLW"default constructor"DEF << endl;
 			}
 
 			explicit vector(size_type count,
@@ -58,7 +61,7 @@ namespace	ft
 					const Allocator & alloc = allocator_type())
 				: _capacity(count), _size(0), _myalloc(alloc)
 			{
-				cout << "YAYA ENTER!!" << endl;
+				cout << YLW"constructor with size count & value"DEF << endl;
 				_vec = _myalloc.allocate(_capacity);
 				for (size_type i = 0; i < count; ++i)
 				{
@@ -68,10 +71,10 @@ namespace	ft
 			}
 
 			template<class InputIterator,
-				typename std::enable_if<!std::is_same<typename std::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
+				typename std::enable_if<!std::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
 				vector( InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type())
 				{
-					cout << "enter here?" << endl;
+					cout << YLW"constructor with iterator first & second"DEF << endl;
 					(void)first;
 					(void)last;
 					(void)alloc;
@@ -87,7 +90,7 @@ namespace	ft
 				for (size_type i = 0; i < _size; ++i)
 					_myalloc.destroy(_vec + i);
 				_myalloc.deallocate(_vec, _capacity);
-				cout << "destructor" << endl; }
+				cout << RED"destructor"DEF << endl; }
 
 			// operator=
 			vector & operator=(vector const & rhs);
@@ -192,6 +195,21 @@ namespace	ft
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 			/*** END OF NON-MEMBER FUNCTION OVERLOADS ***/
+	};
+
+	// my iterator
+	template <typename T, class A>
+	class vector<T, A>::iterator
+	{
+		public:
+		iterator(void)
+		{
+			cout << "iterator constructor" << endl;
+		}
+		~iterator(void)
+		{
+			cout << "iterator destructor" << endl;
+		}
 	};
 }
 

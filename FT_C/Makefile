@@ -2,10 +2,11 @@ NAME			=	main
 SRC				=	main.cc
 OBJ				=	main.o
 H				=	-I.
+HF				=	*hpp
 CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
 D				=	-Dnoasan=42
 
-all:		$(NAME)
+all:		$(NAME) $(HF)
 
 -include $(OBJ:.o=.d)
 
