@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:30:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/01 18:42:51 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 #include <vector>
 #include <list>
 #include <iterator>
+#include <array>
 #include <unordered_map>
 #include <memory> // for unique make
 #include <type_traits> // for enable_if
-#include <numeric> // for std::reduce
+#include <numeric> // for std::reduce & accumulate()
+#include <fstream>
 
 using std::cout;
 using std::endl;
@@ -30,21 +32,38 @@ using std::unordered_map;
 using std::string;
 using std::ostream;
 using std::iterator_traits;
+using std::array;
+using std::ifstream;
 
-template<class T>
-struct lol
-{};
-
-template<>
-struct lol<int>
+template <typename Random>
+Random getRandomElement (Random first, Random last)
 {
-	int value;
-};
-
+	ptrdiff_t d = last - first;
+	return (first + rand() % d);
+}
 
 int main()
 {
-	lol<int> hi;
+	vector<int> v(10, 0);
 
-	cout << hi.value << endl;
+	// iterator
+	vector<int>::iterator it;
+	it = v.begin();
+	*it = 911;
+	it++;
+
+	// const_iterator
+	vector<int>::const_iterator cit;
+	cit = v.begin();
+
+	// *cit = 911;
+	cit++;
+
+	// iterator that is constant
+	const vector<int>::iterator itc = v.begin();
+
+	// itc = v.begin();
+	*itc = 911;
+	itc++;
+	return (0);
 }
