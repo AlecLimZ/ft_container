@@ -6,11 +6,12 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/01 18:42:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/02 15:27:13 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "myclass.hpp"
+#include "iter.hpp"
 #include <iostream>
 #include <vector>
 #include <list>
@@ -35,35 +36,9 @@ using std::iterator_traits;
 using std::array;
 using std::ifstream;
 
-template <typename Random>
-Random getRandomElement (Random first, Random last)
-{
-	ptrdiff_t d = last - first;
-	return (first + rand() % d);
-}
-
 int main()
 {
-	vector<int> v(10, 0);
+	vector<int> data = {1, 2, 3, 4, 5};
 
-	// iterator
-	vector<int>::iterator it;
-	it = v.begin();
-	*it = 911;
-	it++;
-
-	// const_iterator
-	vector<int>::const_iterator cit;
-	cit = v.begin();
-
-	// *cit = 911;
-	cit++;
-
-	// iterator that is constant
-	const vector<int>::iterator itc = v.begin();
-
-	// itc = v.begin();
-	*itc = 911;
-	itc++;
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 17:33:52 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/02 18:19:10 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,12 @@ namespace	ft
 		size_type		_capacity;
 		size_type		_size;
 		allocator_type	_myalloc;
-		pointer _vec;
+		pointer			 _vec;
 		/*** END OF ATTRIBUTES ***/
 		
 		public:
 			class iterator;
+			typedef const iterator const_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
@@ -81,9 +82,8 @@ namespace	ft
 				}
 
 			vector(vector const & x)
-			{
-				(void)x;
-			}
+			: _capacity(x._capacity), _size(x._size), _myalloc(x._myalloc), _vec(x._vec)
+			{}
 
 			// destructor
 			~vector(void) { 
@@ -94,11 +94,24 @@ namespace	ft
 
 			// operator=
 			vector & operator=(vector const & rhs);
-			/*** END OF MEMBER FUNCTIONS ***/
 
 			/*** ITERATORS ***/
-			/*** END OF ITERATORS ***/
-
+			iterator begin()
+			{
+				return (iterator(this->_vec, 0));
+			}
+			const_iterator begin() const
+			{
+				return (const_iterator(this->_vec, 0));
+			}
+			iterator end()
+			{
+				return (iterator(this->_vec, this->_size));
+			}
+			const_iterator end() const
+			{
+				return (NULL);
+			}
 			/*** CAPACITY ***/
 			size_type size() const { return (_size); }
 			size_type max_size() const { return (_myalloc.max_size()); }
@@ -161,7 +174,6 @@ namespace	ft
 					_capacity = _size;
 				}
 			}
-			/*** END OF CAPACITY ***/
 			
 			/*** ELEMENT ACCESS ***/
 			reference operator[] (size_type n) { return (_vec[n]); }
@@ -184,33 +196,97 @@ namespace	ft
 			const_reference back() const { return (_vec[_size - 1]); }
 			value_type *data() { return (_vec); }
 			value_type *data() const { return (_vec); }
-			/*** END OF ELEMENT ACCESS ***/
 
 			/*** MODIFIERS ***/
-			/*** END OF MODIFIERS ***/
 
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
-			/*** END OF ALLOCATOR ***/
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
-			/*** END OF NON-MEMBER FUNCTION OVERLOADS ***/
 	};
-
 	// my iterator
 	template <typename T, class A>
 	class vector<T, A>::iterator
 	{
+		typedef typename
+		A::difference_type				difference_type;
+		typedef typename
+		A::value_type					value_type;
+		typedef typename
+		A::reference					reference;
+		typedef typename
+		A::pointer						pointer;
+		typedef typename
+		std::random_access_iterator_tag	iterator_category;
+
+		value_type	_index;
+		pointer		_data;
 		public:
-		iterator(void)
-		{
-			cout << "iterator constructor" << endl;
-		}
-		~iterator(void)
-		{
-			cout << "iterator destructor" << endl;
-		}
+			iterator(void)
+			:_index(0), _data(nullptr)
+			{ cout << "iterator constructor" << endl; }
+			iterator(pointer vec, value_type index)
+			: _index(index), _data(vec)
+			{ cout << "iterator constructor parameter" << endl; }
+			~iterator(void)
+			{ cout << "iterator destructor" << endl; }
+			iterator(iterator const & src)
+			: _index(src._index), _data(src._data)
+			{ cout << "iterator copy constructor" << endl; }
+			iterator & operator=(iterator const & rhs) {
+				if (this != &rhs) {
+					_index = rhs._index;
+					_data = rhs._data;
+				}
+			}
+			bool operator==(const iterator & other) const
+			{ return (_index == other._index); }
+			bool operator!=(const iterator & other) const
+			{ return (_index != other._index); }
+			bool operator<(const iterator & other) const
+			{ return (_index < other._index); }
+			bool operator>(const iterator & other) const
+			{ return (_index > other._index); }
+			bool operator<=(const iterator & other) const
+			{ return (_index <= other._index); }
+			bool operator>=(const iterator & other) const
+			{ return (_index >= other._index); }
+
+			iterator & operator++()
+			{
+				cout << "iterator add" << endl;
+				this->_index++;
+				return (*this);
+			}
+			iterator operator++(int)
+			{
+				iterator old(*this);
+				(*this)++;
+				return (old);
+			}
+			iterator & operator--()
+			{
+				this->_index--;
+				return (*this);
+			}
+			iterator operator--(int)
+			{
+				iterator old(*this);
+				(*this)--;
+				return (old);
+			}
+			// iterator & operator+=(size_type);
+			// iterator operator+(size_type) const;
+			// friend iterator operator+(size_type, const iterator & other);
+			// iterator & operator-=(size_type);
+			// iterator operator-(size_type) const;
+			difference_type operator-(iterator) const;
+			reference operator*() const
+			{
+				return (this->_data[_index]);
+			}
+			pointer operator->() const;
+			reference operator[](value_type) const;
 	};
 }
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 15:34:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/02 18:21:12 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,18 @@ void	test(void)
 	ft::vector<int> myvector(5,4);
 	ft::vector<int> myvector2;
 //	int *p;
-	unsigned int i;
-	ft::vector<int>::iterator it;
+	ft::vector<int>::iterator it = myvector.begin();
+	ft::vector<int>::iterator ite = myvector.end();
+
+	cout << CYAN;
+	for (; it != ite; ++it)
+		cout << *it << " ";
+	cout << DEF << endl;
 
 //	p = myvector.get_allocator().allocate(5);
 
 //	for (i = 0; i < 5; i++)
 //		myvector.get_allocator().construct(&p[i], i);
-
-	std::cout << "The allocated array contains:";
-	for (i = 0; i < 5; i++) std::cout << ' ' << myvector[i];
-	std::cout << '\n';
 
 //	for (i = 0; i < 5; i++)
 //		myvector.get_allocator().destroy(&p[i]);
