@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/02 15:27:13 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/05 17:20:24 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,14 @@ using std::ifstream;
 
 int main()
 {
-	vector<int> data = {1, 2, 3, 4, 5};
+	//typedef vector<int>::iterator vit;
+	typedef vector<int>::reverse_iterator rvit;
+	vector<int> myvector(5);
 
-	return (0);
+	int i = 0;
+	for (rvit it = myvector.rbegin(); it != myvector.rend(); ++it)
+		*it = ++i;
+	for (int i = 0; myvector[i]; ++i)
+		cout << myvector[i] << " ";
+	cout << endl;
 }

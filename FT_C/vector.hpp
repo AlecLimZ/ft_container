@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/02 18:19:10 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/05 18:48:13 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ namespace	ft
 		
 		public:
 			class iterator;
-			typedef const iterator const_iterator;
+			class reverse_iterator;
+			typedef const iterator			const_iterator;
+			typedef const reverse_iterator	const_reverse_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
@@ -110,7 +112,7 @@ namespace	ft
 			}
 			const_iterator end() const
 			{
-				return (NULL);
+				return (iterator(this->_vec, this->_size));
 			}
 			/*** CAPACITY ***/
 			size_type size() const { return (_size); }
@@ -254,7 +256,6 @@ namespace	ft
 
 			iterator & operator++()
 			{
-				cout << "iterator add" << endl;
 				this->_index++;
 				return (*this);
 			}
@@ -285,8 +286,18 @@ namespace	ft
 			{
 				return (this->_data[_index]);
 			}
-			pointer operator->() const;
-			reference operator[](value_type) const;
+			pointer operator->() const
+			{
+				return (this->_data);
+			}
+			reference operator[](value_type) const
+			{
+				return (this->_data[_index]);
+			}
+	};
+	template <typename T, class A>
+	class vector<T, A>::reverse_iterator
+	{
 	};
 }
 #endif
