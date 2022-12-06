@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/05 18:48:13 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/06 18:07:23 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,10 @@ namespace	ft
 		
 		public:
 			class iterator;
+			template <class Iter>
 			class reverse_iterator;
 			typedef const iterator			const_iterator;
-			typedef const reverse_iterator	const_reverse_iterator;
+			typedef const reverse_iterator<const_iterator>	const_reverse_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
@@ -296,8 +297,68 @@ namespace	ft
 			}
 	};
 	template <typename T, class A>
+	template <class Iter>
 	class vector<T, A>::reverse_iterator
 	{
+		typedef Iter iterator_type;
+		typedef typename ft::iterator_traits<Iter>::iterator_category
+		iterator_category;
+		typedef typename ft::iterator_traits<Iter>::value_type
+		value_type;
+		typedef typename ft::iterator_traits<Iter>::difference_type
+		difference_type;
+		typedef typename ft::iterator_traits<Iter>::pointer
+		pointer;
+		typedef typename ft::iterator_traits<Iter>::reference
+		reference;
+
+		public:
+		reverse_iterator();
+		reverse_iterator(iterator_type x);
+		template <class ite>
+		reverse_iterator(const reverse_iterator<ite> & other);
+		~reverse_iterator();
+		reverse_iterator & operator=(const reverse_iterator & other);
+
+		iterator_type base() const;
+		reference operator*() const;
+		reverse_iterator operator+(difference_type n) const;
+		reverse_iterator & operator++();
+		reverse_iterator operator++(int);
+		reverse_iterator & operator+=(difference_type n);
+		reverse_iterator operator-(difference_type n) const;
+		reverse_iterator & operator--();
+		reverse_iterator operator--(int);
+		reverse_iterator & operator-=(difference_type n);
+		pointer operator->() const;
+		reference operator[](difference_type n) const;
 	};
+
+	// non-member function overloads for reverse iterator
+	template <class T, class A>
+	bool operator==(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+	
+	template <class T, class A>
+	bool operator!=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+
+	template <class T, class A>
+	bool operator<(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+	
+	template <class T, class A>
+	bool operator<=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+	
+	template <class T, class A>
+	bool operator>(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+	
+	template <class T, class A>
+	bool operator>=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
+
+	template <class T, class A>
+	typename vector<T, A>::reverse_iterator operator+(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
+	
+	template <class T, class A>
+	typename vector<T, A>::reverse_iterator operator-(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
+// this line before the end of the namespace ft
 }
+	
 #endif
