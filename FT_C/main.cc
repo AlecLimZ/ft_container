@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/02 18:21:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:25:43 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,26 @@ int	doc(int *ac, char **av)
 
 void	test(void)
 {
-	ft::vector<int> myvector(5,4);
-	ft::vector<int> myvector2;
-//	int *p;
-	ft::vector<int>::iterator it = myvector.begin();
-	ft::vector<int>::iterator ite = myvector.end();
+	typedef ft::vector<int> fvector;
+	fvector mv;
+	mv.push_back(0);
+	mv.push_back(1);
+	mv.push_back(2);
+	mv.push_back(3);
+	mv.push_back(4);
+	mv.push_back(5);
+	
+//	ft::vector<int>::iterator it = mv.begin();
+	ft::vector<int>::iterator it = mv.begin() + 3;
+
+	ft::vector<int>::reverse_iterator revit(it);
+//	ft::vector<int>::iterator ite = mv.end();
 
 	cout << CYAN;
-	for (; it != ite; ++it)
-		cout << *it << " ";
+//	for (; it != ite; ++it)
+//		cout << *it << " ";
+	cout << "*it == " << *it << endl;
+	cout << "*revit == " << *revit << endl;
 	cout << DEF << endl;
 
 //	p = myvector.get_allocator().allocate(5);

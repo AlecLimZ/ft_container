@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/05 17:20:24 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/07 16:54:15 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,27 @@ using std::ifstream;
 
 int main()
 {
-	//typedef vector<int>::iterator vit;
-	typedef vector<int>::reverse_iterator rvit;
-	vector<int> myvector(5);
+	vector<int> v = { 0, 1, 2, 3, 4, 5 };
 
-	int i = 0;
-	for (rvit it = myvector.rbegin(); it != myvector.rend(); ++it)
-		*it = ++i;
-	for (int i = 0; myvector[i]; ++i)
-		cout << myvector[i] << " ";
+	using RevIt = std::reverse_iterator<vector<int>::iterator>;
+
+	vector<int>::iterator it = v.begin() + 4;
+	//std::reverse_iterator<vector<int>::iterator>  r_it(it);
+	vector<int>::reverse_iterator r_it(it);
+
+	cout << "*it == " << *it << '\n'
+		<< "*r_it == " << *r_it << '\n'
+		<< "*r_it + 1== " << *r_it + 1 << '\n'
+		<< "*r_it.base() == " << *r_it.base() << '\n'
+		<< "*(r_it.base() - 1) == " << *(r_it.base() - 1) << '\n';
+
+	it = r_it.base();
+	cout << "*it == " << *it << endl;
+	RevIt r_end{v.begin()};
+	RevIt r_begin{v.end()};
+
+	for (vector<int>::iterator it = r_end.base(); 
+			it != r_begin.base(); ++it)
+		cout << *it << " ";
 	cout << endl;
 }

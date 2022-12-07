@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/06 18:07:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/07 17:24:57 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,9 @@ namespace	ft
 		
 		public:
 			class iterator;
-			template <class Iter>
 			class reverse_iterator;
 			typedef const iterator			const_iterator;
-			typedef const reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef const reverse_iterator	const_reverse_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
@@ -201,7 +200,26 @@ namespace	ft
 			value_type *data() const { return (_vec); }
 
 			/*** MODIFIERS ***/
-
+			void	push_back(const value_type & val)
+			{
+				_size++;
+				if (_size > _capacity)
+				{
+					pointer tmp = _vec;
+					_vec = _myalloc.allocate(_size);
+					size_type i = 0;
+					for (; i < _capacity; ++i)
+					{
+						_myalloc.construct(_vec + i, tmp[i]);
+						_myalloc.destroy(tmp + i);
+					}
+					_myalloc.deallocate(tmp, _capacity);
+					_myalloc.construct(_vec + i, val);
+					_capacity = _size;
+				}
+				else
+					_myalloc.construct(_vec + (_size - 1), val);
+			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
 			
@@ -211,6 +229,7 @@ namespace	ft
 	template <typename T, class A>
 	class vector<T, A>::iterator
 	{
+		public:
 		typedef typename
 		A::difference_type				difference_type;
 		typedef typename
@@ -221,7 +240,7 @@ namespace	ft
 		A::pointer						pointer;
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
-
+		
 		value_type	_index;
 		pointer		_data;
 		public:
@@ -278,7 +297,11 @@ namespace	ft
 				return (old);
 			}
 			// iterator & operator+=(size_type);
-			// iterator operator+(size_type) const;
+			iterator operator+(size_type x) const
+			{
+				iterator tmp(_data, _index + x);
+				return (tmp);
+			}
 			// friend iterator operator+(size_type, const iterator & other);
 			// iterator & operator-=(size_type);
 			// iterator operator-(size_type) const;
@@ -297,31 +320,41 @@ namespace	ft
 			}
 	};
 	template <typename T, class A>
-	template <class Iter>
 	class vector<T, A>::reverse_iterator
 	{
-		typedef Iter iterator_type;
-		typedef typename ft::iterator_traits<Iter>::iterator_category
+		typedef iterator iterator_type;
+		typedef typename ft::iterator_traits<iterator>::iterator_category
 		iterator_category;
-		typedef typename ft::iterator_traits<Iter>::value_type
+		typedef typename ft::iterator_traits<iterator>::value_type
 		value_type;
-		typedef typename ft::iterator_traits<Iter>::difference_type
+		typedef typename ft::iterator_traits<iterator>::difference_type
 		difference_type;
-		typedef typename ft::iterator_traits<Iter>::pointer
+		typedef typename ft::iterator_traits<iterator>::pointer
 		pointer;
-		typedef typename ft::iterator_traits<Iter>::reference
+		typedef typename ft::iterator_traits<iterator>::reference
 		reference;
 
+		pointer			_data;
+		value_type		_index;
 		public:
-		reverse_iterator();
-		reverse_iterator(iterator_type x);
+		reverse_iterator(): _data(nullptr), _index(0){}
+		reverse_iterator(iterator_type x): _data(x._data), _index(x._index - 1)
+		{ if (_index <= 0) _index = 0; }
 		template <class ite>
-		reverse_iterator(const reverse_iterator<ite> & other);
-		~reverse_iterator();
-		reverse_iterator & operator=(const reverse_iterator & other);
-
+		reverse_iterator(const reverse_iterator & other)
+		: _index(other._index), _data(other._data){}
+		~reverse_iterator(){}
+		reverse_iterator & operator=(const reverse_iterator & other)
+		{
+			if (this != &other)
+			{
+				this->_index = other._index;
+				this->_data = other._data;
+			}
+			return (*this);
+		}
 		iterator_type base() const;
-		reference operator*() const;
+		reference operator*() const { return (_data[_index]); }
 		reverse_iterator operator+(difference_type n) const;
 		reverse_iterator & operator++();
 		reverse_iterator operator++(int);
