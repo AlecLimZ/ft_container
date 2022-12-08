@@ -1,0 +1,3 @@
+now both has total 5 size. if i add pre add to try to access the 5th index
+capacity didnt affect. i will fix capacity later in the push_back implementation.
+

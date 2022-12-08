@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/07 16:54:15 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/08 16:24:26 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,29 +36,19 @@ using std::iterator_traits;
 using std::array;
 using std::ifstream;
 
+namespace ft
+{
+	template <class T>
+	struct is_integral
+	{
+		static const bool value = std::numeric_limits<T>::is_integer;
+	};
+}
+
 int main()
 {
-	vector<int> v = { 0, 1, 2, 3, 4, 5 };
-
-	using RevIt = std::reverse_iterator<vector<int>::iterator>;
-
-	vector<int>::iterator it = v.begin() + 4;
-	//std::reverse_iterator<vector<int>::iterator>  r_it(it);
-	vector<int>::reverse_iterator r_it(it);
-
-	cout << "*it == " << *it << '\n'
-		<< "*r_it == " << *r_it << '\n'
-		<< "*r_it + 1== " << *r_it + 1 << '\n'
-		<< "*r_it.base() == " << *r_it.base() << '\n'
-		<< "*(r_it.base() - 1) == " << *(r_it.base() - 1) << '\n';
-
-	it = r_it.base();
-	cout << "*it == " << *it << endl;
-	RevIt r_end{v.begin()};
-	RevIt r_begin{v.end()};
-
-	for (vector<int>::iterator it = r_end.base(); 
-			it != r_begin.base(); ++it)
-		cout << *it << " ";
-	cout << endl;
+	vector<int> tmp;
+	vector<int>::reverse_iterator rit = tmp.rbegin();
+	cout << *rit << endl;
+	return (0);
 }

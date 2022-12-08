@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/11/30 16:46:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/08 14:55:23 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ namespace ft
 	
 	template<class T>
 	struct is_same<T, T> : std::true_type {};
+
+	template <class T>
+	struct is_integral
+	{
+		static const bool value = std::numeric_limits<T>::is_integer;
+	};
 }
 
 #endif

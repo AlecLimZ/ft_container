@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/07 17:25:43 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/08 17:09:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,34 @@ int	doc(int *ac, char **av)
 
 void	test(void)
 {
-	typedef ft::vector<int> fvector;
-	fvector mv;
-	mv.push_back(0);
-	mv.push_back(1);
-	mv.push_back(2);
-	mv.push_back(3);
-	mv.push_back(4);
-	mv.push_back(5);
+	std::vector<int> vstd;
+	ft::vector<int> vft;
+	for (int i = 1; i <= 4; i++)
+	{
+		vstd.push_back(i);
+		vft.push_back(i);
+	}
 	
-//	ft::vector<int>::iterator it = mv.begin();
-	ft::vector<int>::iterator it = mv.begin() + 3;
+	typedef std::vector<int>::iterator	stditer;
+	typedef ft::vector<int>::iterator	ftiter;
+	stditer sit = vstd.begin();
+	stditer site = vstd.end();
+	ftiter vit = vft.begin();
+	ftiter vite = vft.end();
 
-	ft::vector<int>::reverse_iterator revit(it);
-//	ft::vector<int>::iterator ite = mv.end();
+	cout << "std iterator" << endl;
+	int i = 0;
+	while (sit != site)
+		cout << ++i << ": " << *++sit << "| ";
+	cout << vstd.size() << " ";
+	cout << endl;
 
-	cout << CYAN;
-//	for (; it != ite; ++it)
-//		cout << *it << " ";
-	cout << "*it == " << *it << endl;
-	cout << "*revit == " << *revit << endl;
-	cout << DEF << endl;
-
-//	p = myvector.get_allocator().allocate(5);
-
-//	for (i = 0; i < 5; i++)
-//		myvector.get_allocator().construct(&p[i], i);
-
-//	for (i = 0; i < 5; i++)
-//		myvector.get_allocator().destroy(&p[i]);
-//	myvector.get_allocator().deallocate(p, 5);
-
+	i = 0;
+	cout << "my ft iterator" << endl;
+	while (vit != vite)
+		cout << ++i << ": " << *++vit << "| ";
+	cout << vft.size() << " ";
+	cout << endl;
 }
 
 int main(int argc, char **argv)
