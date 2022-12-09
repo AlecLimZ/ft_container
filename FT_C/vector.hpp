@@ -6,13 +6,14 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/08 17:07:17 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/09 18:11:35 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <iterator>
 # include <iostream>
 # include <cstddef> // for linux ptrdiff_t
 # include <stdexcept>
@@ -49,7 +50,8 @@ namespace	ft
 		public:
 			class iterator;
 			class reverse_iterator;
-			typedef const iterator			const_iterator;
+			typedef const iterator const_iterator;
+
 			typedef const reverse_iterator	const_reverse_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
@@ -100,11 +102,13 @@ namespace	ft
 			/*** ITERATORS ***/
 			iterator begin()
 			{
+				cout << "begin return non-const" << endl;
 				if (_size == 0) return (iterator());
 				return (iterator(this->_vec, 0));
 			}
 			const_iterator begin() const
 			{
+				cout << "begin return CONST" << endl;
 				if (_size == 0) return (const_iterator());
 				return (const_iterator(this->_vec, 0));
 			}
@@ -230,17 +234,18 @@ namespace	ft
 				_size++;
 				if (_size > _capacity)
 				{
+					size_type tmpcap = _capacity;
+					_capacity = _capacity == 0 ? 1 : _capacity * 2;
 					pointer tmp = _vec;
-					_vec = _myalloc.allocate(_size * 2);
+					_vec = _myalloc.allocate(_capacity);
 					size_type i = 0;
-					for (; i < _capacity; ++i)
+					for (; i < tmpcap; ++i)
 					{
 						_myalloc.construct(_vec + i, tmp[i]);
 						_myalloc.destroy(tmp + i);
 					}
-					_myalloc.deallocate(tmp, _capacity);
+					_myalloc.deallocate(tmp, tmpcap);
 					_myalloc.construct(_vec + i, val);
-					_capacity = _size;
 				}
 				else
 					_myalloc.construct(_vec + (_size - 1), val);
@@ -251,6 +256,7 @@ namespace	ft
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 	};
 	// my iterator
+
 	template <typename T, class A>
 	class vector<T, A>::iterator
 	{
@@ -297,7 +303,7 @@ namespace	ft
 
 			iterator & operator++()
 			{
-				this->_index++;
+				_index++;
 				return (*this);
 			}
 			iterator operator++(int)
