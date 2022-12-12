@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/12 22:00:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/12 21:50:16 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ namespace	ft
 		
 		public:
 			typedef myiter<value_type>	iterator;
-			typedef myiter<const value_type>	const_iterator;
+			typedef myiter<value_type>	const_iterator;
 			class reverse_iterator;
 		//	typedef const iterator<const value_type> const_iterator;
 

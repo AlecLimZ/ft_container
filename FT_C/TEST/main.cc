@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/12 22:01:19 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:29:34 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	doc(int *ac, char **av)
 
 void	test(void)
 {
-	std::vector<int>	vstd;
-	ft::vector<int>		vft;
+	std::vector<int> vstd;
+	ft::Vector<int> vft;
 	for (int i = 1; i <= 20; i++)
 	{
 		vstd.push_back(i);
@@ -41,9 +41,8 @@ void	test(void)
 	}
 	
 	typedef std::vector<int>::const_iterator	stditer;
-	typedef ft::vector<int>::iterator		ftiter;
-	ftiter	vit = vft.begin();
-	ftiter	vite = vft.end();
+	ft::Vector<int>::const_iterator	vit = vft.begin();
+	ft::Vector<int>::const_iterator	vite = vft.end();
 	stditer sit = vstd.begin();
 	stditer site = vstd.end();
 
