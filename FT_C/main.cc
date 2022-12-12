@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/12 22:01:19 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 06:39:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	test(void)
 	}
 	
 	typedef std::vector<int>::const_iterator	stditer;
-	typedef ft::vector<int>::iterator		ftiter;
+	typedef ft::vector<int>::const_iterator		ftiter;
 	ftiter	vit = vft.begin();
 	ftiter	vite = vft.end();
 	stditer sit = vstd.begin();

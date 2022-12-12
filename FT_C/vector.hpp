@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/12 22:00:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 06:40:03 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ namespace	ft
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
 		
-		protected:
+		public:
 		pointer		_data;
 		public:
 			myiter(void)
@@ -342,6 +342,26 @@ namespace	ft
 			reference operator[](size_t i) const
 			{
 				return (_data[i]);
+			}
+	};
+	template <typename A>
+	class myiter<const A> : public myiter
+	{
+		public:
+		typedef std::ptrdiff_t				difference_type;
+		typedef A					value_type;
+		typedef A&					reference;
+		typedef A*						pointer;
+		typedef typename
+		std::random_access_iterator_tag	iterator_category;
+		
+		protected:
+		pointer _data;
+		public:
+			myiter(){}
+			~myiter(){}
+			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){
+				cout << "success?" << endl;
 			}
 	};
 	template <typename T, class A>
