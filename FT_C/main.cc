@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 06:39:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 11:11:48 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,26 @@ void	test(void)
 
 	cout << "std iterator" << endl;
 	int i = 0;
+	cout << sit[0] << endl;
+	cout << sit[1] << endl;
+	cout << sit[2] << endl;
 	while (sit != site)
-		cout << ++i << ": " << *++sit << "| ";
+	{
+		++sit;
+		cout << ++i << ": " << sit[0] << "| ";
+	}
 	cout << endl;
 
 	i = 0;
+	cout << vit[0] << endl;
+	cout << vit[1] << endl;
+	cout << vit[2] << endl;
 	cout << "my ft iterator" << endl;
 	while (vit != vite)
-		cout << ++i << ": " << *++vit << "| ";
+	{
+		++vit;
+		cout << ++i << ": " << vit[0] << "| ";
+	}
 	cout << endl;
 }
 

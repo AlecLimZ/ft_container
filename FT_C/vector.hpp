@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 06:40:03 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 11:11:43 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ namespace	ft
 {
 	template <typename A>
 	class myiter;
+	template <typename A>
+	class myiter<A const>;
 	template <typename T, class Allocator = std::allocator<T> >
 	class vector
 	{
@@ -254,7 +256,6 @@ namespace	ft
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 	};
 	// my iterator
-
 	template<typename A>
 	class myiter
 	{
@@ -266,11 +267,12 @@ namespace	ft
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
 		
-		public:
+		protected:
 		pointer		_data;
 		public:
+			friend class myiter<A const>;
 			myiter(void)
-			:_data(NULL){}
+			:_data(nullptr){}
 			myiter(value_type *vec)
 			:_data(vec){}
 			~myiter(void){}
@@ -345,24 +347,89 @@ namespace	ft
 			}
 	};
 	template <typename A>
-	class myiter<const A> : public myiter
+	class myiter<const A>
 	{
-		public:
 		typedef std::ptrdiff_t				difference_type;
 		typedef A					value_type;
 		typedef A&					reference;
 		typedef A*						pointer;
+		typedef const A&	const_reference;
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
 		
 		protected:
 		pointer _data;
 		public:
-			myiter(){}
+			myiter():_data(nullptr){}
 			~myiter(){}
-			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){
-				cout << "success?" << endl;
+			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){}
+		myiter & operator=(const myiter & rhs) {
+			if (this != &rhs) {
+				_data = rhs._data;
 			}
+			return (*this);
+		}
+		bool operator==(const myiter & other) const
+		{ return (_data == other._data); }
+		bool operator!=(const myiter & other) const
+		{ return (_data != other._data); }
+		bool operator<(const myiter & other) const
+		{ return (_data < other._data); }
+		bool operator>(const myiter & other) const
+		{ return (_data > other._data); }
+		bool operator<=(const myiter & other) const
+		{ return (_data <= other._data); }
+		bool operator>=(const myiter & other) const
+		{ return (_data >= other._data); }
+
+		myiter & operator++()
+		{
+			_data++;
+			return (*this);
+		}
+		myiter operator++(int)
+		{
+			myiter old(*this);
+			this->_data++;
+				return (old);
+		}
+		myiter & operator--()
+		{
+			this->_data--;
+			return (*this);
+		}
+		myiter operator--(int)
+		{
+			myiter old(*this);
+			(*this)--;
+			return (old);
+		}
+		// myiter & operator+=(size_t);
+		myiter operator+(size_t x) const
+		{
+			return (myiter(_data + x));
+		}
+		// friend myiter operator+(size_t, const myiter & other);
+		// myiter & operator-=(size_t);
+		// myiter operator-(size_t) const;
+		//difference_type operator-(myiter x) const
+		myiter operator-(size_t x) const
+		{
+			myiter tmp(_data - x);
+			return (tmp);
+		}
+		const_reference operator*() const
+		{
+			return (*_data);
+		}
+		const pointer operator->() const
+		{
+			return (this->_data);
+		}
+		const_reference operator[](size_t i) const
+		{
+			return (_data[i]);
+		}
 	};
 	template <typename T, class A>
 	class vector<T, A>::reverse_iterator
