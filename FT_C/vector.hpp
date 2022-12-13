@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 14:59:38 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 16:00:45 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <cstddef> // for linux ptrdiff_t
 # include <stdexcept>
 # include "color.hpp"
+# include <algorithm>
+# include <vector>
 # include "myiterator.hpp"
 
 using std::cout;
@@ -35,6 +37,7 @@ namespace	ft
 	template <typename T, class Allocator = std::allocator<T> >
 	class vector
 	{
+		public:
 		/*** MEMBER TYPES ***/
 		typedef T											value_type;
 		typedef Allocator									allocator_type;
@@ -46,6 +49,7 @@ namespace	ft
 		typedef size_t					size_type;
 		/*** END OF MEMBER TYPES ***/
 		
+		protected:
 		/*** ATTRIBUTES ***/
 		size_type		_capacity;
 		size_type		_size;
@@ -329,9 +333,9 @@ namespace	ft
 			{
 				return (myiter(_data + x));
 			}
-			friend myiter operator+(size_t, const myiter & other)
+			friend myiter operator+(size_t n, const myiter & other)
 			{
-				return (other + 2);
+				return (other + n);
 			}
 			myiter & operator-=(size_t n)
 			{
@@ -426,10 +430,10 @@ namespace	ft
 		{
 			return (myiter(_data + x));
 		}
-			friend myiter operator+(size_t, const myiter & other)
-			{
-				return (other + 2);
-			}
+		friend myiter operator+(size_t n, const myiter & other)
+		{
+			return (other + n);
+		}
 		myiter & operator-=(size_t n)
 		{
 			this->_data -= n;

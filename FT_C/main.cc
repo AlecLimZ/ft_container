@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 14:49:54 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 15:59:38 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,29 @@ int	doc(int *ac, char **av)
 	return (res + client_stuff_return_code);
 }
 
+
 void	test(void)
 {
+	const int size = 5;
+//	std::vector<int> vct(size);
+//	std::vector<int>::iterator it = vct.begin();
+//	std::vector<int>::const_iterator ite = vct.begin();
+	ft::vector<int> vct(size);
+	ft::vector<int>::iterator it = vct.begin();
+	ft::vector<int>::const_iterator ite = vct.begin();
+	for (int i = 0; i < size; ++i)
+	{
+		it[i] = (size - i) * 5;
+	}
+	cout << *it << endl;
+	it = it + 5;
+	cout << "it + 5: " << *it << endl;
+	it = 1 + it;
+	cout << "1 + it: " << *it << endl;
+	it = it - 4;
+	cout << "it - 4: " << *it << endl;
+	cout << *(it += 2) << endl;
+	(void)ite;
 }
 
 TEST_CASE("Iterator & const iterator")
