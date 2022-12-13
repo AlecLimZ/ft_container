@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 19:25:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:14:30 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,15 @@ using std::cin;
 
 namespace	ft
 {
+	template <typename Iter>
+	class myiterev;
+	template <typename A>
+	class myiter;
+	template <typename A>
+	class myiter<A const>;
 	template <typename T, class Allocator = std::allocator<T> >
 	class vector
 	{
-		template <typename Iter>
-		class myiterev;
-		template <typename A>
-		class myiter;
 		public:
 		/*** MEMBER TYPES ***/
 		typedef T											value_type;
@@ -45,18 +47,8 @@ namespace	ft
 		typedef typename allocator_type::const_pointer		const_pointer;
 		typedef std::ptrdiff_t				difference_type;
 		typedef size_t					size_type;
-		
-		typedef myiter<value_type>	iterator;
-		typedef myiter<const value_type>	const_iterator;	
-		typedef myiterev<iterator>	reverse_iterator;
-		typedef myiterev<const_iterator>	const_reverse_iterator;
 		/*** END OF MEMBER TYPES ***/
-
-		template<typename X, typename Y>
-		friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs)
-		{
-			return (lhs._data != rhs._data);
-		}
+		
 		protected:
 		/*** ATTRIBUTES ***/
 		size_type		_capacity;
@@ -66,11 +58,17 @@ namespace	ft
 		/*** END OF ATTRIBUTES ***/
 		
 		public:
+			typedef myiter<value_type>	iterator;
+			typedef myiter<const value_type>	const_iterator;
+			
+			typedef myiterev<iterator>	reverse_iterator;
+			typedef myiterev<const_iterator>	const_reverse_iterator;
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
 				: _capacity(0), _size(0), _myalloc(alloc), _vec(0)
-			{}
+			{
+			}
 
 			explicit vector(size_type count,
 					const value_type & value = value_type(),
@@ -111,18 +109,22 @@ namespace	ft
 			/*** ITERATORS ***/
 			iterator begin()
 			{
+				if (_size == 0) return (iterator());
 				return (iterator(this->_vec));
 			}
 			const_iterator begin() const
 			{
+				if (_size == 0) return (const_iterator());
 				return (const_iterator(this->_vec));
 			}
 			iterator end()
 			{
+				if (_size == 0) return (iterator());
 				return (iterator(this->_vec + this->_size));
 			}
 			const_iterator end() const
 			{
+				if (_size == 0) return (const_iterator());
 				return (const_iterator(this->_vec + this->_size));
 			}
 			reverse_iterator rbegin()
@@ -259,9 +261,8 @@ namespace	ft
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 	};
 	// my iterator
-	template <typename T, class B>
 	template<typename A>
-	class vector<T, B>::myiter
+	class myiter
 	{
 		public:
 		typedef std::ptrdiff_t				difference_type;
@@ -276,15 +277,12 @@ namespace	ft
 		public:
 			friend class myiter<A const>;
 			myiter(void)
-			:_data(nullptr){
-			}
+			:_data(nullptr){}
 			myiter(value_type *vec)
-			:_data(vec){
-			}
+			:_data(vec){}
 			~myiter(void){}
 			myiter(myiter const & src)
-			: _data(src._data){
-			}
+			: _data(src._data){}
 			myiter & operator=(myiter const & rhs) {
 				if (this != &rhs) {
 					_data = rhs._data;
@@ -295,8 +293,6 @@ namespace	ft
 			{ return (_data == other._data); }
 			bool operator!=(const myiter<typename std::remove_const<value_type>::type> & other) const
 			{ return (_data != other._data); }
-			template<typename X, typename Y>
-			friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
 			bool operator<(const myiter & other) const
 			{ return (_data < other._data); }
 			bool operator>(const myiter & other) const
@@ -367,29 +363,23 @@ namespace	ft
 				return (_data[i]);
 			}
 	};
-	
-	template <typename T, class B>
-	template<typename A>
-	class vector<T, B>::myiter<const A>
+	template <typename A>
+	class myiter<const A>
 	{
 		typedef std::ptrdiff_t				difference_type;
 		typedef A					value_type;
 		typedef A&					reference;
 		typedef A*						pointer;
 		typedef const A&	const_reference;
-		typedef const A*	const_pointer;
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
 		
 		protected:
 		pointer _data;
 		public:
-			template<typename X, typename Y>
-			friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
 			myiter():_data(nullptr){}
 			~myiter(){}
-			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){
-			}
+			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){}
 		myiter & operator=(const myiter & rhs) {
 			if (this != &rhs) {
 				_data = rhs._data;
@@ -398,12 +388,8 @@ namespace	ft
 		}
 		bool operator==(const myiter & other) const
 		{ return (_data == other._data); }
-
 		bool operator!=(const myiter & other) const
 		{ return (_data != other._data); }
-		template<typename X, typename Y>
-		friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
-
 		bool operator<(const myiter & other) const
 		{ return (_data < other._data); }
 		bool operator>(const myiter & other) const
@@ -465,7 +451,7 @@ namespace	ft
 		{
 			return (*_data);
 		}
-		const_pointer operator->() const
+		const pointer operator->() const
 		{
 			return (this->_data);
 		}
