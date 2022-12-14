@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 19:25:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/14 13:18:13 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,6 @@ namespace	ft
 		typedef myiterev<const_iterator>	const_reverse_iterator;
 		/*** END OF MEMBER TYPES ***/
 
-		template<typename X, typename Y>
-		friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs)
-		{
-			return (lhs._data != rhs._data);
-		}
 		protected:
 		/*** ATTRIBUTES ***/
 		size_type		_capacity;
@@ -291,20 +286,31 @@ namespace	ft
 				}
 				return (*this);
 			}
-			bool operator==(const myiter & other) const
-			{ return (_data == other._data); }
-			bool operator!=(const myiter<typename std::remove_const<value_type>::type> & other) const
-			{ return (_data != other._data); }
+
+
 			template<typename X, typename Y>
-			friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
-			bool operator<(const myiter & other) const
-			{ return (_data < other._data); }
-			bool operator>(const myiter & other) const
-			{ return (_data > other._data); }
-			bool operator<=(const myiter & other) const
-			{ return (_data <= other._data); }
-			bool operator>=(const myiter & other) const
-			{ return (_data >= other._data); }
+			friend bool operator==(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data == rhs._data); }
+
+			template<typename X, typename Y>
+			friend bool operator!=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data != rhs._data); }
+
+			template<typename X, typename Y>
+			friend bool operator<(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data < rhs._data); }
+
+			template<typename X, typename Y>
+			friend bool operator>(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data > rhs._data); }
+
+			template<typename X, typename Y>
+			friend bool operator<=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data <= rhs._data); }
+
+			template<typename X, typename Y>
+			friend bool operator>=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data >= rhs._data); }
 
 			myiter & operator++()
 			{
@@ -396,22 +402,29 @@ namespace	ft
 			}
 			return (*this);
 		}
-		bool operator==(const myiter & other) const
-		{ return (_data == other._data); }
-
-		bool operator!=(const myiter & other) const
-		{ return (_data != other._data); }
 		template<typename X, typename Y>
-		friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
-
-		bool operator<(const myiter & other) const
-		{ return (_data < other._data); }
-		bool operator>(const myiter & other) const
-		{ return (_data > other._data); }
-		bool operator<=(const myiter & other) const
-		{ return (_data <= other._data); }
-		bool operator>=(const myiter & other) const
-		{ return (_data >= other._data); }
+		friend bool operator==(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data == rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator!=(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data != rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator<(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data < rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator>(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data > rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator<=(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data <= rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator>=(const myiter<X> & lhs, const myiter<Y> & rhs)
+		{ return (lhs._data >= rhs._data); }
 
 		myiter & operator++()
 		{
