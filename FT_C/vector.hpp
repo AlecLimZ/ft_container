@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/14 20:06:34 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:19:38 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ using std::cin;
 
 namespace	ft
 {
+		template <typename Iter>
+		class myiterev;
 	template <typename T, class Allocator = std::allocator<T> >
 	class vector
 	{
-		template <typename Iter>
-		class myiterev;
+	//	template <typename Iter>
+	//	class myiterev;
 		template <typename A>
 		class myiter;
 		public:
@@ -484,9 +486,10 @@ namespace	ft
 	};
 
 	/*** Reverse Iterator ***/
-	template <typename T, class B>
+	//template <typename T, class B>
 	template <typename Iter>
-	class vector<T, B>::myiterev
+//	class vector<T, B>::myiterev
+	class myiterev
 	{
 		typedef Iter
 		iterator_type;
@@ -614,9 +617,10 @@ namespace	ft
 	};
 	
 	/*** Const Reverse Iterator ***/
-	template <typename T, class B>
+//	template <typename T, class B>
 	template <typename Iter>
-	class vector<T, B>::myiterev<const Iter>
+//	class vector<T, B>::myiterev<const Iter>
+	class myiterev<const Iter>
 	{
 		typedef Iter
 		iterator_type;
@@ -630,8 +634,8 @@ namespace	ft
 		pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference
 		reference;
-		typedef const T&	const_reference;
-		typedef const T*	const_pointer;
+		typedef const value_type&	const_reference;
+		typedef const value_type*	const_pointer;
 
 		protected:
 		pointer	_data;
@@ -639,7 +643,9 @@ namespace	ft
 		public:
 		myiterev(): _data(nullptr){}
 
-		explicit myiterev(vector<T, B>::const_iterator & x): _data(x._data - 1){}
+		template <typename T, typename B>
+		explicit myiterev(typename vector<T, B>::const_iterator & x)
+		: _data(x._data - 1){}
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 
 		myiterev(value_type *vec) : _data(vec){}
