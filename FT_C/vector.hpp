@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/14 17:54:52 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/14 20:06:34 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,23 +125,19 @@ namespace	ft
 
 			reverse_iterator rbegin()
 			{
-				if (_size == 0) return (reverse_iterator());
-				return (reverse_iterator((*this).end()));
+				return (reverse_iterator(end()));
 			}
 			const_reverse_iterator rbegin() const
 			{
-				if (_size == 0) return (const_reverse_iterator());
-				return (const_reverse_iterator((*this).end()));
+				return (const_reverse_iterator(end()));
 			}
 			reverse_iterator rend()
 			{
-				if (_size == 0) return (reverse_iterator());
-				return (reverse_iterator((*this).begin()));
+				return (reverse_iterator(begin()));
 			}
 			reverse_iterator rend() const
 			{
-				if (_size == 0) return (const_reverse_iterator());
-				return (const_reverse_iterator((*this).begin()));
+				return (const_reverse_iterator(begin()));
 			}
 
 			/*** CAPACITY ***/
@@ -274,7 +270,8 @@ namespace	ft
 			friend class	myiter<A const>;
 			friend struct	iterator_traits<myiter>;
 			friend class	myiterev<myiter>;
-			friend class	myiterev<const myiter>;
+			template <typename Iter>
+			friend class	myiterev;
 
 		public:
 			myiter(void) :_data(nullptr){}
@@ -387,7 +384,8 @@ namespace	ft
 			pointer _data;
 			friend struct	iterator_traits<myiter>;
 			friend class	myiterev<myiter>;
-			friend class	myiterev<const myiter>;
+			template <typename Iter>
+			friend class	myiterev;
 
 		public:
 			myiter() :_data(nullptr){}
@@ -505,6 +503,7 @@ namespace	ft
 
 		protected:
 		pointer			_data;
+		friend class	myiterev<const Iter>;
 
 		public:
 		myiterev(): _data(nullptr){}
@@ -592,19 +591,19 @@ namespace	ft
 		
 		template<typename X, typename Y>
 		friend bool operator<(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data < rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
 		{ return (lhs._data > rhs._data); }
 		
 		template<typename X, typename Y>
+		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data < rhs._data); }
+		
+		template<typename X, typename Y>
 		friend bool operator<=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data <= rhs._data); }
+		{ return (lhs._data >= rhs._data); }
 		
 		template<typename X, typename Y>
 		friend bool operator>=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data >= rhs._data); }
+		{ return (lhs._data <= rhs._data); }
 
 		friend myiterev operator+(difference_type n, const myiterev & rhs)
 		{ return (rhs + n); }
@@ -640,11 +639,12 @@ namespace	ft
 		public:
 		myiterev(): _data(nullptr){}
 
+		explicit myiterev(vector<T, B>::const_iterator & x): _data(x._data - 1){}
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 
 		myiterev(value_type *vec) : _data(vec){}
 
-		myiterev(const myiterev & other)
+		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
 			: _data(other._data){}
 
 		~myiterev(){}
@@ -728,19 +728,19 @@ namespace	ft
 
 		template<typename X, typename Y>
 		friend bool operator<(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data < rhs._data); }
-
-		template<typename X, typename Y>
-		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
 		{ return (lhs._data > rhs._data); }
 
 		template<typename X, typename Y>
+		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data < rhs._data); }
+
+		template<typename X, typename Y>
 		friend bool operator<=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data <= rhs._data); }
+		{ return (lhs._data >= rhs._data); }
 
 		template<typename X, typename Y>
 		friend bool operator>=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
-		{ return (lhs._data >= rhs._data); }
+		{ return (lhs._data <= rhs._data); }
 		
 		friend myiterev operator+(difference_type n, const myiterev & rhs)
 		{ return (rhs + n); }
