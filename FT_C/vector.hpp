@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/14 13:18:13 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/14 17:54:52 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ namespace	ft
 		typedef std::ptrdiff_t				difference_type;
 		typedef size_t					size_type;
 		
-		typedef myiter<value_type>	iterator;
+		typedef myiter<value_type>			iterator;
 		typedef myiter<const value_type>	const_iterator;	
-		typedef myiterev<iterator>	reverse_iterator;
-		typedef myiterev<const_iterator>	const_reverse_iterator;
+		typedef myiterev<iterator>			reverse_iterator;
+		typedef myiterev<const iterator>	const_reverse_iterator;
 		/*** END OF MEMBER TYPES ***/
 
 		protected:
@@ -64,11 +64,9 @@ namespace	ft
 			/*** MEMBER FUNCTIONS ***/
 			// constructor
 			explicit vector(const allocator_type & alloc = allocator_type())
-				: _capacity(0), _size(0), _myalloc(alloc), _vec(0)
-			{}
+				: _capacity(0), _size(0), _myalloc(alloc), _vec(0){}
 
-			explicit vector(size_type count,
-					const value_type & value = value_type(),
+			explicit vector(size_type count, const value_type & value = value_type(),
 					const Allocator & alloc = allocator_type())
 				: _capacity(count), _size(0), _myalloc(alloc)
 			{
@@ -89,37 +87,42 @@ namespace	ft
 					(void)alloc;
 				}
 
-			vector(vector const & x)
-			: _capacity(x._capacity), _size(x._size), _myalloc(x._myalloc), _vec(x._vec)
-			{}
+			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
+									   _myalloc(x._myalloc), _vec(x._vec){}
 
-			// destructor
-			~vector(void) { 
+			~vector(void)
+			{ 
 				for (size_type i = 0; i < _size; ++i)
 					_myalloc.destroy(_vec + i);
 				_myalloc.deallocate(_vec, _capacity);
-				 }
+			}
 
 			// operator=
-			vector & operator=(vector const & rhs);
+			vector & operator=(vector const & rhs)
+			{
+				if (this != &rhs)
+				{
+					_capacity = rhs._capacity;
+					_size = rhs._size;
+					_myalloc = rhs._myalloc;
+					_vec = rhs._vec;
+				}
+				return (*this);
+			}
 
 			/*** ITERATORS ***/
 			iterator begin()
-			{
-				return (iterator(this->_vec));
-			}
+			{ return (iterator(this->_vec)); }
+
 			const_iterator begin() const
-			{
-				return (const_iterator(this->_vec));
-			}
+			{ return (const_iterator(this->_vec)); }
+
 			iterator end()
-			{
-				return (iterator(this->_vec + this->_size));
-			}
+			{ return (iterator(this->_vec + this->_size)); }
+
 			const_iterator end() const
-			{
-				return (const_iterator(this->_vec + this->_size));
-			}
+			{ return (const_iterator(this->_vec + this->_size)); }
+
 			reverse_iterator rbegin()
 			{
 				if (_size == 0) return (reverse_iterator());
@@ -253,40 +256,37 @@ namespace	ft
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 	};
-	// my iterator
+
+	/*** MY	VECTOR'S ITERATOR ***/
 	template <typename T, class B>
 	template<typename A>
 	class vector<T, B>::myiter
 	{
-		public:
-		typedef std::ptrdiff_t				difference_type;
-		typedef A					value_type;
-		typedef A&					reference;
+		typedef std::ptrdiff_t			difference_type;
+		typedef A						value_type;
+		typedef A&						reference;
 		typedef A*						pointer;
 		typedef typename
 		std::random_access_iterator_tag	iterator_category;
 		
 		protected:
-		pointer		_data;
+			pointer			_data;
+			friend class	myiter<A const>;
+			friend struct	iterator_traits<myiter>;
+			friend class	myiterev<myiter>;
+			friend class	myiterev<const myiter>;
+
 		public:
-			friend class myiter<A const>;
-			myiter(void)
-			:_data(nullptr){
-			}
-			myiter(value_type *vec)
-			:_data(vec){
-			}
-			~myiter(void){}
-			myiter(myiter const & src)
-			: _data(src._data){
-			}
-			myiter & operator=(myiter const & rhs) {
-				if (this != &rhs) {
+			myiter(void) :_data(nullptr){}
+			myiter(value_type *vec) :_data(vec){}
+			~myiter(void) {}
+			myiter(myiter const & src) :_data(src._data){}
+			myiter & operator=(myiter const & rhs)
+			{
+				if (this != &rhs)
 					_data = rhs._data;
-				}
 				return (*this);
 			}
-
 
 			template<typename X, typename Y>
 			friend bool operator==(const myiter<X> & lhs, const myiter<Y> & rhs)
@@ -317,180 +317,181 @@ namespace	ft
 				_data++;
 				return (*this);
 			}
+
 			myiter operator++(int)
 			{
 				myiter old(*this);
 				this->_data++;
 				return (old);
 			}
+
 			myiter & operator--()
 			{
 				this->_data--;
 				return (*this);
 			}
+
 			myiter operator--(int)
 			{
 				myiter old(*this);
 				this->_data--;
 				return (old);
 			}
+
 			myiter & operator+=(size_t n)
 			{
 				this->_data += n;
 				return (*this);
 			}
+
 			myiter operator+(size_t x) const
-			{
-				return (myiter(_data + x));
-			}
+			{ return (myiter(_data + x)); }
+
 			friend myiter operator+(size_t n, const myiter & other)
+			{ return (other + n); }
+
+			myiter & operator-=(size_t n)
+			{ this->_data -= n; return (*this); }
+
+			difference_type operator-(myiter x) const
+			{ return (this->_data - x._data); }
+
+			myiter operator-(size_t x) const
+			{ return (myiter(_data - x)); }
+
+			reference operator*() const
+			{ return (*_data); }
+
+			pointer operator->() const
+			{ return (this->_data); }
+
+			reference operator[](size_t i) const
+			{ return (_data[i]); }
+	};
+	
+	/*** MY VECTOR'S CONST ITERATOR ***/
+	template <typename T, class B>
+	template<typename A>
+	class vector<T, B>::myiter<const A>
+	{
+		typedef std::ptrdiff_t			difference_type;
+		typedef A						value_type;
+		typedef A&						reference;
+		typedef A*						pointer;
+		typedef const A&				const_reference;
+		typedef const A*				const_pointer;
+		typedef typename
+		std::random_access_iterator_tag	iterator_category;
+		
+		protected:
+			pointer _data;
+			friend struct	iterator_traits<myiter>;
+			friend class	myiterev<myiter>;
+			friend class	myiterev<const myiter>;
+
+		public:
+			myiter() :_data(nullptr){}
+			~myiter() {}
+			myiter(const myiter<typename std::remove_const<value_type>::type> & src)
+				:_data(src._data){}
+			myiter & operator=(const myiter & rhs)
 			{
-				return (other + n);
+				if (this != &rhs)
+					_data = rhs._data;
+				return (*this);
 			}
+
+			template<typename X, typename Y>
+			friend bool operator==(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data == rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator!=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data != rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator<(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data < rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator>(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data > rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator<=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data <= rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator>=(const myiter<X> & lhs, const myiter<Y> & rhs)
+			{ return (lhs._data >= rhs._data); }
+
+			myiter & operator++()
+			{
+				_data++;
+				return (*this);
+			}
+	
+			myiter operator++(int)
+			{
+				myiter old(*this);
+				this->_data++;
+					return (old);
+			}
+	
+			myiter & operator--()
+			{
+				this->_data--;
+				return (*this);
+			}
+	
+			myiter operator--(int)
+			{
+				myiter old(*this);
+				this->_data--;
+				return (old);
+			}
+	
+			myiter & operator+=(size_t n)
+			{
+				this->_data += n;
+				return (*this);
+			}
+	
+			myiter operator+(size_t x) const
+			{ return (myiter(_data + x)); }
+	
+			friend myiter operator+(size_t n, const myiter & other)
+			{ return (other + n); }
+	
 			myiter & operator-=(size_t n)
 			{
 				this->_data -= n;
 				return (*this);
 			}
-			difference_type operator-(myiter x) const
-			{
-				return (this->_data - x._data);
-			}
-			myiter operator-(size_t x) const
-			{
-				return (myiter(_data - x));
-			}
-			reference operator*() const
-			{
-				return (*_data);
-			}
-			pointer operator->() const
-			{
-				return (this->_data);
-			}
-			reference operator[](size_t i) const
-			{
-				return (_data[i]);
-			}
-	};
 	
-	template <typename T, class B>
-	template<typename A>
-	class vector<T, B>::myiter<const A>
-	{
-		typedef std::ptrdiff_t				difference_type;
-		typedef A					value_type;
-		typedef A&					reference;
-		typedef A*						pointer;
-		typedef const A&	const_reference;
-		typedef const A*	const_pointer;
-		typedef typename
-		std::random_access_iterator_tag	iterator_category;
-		
-		protected:
-		pointer _data;
-		public:
-			template<typename X, typename Y>
-			friend bool operator!=(const vector::template myiter<X> & lhs, const vector::template myiter<Y> & rhs);
-			myiter():_data(nullptr){}
-			~myiter(){}
-			myiter(const myiter<typename std::remove_const<value_type>::type> & src):_data(src._data){
-			}
-		myiter & operator=(const myiter & rhs) {
-			if (this != &rhs) {
-				_data = rhs._data;
-			}
-			return (*this);
-		}
-		template<typename X, typename Y>
-		friend bool operator==(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data == rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator!=(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data != rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator<(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data < rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator>(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data > rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator<=(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data <= rhs._data); }
-		
-		template<typename X, typename Y>
-		friend bool operator>=(const myiter<X> & lhs, const myiter<Y> & rhs)
-		{ return (lhs._data >= rhs._data); }
-
-		myiter & operator++()
-		{
-			_data++;
-			return (*this);
-		}
-		myiter operator++(int)
-		{
-			myiter old(*this);
-			this->_data++;
-				return (old);
-		}
-		myiter & operator--()
-		{
-			this->_data--;
-			return (*this);
-		}
-		myiter operator--(int)
-		{
-			myiter old(*this);
-			this->_data--;
-			return (old);
-		}
-		myiter & operator+=(size_t n)
-		{
-			this->_data += n;
-			return (*this);
-		}
-		myiter operator+(size_t x) const
-		{
-			return (myiter(_data + x));
-		}
-		friend myiter operator+(size_t n, const myiter & other)
-		{
-			return (other + n);
-		}
-		myiter & operator-=(size_t n)
-		{
-			this->_data -= n;
-			return (*this);
-		}
-		difference_type operator-(myiter x) const
-		{
-			return (this->_data - x._data);
-		}
-		myiter operator-(size_t x) const
-		{
-			return (myiter(_data - x));
-		}
-		const_reference operator*() const
-		{
-			return (*_data);
-		}
-		const_pointer operator->() const
-		{
-			return (this->_data);
-		}
-		const_reference operator[](size_t i) const
-		{
-			return (_data[i]);
-		}
+			difference_type operator-(myiter x) const
+			{ return (this->_data - x._data); }
+	
+			myiter operator-(size_t x) const
+			{ return (myiter(_data - x)); }
+	
+			const_reference operator*() const
+			{ return (*_data); }
+	
+			const_pointer operator->() const
+			{ return (this->_data); }
+	
+			const_reference operator[](size_t i) const
+			{ return (_data[i]); }
 	};
+
+	/*** Reverse Iterator ***/
+	template <typename T, class B>
 	template <typename Iter>
-	class myiterev
+	class vector<T, B>::myiterev
 	{
-		typedef Iter iterator_type;
+		typedef Iter
+		iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::iterator_category
 		iterator_category;
 		typedef typename ft::iterator_traits<iterator_type>::value_type
@@ -501,107 +502,262 @@ namespace	ft
 		pointer;
 		typedef typename ft::iterator_traits<iterator_type>::reference
 		reference;
-		typedef typename ft::iterator_traits<iterator_type>::size_type
-		size_type;
 
+		protected:
 		pointer			_data;
-		size_type		_index;
-		public:
-		myiterev(): _data(nullptr), _index(0){}
 
-		myiterev(iterator_type x): _data(x._data), _index(x._index - 1)
-		{ if (_index <= 0) _index = 0; }
+		public:
+		myiterev(): _data(nullptr){}
+
+		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
+		
+		myiterev(value_type *vec) :_data(vec){}
 
 		myiterev(const myiterev & other)
-		: _data(other._data), _index(other._index){}
+		: _data(other._data){}
 
 		~myiterev(){}
 		myiterev & operator=(const myiterev & other)
 		{
 			if (this != &other)
-			{
-				this->_index = other._index;
 				this->_data = other._data;
-			}
 			return (*this);
 		}
+
 		iterator_type base() const
 		{
-			iterator_type base(_data, _index + 1);
-			return (base);
+			return (iterator_type(_data + 1));
 		}
-		reference operator*() const { return (_data[_index]); }
+
+		reference operator*() const
+		{ return (*_data); }
+		
 		myiterev operator+(difference_type n) const
 		{
-			myiterev plus(_data, _index - n);
-			return (plus);
+			return (myiterev(_data - n));
 		}
+
 		myiterev & operator++()
 		{
-			this->_index--;
-			if (this->_index < 0)
-				this->_index = 0;
+			this->_data--;
 			return (*this);
 		}
 		myiterev operator++(int)
 		{
 			myiterev tmp(*this);
-			this->_index -= 1;
+			this->_data--;
 			return (tmp);
 		}
-		myiterev & operator+=(difference_type n);
+		myiterev & operator+=(difference_type n)
+		{
+			this->_data -= n;
+			return (*this);
+		}
 		myiterev operator-(difference_type n) const
 		{
-			myiterev tmp(_data, _index - n);
-			return (tmp);
+			return (myiterev(_data + n));
 		}
 		myiterev & operator--()
 		{
-			if (_data[_index])
-				this->index++;
+			this->_data++;
 			return (*this);
 		}
 		myiterev operator--(int)
 		{
 			myiterev tmp(*this);
-			(*this)--;
+			this->_data++;
 			return (tmp);
 		}
-		myiterev & operator-=(difference_type n);
-		pointer operator->() const;
-		reference operator[](difference_type n) const;
-	
-		bool operator!=(const myiterev & rhs)
+		myiterev & operator-=(difference_type n)
 		{
-			return (this->_index != rhs._index);
+			this->_data += n;
+			return (*this);
 		}
+		pointer operator->() const
+		{
+			return (this->_data);
+		}
+		reference operator[](difference_type n) const
+		{
+			return (_data[-n]);
+		}
+
+		template<typename X, typename Y>
+		friend bool operator==(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data == rhs._data); }
+	
+		template<typename X, typename Y>
+		friend bool operator!=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data != rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator<(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data < rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data > rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator<=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data <= rhs._data); }
+		
+		template<typename X, typename Y>
+		friend bool operator>=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data >= rhs._data); }
+
+		friend myiterev operator+(difference_type n, const myiterev & rhs)
+		{ return (rhs + n); }
+
+		template<typename X, typename Y>
+		friend difference_type operator-(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return rhs._data - lhs._data; }
+	};
+	
+	/*** Const Reverse Iterator ***/
+	template <typename T, class B>
+	template <typename Iter>
+	class vector<T, B>::myiterev<const Iter>
+	{
+		typedef Iter
+		iterator_type;
+		typedef typename ft::iterator_traits<iterator_type>::iterator_category
+		iterator_category;
+		typedef typename ft::iterator_traits<iterator_type>::value_type
+		value_type;
+		typedef typename ft::iterator_traits<iterator_type>::difference_type
+		difference_type;
+		typedef typename ft::iterator_traits<iterator_type>::pointer
+		pointer;
+		typedef typename ft::iterator_traits<iterator_type>::reference
+		reference;
+		typedef const T&	const_reference;
+		typedef const T*	const_pointer;
+
+		protected:
+		pointer	_data;
+
+		public:
+		myiterev(): _data(nullptr){}
+
+		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
+
+		myiterev(value_type *vec) : _data(vec){}
+
+		myiterev(const myiterev & other)
+			: _data(other._data){}
+
+		~myiterev(){}
+
+		myiterev & operator=(const myiterev & other)
+		{
+			if (this != &other)
+				_data = other._data;
+			return (*this);
+		}
+
+		iterator_type base() const
+		{
+			return (iterator_type(_data + 1));
+		}
+
+		const_reference operator*() const
+		{
+			return (*_data);
+		}
+
+		myiterev operator+(difference_type n) const
+		{
+			return (myiterev(_data - n));
+		}
+
+		myiterev & operator++()
+		{
+			this->_data--;
+			return (*this);
+		}
+		myiterev operator++(int)
+		{
+			myiterev tmp(*this);
+			this->_data--;
+			return (tmp);
+		}
+		myiterev & operator+=(difference_type n)
+		{
+			this->_data -= n;
+			return (*this);
+		}
+		myiterev operator-(difference_type n) const
+		{
+			return (myiterev(_data + n));
+		}
+		myiterev & operator--()
+		{
+			this->_data++;
+			return (*this);
+		}
+		myiterev operator--(int)
+		{
+			myiterev tmp(*this);
+			this->_data++;
+			return (tmp);
+		}
+		myiterev & operator-=(difference_type n)
+		{
+			this->_data += n;
+			return (*this);
+		}
+
+		const_pointer operator->() const
+		{
+			return (this->_data);
+		}
+
+		const_reference operator[](difference_type n) const
+		{
+			return (_data[-n]);
+		}
+
+		template<typename X, typename Y>
+		friend bool operator==(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data == rhs._data); }
+
+		template<typename X, typename Y>
+		friend bool operator!=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data != rhs._data); }
+
+		template<typename X, typename Y>
+		friend bool operator<(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data < rhs._data); }
+
+		template<typename X, typename Y>
+		friend bool operator>(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data > rhs._data); }
+
+		template<typename X, typename Y>
+		friend bool operator<=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data <= rhs._data); }
+
+		template<typename X, typename Y>
+		friend bool operator>=(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return (lhs._data >= rhs._data); }
+		
+		friend myiterev operator+(difference_type n, const myiterev & rhs)
+		{ return (rhs + n); }
+
+		template<typename X, typename Y>
+		friend difference_type operator-(const myiterev<X> & lhs, const myiterev<Y> & rhs)
+		{ return rhs._data - lhs._data; }
 	};
 
-	// non-member function overloads for reverse iterator
-	template <class T, class A>
-	bool operator==(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-	
 //	template <class T, class A>
-//	bool operator!=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-
-	template <class T, class A>
-	bool operator<(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-	
-	template <class T, class A>
-	bool operator<=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-	
-	template <class T, class A>
-	bool operator>(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-	
-	template <class T, class A>
-	bool operator>=(typename vector<T, A>::const_reverse_iterator & lhs, typename vector<T, A>::const_reverse_iterator & rhs);
-
-	template <class T, class A>
-	typename vector<T, A>::reverse_iterator operator+(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
+//	typename vector<T, A>::reverse_iterator operator+(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
 	
 //				typename ft::enable_if<!ft::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
-	template <class T, class A, typename ft::enable_if<!ft::is_integral<T>::value, bool> >
-	typename vector<T, A>::reverse_iterator operator-(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
+	//template <class T, class A, typename ft::enable_if<!ft::is_integral<T>::value, bool> >
+//	template <class T, class A>
+//	typename vector<T, A>::reverse_iterator operator-(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
+
 // this line before the end of the namespace ft
 }
 	

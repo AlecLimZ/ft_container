@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/13 19:10:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/14 17:55:26 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,8 @@ int	doc(int *ac, char **av)
 }
 
 
-void	test(void)
-{
-	ft::vector<int> test;
-	ft::vector<int>::iterator lol(test.begin());
-	(void)lol;
-}
-
+void	ft_test(void)
+{}
 
 TEST_CASE("Iterator & const iterator")
 {
@@ -222,9 +217,170 @@ TEST_CASE("Iterator & const iterator")
 	}
 }
 
+TEST_CASE("Reverse iterator & Const Reverse terator")
+{
+	ft::vector<int> ftv;
+	std::vector<int> stdv;
+
+	for (int i = 1; i <= 7; ++i)
+	{
+		ftv.push_back(i);
+		stdv.push_back(i);
+	}
+
+	typedef std::vector<int>::reverse_iterator stditrev;
+	typedef ft::vector<int>::reverse_iterator ftitrev;
+
+	typedef std::vector<int>::const_reverse_iterator cstditrev;
+	typedef ft::vector<int>::const_reverse_iterator cftitrev;
+
+	// explicit constructor copy of iterator
+	// stditrev stdb = stdv.end() cannot compile so
+	// ftitrev ftb = ftv.end() should be fail compile
+	stditrev stdb(stdv.end());
+	stditrev stde(stdv.begin());
+	ftitrev ftb(ftv.end());
+	ftitrev fte(ftv.begin());
+
+	cstditrev cstdb(stdv.end());
+	cstditrev cstde(stdv.begin());
+	cftitrev cftb(ftv.end());
+	cftitrev cfte(ftv.begin());
+
+	// default constructor
+	stditrev sb;
+	stditrev se;
+	ftitrev fb;
+	ftitrev fe;
+
+	cstditrev csb;
+	cstditrev cse;
+	cftitrev cfb;
+	cftitrev cfe;
+	
+	// assign copy constructor
+	sb = stdb;
+	se = stde;
+	fb = ftb;
+	fe = fte;
+
+	csb = cstdb;
+	cse = cstde;
+	cfb = cftb;
+	cfe = cfte;
+	
+	// copy constructor (both is same type class)
+	stditrev s1(sb);
+	stditrev s2(se);
+	ftitrev f1(fb);
+	ftitrev f2(fe);
+
+	cstditrev cs1(csb);
+	cstditrev cs2(cse);
+	cftitrev cf1(cfb);
+	cftitrev cf2(cfe);
+
+	SUBCASE("base")
+	{
+		CHECK(*(s1.base()) == *(f1.base()));
+		CHECK(*(s2.base()) == *(f2.base()));
+		
+		CHECK(*(cs1.base()) == *(cf1.base()));
+		CHECK(*(cs2.base()) == *(cf2.base()));
+	}
+
+	SUBCASE("*operator")
+	{
+		while (s1 != s2 && f1 != f2)
+			CHECK(*s1++ == *f1++);
+		while (cs1 != cs2 && cf1 != cf2)
+			CHECK(*cs1++ == *cf1++);
+	}
+
+	SUBCASE("++ --")
+	{
+		CHECK(*(s1 + 4) == *(f1 + 4));
+		s1++;
+		f1++;
+		CHECK(*s1 == *f1);
+		CHECK(*++s1 == *++f1);
+		s1 += 3;
+		f1 += 3;
+		CHECK(*s1 == *f1);
+		
+		CHECK(*(cs1 + 4) == *(cf1 + 4));
+		cs1++;
+		cf1++;
+		CHECK(*cs1 == *cf1);
+		CHECK(*++cs1 == *++cf1);
+		cs1 += 3;
+		cf1 += 3;
+		CHECK(*cs1 == *cf1);
+
+		CHECK(*(s1 - 4) == *(f1 - 4));
+		s1--;
+		f1--;
+		CHECK(*s1 == *f1);
+		CHECK(*--s1 == *--f1);
+		s1 -= 3;
+		f1 -= 3;
+		CHECK(*s1 == *f1);
+		
+		CHECK(*(cs1 - 4) == *(cf1 - 4));
+		cs1--;
+		cf1--;
+		CHECK(*cs1 == *cf1);
+		CHECK(*--cs1 == *--cf1);
+		s1 -= 3;
+		f1 -= 3;
+		CHECK(*cs1 == *cf1);
+	}
+	SUBCASE("pointer and []")
+	{
+		int i = 0;
+		for (; i < 7; ++i)
+			CHECK(s1[i] == f1[i]);
+
+		i = 0;
+		for (; i < 7; ++i)
+			CHECK(cs1[i] == cf1[i]);
+	}
+	SUBCASE("Relation Operations")
+	{
+		CHECK((*s1 == *cs1) == (*f1 == *cf1));	
+		CHECK((*cs1 == *s2) == (*cf1 == *f2));	
+		
+		CHECK((*s1 != *cs1) == (*f1 != *cf1));	
+		CHECK((*cs1 != *s2) == (*cf1 != *f2));	
+		
+		CHECK((*s1 < *cs1) == (*f1 < *cf1));	
+		CHECK((*cs1 < *s2) == (*cf1 < *f2));	
+		
+		CHECK((*s1 > *cs1) == (*f1 > *cf1));	
+		CHECK((*cs1 > *s2) == (*cf1 > *f2));	
+		
+		CHECK((*s1 <= *cs1) == (*f1 <= *cf1));	
+		CHECK((*cs1 <= *s2) == (*cf1 <= *f2));	
+		
+		CHECK((*s1 >= *cs1) == (*f1 >= *cf1));	
+		CHECK((*cs1 >= *s2) == (*cf1 >= *f2));	
+	}
+	SUBCASE("[non-member]operator+ , operator-")
+	{
+		CHECK(*(3 + s1) == *(3 + f1));
+		CHECK(*(3 + cs1) == *(3 + cf1));
+
+		CHECK((s2 - s1) == (f2 - f1));
+		CHECK((s1 - cs2) == (f1 - cf2));
+		
+		CHECK((cs2 - cs1) == (cf2 - cf1));
+		CHECK((cs1 - cs2) == (cf1 - cf2));
+	}
+}
+
 int main(int argc, char **argv)
 {
-	test();
+	ft_test();
 #ifdef noasan
 	system("leaks main");
 #endif
