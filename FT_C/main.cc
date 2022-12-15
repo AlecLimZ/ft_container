@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 14:39:43 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:50:58 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -437,17 +437,62 @@ TEST_CASE("vector construct")
 		ftv finter(fit + 5, fite);
 //		stv sinter(site + 5, sit); // throw error when first is exceed the last
 //		ftv finter(fite + 5, fit); // should be throw error
-		cout << sinter.size() << " = " << finter.size() << endl;
-		cout << sinter.capacity() << " = " << finter.capacity() << endl;
+		CHECK(sinter.size() == finter.size());
+		CHECK(sinter.capacity() == finter.capacity());
 		sit = sinter.begin();
 		site = sinter.end();
 		fit = finter.begin();
 		fite = finter.end();
 
-		int i = 1;
 		while (fit != fite && sit != site)
-			cout << i++ << "| " << *fit++ << " == " << *sit++ << " |" << endl;
+			CHECK(*fit++ == *sit++);
+	}
+	SUBCASE("vector copy constructor")
+	{
+		stv snew(7,7);
+		ftv fnew(7,7);
 
+		stv scopy1 = snew;
+		ftv fcopy1 = fnew;
+		CHECK(fcopy1.size() == scopy1.size());
+		CHECK(fcopy1.size() == snew.size());
+
+		stv scopy2(scopy1);
+		ftv fcopy2(fcopy1);
+		
+		stviter sit = scopy2.begin();
+		stviter site = scopy2.end();
+		ftviter fit = fcopy2.begin();
+		ftviter fite = fcopy2.end();
+		
+		CHECK(fcopy2.size() == scopy1.size());
+		CHECK(fcopy2.size() == scopy2.size());
+		CHECK(fcopy2.capacity() == scopy1.capacity());
+		CHECK(fcopy2.capacity() == scopy2.capacity());
+
+		while (sit != site && fit != fite)
+			CHECK(*sit++ == *fit++);
+	}
+	SUBCASE("vector copy assign constructor")
+	{
+		stv snew(7,7);
+		ftv fnew(7,7);
+
+		stv sassign;
+		ftv fassign;
+
+		sassign = snew;
+		fassign = fnew;
+		CHECK(sassign.size() == fassign.size());
+		CHECK(sassign.capacity() == fassign.capacity());
+		
+		stviter sit = sassign.begin();
+		stviter site = sassign.end();
+
+		ftviter fit = fassign.begin();
+		ftviter fite = fassign.end();
+		while (fit != fite && sit != site)
+			CHECK(*fit++ == *sit++);
 	}
 }
 

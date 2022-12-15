@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 14:37:53 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:46:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,18 +80,30 @@ namespace	ft
 				}
 			}
 
+			//		template <typename InputIterator>
 	//		vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::iterator_traits<InputIterator>::iterator_category* = 0)
+
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
 			{
+				if (first > last)
+					throw (std::length_error("vector"));
 				_vec = _myalloc.allocate(_capacity);
 				while (first != last)
 					_myalloc.construct(_vec + _size++, *first++);
 			}
 
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
-									   _myalloc(x._myalloc), _vec(x._vec){}
+									   _myalloc(allocator_type())
+			{
+				_vec = _myalloc.allocate(_capacity);
+				const_iterator it = x.begin();
+				const_iterator ite = x.end();
+				int i = 0;
+				while (it != ite)
+					_myalloc.construct(_vec + i++, *it++);
+			}
 
 			~vector(void)
 			{ 
@@ -105,10 +117,17 @@ namespace	ft
 			{
 				if (this != &rhs)
 				{
+					for (size_type i = 0; i < _size; ++i)
+						_myalloc.destroy(_vec + i);
+					_myalloc.deallocate(_vec, _capacity);
 					_capacity = rhs._capacity;
 					_size = rhs._size;
-					_myalloc = rhs._myalloc;
-					_vec = rhs._vec;
+					const_iterator it = rhs.begin();
+					const_iterator ite = rhs.end();
+					_vec = _myalloc.allocate(_capacity);
+					int i = 0;
+					while (it != ite)
+						_myalloc.construct(_vec + i++, *it++);
 				}
 				return (*this);
 			}
@@ -279,8 +298,7 @@ namespace	ft
 
 		public:
 			myiter(void) :_data(nullptr){}
-			myiter(value_type *vec) :_data(vec){}
-			~myiter(void) {}
+			myiter(value_type * vec) :_data(vec){}
 			myiter(myiter const & src) :_data(src._data){}
 			myiter & operator=(myiter const & rhs)
 			{
