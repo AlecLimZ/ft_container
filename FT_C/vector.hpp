@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/14 20:19:38 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:45:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -643,8 +643,7 @@ namespace	ft
 		public:
 		myiterev(): _data(nullptr){}
 
-		template <typename T, typename B>
-		explicit myiterev(typename vector<T, B>::const_iterator & x)
+		explicit myiterev(typename vector<value_type>::const_iterator & x)
 		: _data(x._data - 1){}
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 
