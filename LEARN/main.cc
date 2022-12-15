@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 17:08:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 19:00:52 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,30 +47,44 @@ namespace ft
 
 int main()
 {
-	vector<int> first;
-	vector<int> second;
-	vector<int> third;
+	std::vector<int> myvector(3, 100);
+	std::vector<int>::iterator it;
+
+	it = myvector.begin();
+	it = myvector.insert(it , 200);
+
+	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
+		cout << myvector[i] << " ";
+	cout << endl;
+
+	myvector.insert(it, 2, 300);
 	
-	typedef vector<int>::iterator iter;
+	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
+		cout << myvector[i] << " ";
+	cout << endl;
 
-	first.assign(7);
-	
-	iter test = first.begin();
-	iter test2 = first.end();
+	// "it" no longer valid, get a new one
+//	it = myvector.begin();
+	cout << "TEST" << endl;
+	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
+		cout << myvector[i] << " ";
+	cout << endl;
 
-	while (test != test2)
-		cout << *test++ << endl;
+	std::vector<int> anothervector(2, 400);
+	for (vector<int>::size_type i = 0; i < anothervector.size(); ++i)
+		cout << anothervector[i] << " ";
+	cout << endl;
+	myvector.insert(it + 2, anothervector.begin(), anothervector.end());
+	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
+		cout << myvector[i] << " ";
+	cout << endl;
 
-	vector<int>::iterator it;
-	it = first.begin() + 1;
+	int myarray[] = {501, 502, 503};
+	myvector.insert(myvector.begin(), myarray, myarray + 3);
 
-	second.assign(it, first.end() - 1);
-
-	int myints[] = {1776, 7, 4};
-	third.assign(myints, myints + 3);
-
-	cout << "Size of first: " << first.size() << endl;
-	cout << "Size of second: " << second.size() << endl;
-	cout << "Size of third: " << third.size() << endl;
+	cout << "final myvector contains: ";
+	for (it = myvector.begin(); it < myvector.end(); ++it)
+		cout << *it << " ";
+	cout << endl;
 	return (0);
 }

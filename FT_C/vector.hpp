@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 18:17:34 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 18:30:38 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,17 @@ namespace	ft
 				else
 					_myalloc.construct(_vec + (_size - 1), val);
 			}
+
+			void	pop_back()
+			{
+				if (_size--)
+					_myalloc.destroy(_vec + _size);
+			}
+
+			iterator insert(iterator position, const value_type & val);
+			void insert(iterator position, size_type n, const value_type & val);
+			template <class InputIterator>
+			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
 			
@@ -810,14 +821,6 @@ namespace	ft
 		friend difference_type operator-(const myiterev<X> & lhs, const myiterev<Y> & rhs)
 		{ return rhs._data - lhs._data; }
 	};
-
-//	template <class T, class A>
-//	typename vector<T, A>::reverse_iterator operator+(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
-	
-//				typename ft::enable_if<!ft::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
-	//template <class T, class A, typename ft::enable_if<!ft::is_integral<T>::value, bool> >
-//	template <class T, class A>
-//	typename vector<T, A>::reverse_iterator operator-(typename vector<T, A>::reverse_iterator::difference_type n, typename vector<T, A>::const_reverse_iterator & rev_it);
 
 // this line before the end of the namespace ft
 }
