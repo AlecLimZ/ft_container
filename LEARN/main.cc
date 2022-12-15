@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/08 16:24:26 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:08:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,30 @@ namespace ft
 
 int main()
 {
-	vector<int> tmp;
-	vector<int>::reverse_iterator rit = tmp.rbegin();
-	cout << *rit << endl;
+	vector<int> first;
+	vector<int> second;
+	vector<int> third;
+	
+	typedef vector<int>::iterator iter;
+
+	first.assign(7);
+	
+	iter test = first.begin();
+	iter test2 = first.end();
+
+	while (test != test2)
+		cout << *test++ << endl;
+
+	vector<int>::iterator it;
+	it = first.begin() + 1;
+
+	second.assign(it, first.end() - 1);
+
+	int myints[] = {1776, 7, 4};
+	third.assign(myints, myints + 3);
+
+	cout << "Size of first: " << first.size() << endl;
+	cout << "Size of second: " << second.size() << endl;
+	cout << "Size of third: " << third.size() << endl;
 	return (0);
 }

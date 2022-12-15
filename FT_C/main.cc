@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 16:50:58 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 18:15:23 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -493,6 +493,92 @@ TEST_CASE("vector construct")
 		ftviter fite = fassign.end();
 		while (fit != fite && sit != site)
 			CHECK(*fit++ == *sit++);
+	}
+}
+
+TEST_CASE("Modifiers")
+{
+	typedef std::vector<int>	stdv;
+	typedef ft::vector<int>		ftv;
+
+	typedef stdv::iterator	siter;
+	typedef ftv::iterator	fiter;
+
+	SUBCASE("Assign")
+	{
+		stdv first;
+		stdv second;
+		stdv third;
+
+		ftv f1;
+		ftv f2;
+		ftv f3;
+
+		first.assign(7, 100);
+		f1.assign(7, 100);
+
+		siter it = first.begin() + 1;
+		fiter fit = f1.begin() + 1;
+
+		second.assign(it, first.end() - 1);
+		f2.assign(fit, f1.end() - 1);
+
+		int myints[] = {1776, 7, 4};
+		third.assign(myints, myints + 3);
+		f3.assign(myints, myints + 3);
+
+		CHECK(first.size() == f1.size());
+		CHECK(second.size() == f2.size());
+		CHECK(third.size() == f3.size());
+
+		CHECK(first.capacity() == f1.capacity());
+		CHECK(second.capacity() == f2.capacity());
+		CHECK(third.capacity() == f3.capacity());
+		
+		siter test = third.begin();
+		siter teste = third.end();
+
+		fiter ftest = f3.begin();
+		fiter fteste = f3.end();
+		while (test != teste && ftest != fteste)
+			CHECK(*test++ == *ftest++);
+
+		third.assign(first.begin(), first.end());
+		f3.assign(f1.begin(), f1.end());
+	
+		test = third.begin();
+		teste = third.end();
+		ftest = f3.begin();
+		fteste = f3.end();
+		while (test != teste && ftest != fteste)
+			CHECK(*test++ == *ftest++);
+
+		third.assign(myints, myints + 3);
+		f3.assign(myints, myints + 3);
+		test = third.begin();
+		teste = third.end();
+		ftest = f3.begin();
+		fteste = f3.end();
+		while (test != teste && ftest != fteste)
+			CHECK(*test++ == *ftest++);
+		
+	
+		third.assign(second.begin(), second.end());
+		f3.assign(f2.begin(), f2.end());
+		test = third.begin();
+		teste = third.end();
+		ftest = f3.begin();
+		fteste = f3.end();
+		while (test != teste && ftest != fteste)
+			CHECK(*test++ == *ftest++);
+		
+		CHECK(first.size() == f1.size());
+		CHECK(second.size() == f2.size());
+		CHECK(third.size() == f3.size());
+
+		CHECK(first.capacity() == f1.capacity());
+		CHECK(second.capacity() == f2.capacity());
+		CHECK(third.capacity() == f3.capacity());
 	}
 }
 

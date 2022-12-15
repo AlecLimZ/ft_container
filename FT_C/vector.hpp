@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 16:46:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 18:17:34 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,6 +248,39 @@ namespace	ft
 			value_type *data() const { return (_vec); }
 
 			/*** MODIFIERS ***/
+			template<class InputIterator>
+				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+				{
+					size_type sz = std::distance(first, last);
+
+					for (size_type i = 0; i < _size; ++i)
+						_myalloc.destroy(_vec + i);
+					if (sz > _capacity)
+					{
+						_myalloc.deallocate(_vec, _capacity);
+						_capacity = sz;
+						_vec = _myalloc.allocate(_capacity);
+					}
+					_size = 0;
+					while (first != last)
+						_myalloc.construct(_vec + _size++, *first++);
+				}
+
+			void assign(size_type n, const value_type & val)
+			{
+				for (size_type i = 0; i < _size; ++i)
+					_myalloc.destroy(_vec + i);
+				if (n > _capacity)
+				{
+					_myalloc.deallocate(_vec, _capacity);
+					_capacity = n;
+					_vec = _myalloc.allocate(_capacity);
+				}
+				_size = 0;
+				while (_size < n)
+					_myalloc.construct(_vec + _size++, val);
+			}
+
 			void	push_back(const value_type & val)
 			{
 				_size++;
