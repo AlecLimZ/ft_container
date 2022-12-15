@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/08 14:55:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:32:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace ft
 {
 
 	// enable_if
-	template<bool, class T>
+	template<bool B, class T = void>
 	struct enable_if
 	{};
 
@@ -76,6 +76,7 @@ namespace ft
 	{
 		static const bool value = std::numeric_limits<T>::is_integer;
 	};
+
 }
 
 #endif

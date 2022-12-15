@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/14 20:17:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:39:43 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,6 +375,79 @@ TEST_CASE("Reverse iterator & Const Reverse terator")
 		
 		CHECK((cs2 - cs1) == (cf2 - cf1));
 		CHECK((cs1 - cs2) == (cf1 - cf2));
+	}
+}
+
+TEST_CASE("vector construct")
+{
+	typedef std::vector<int> stv;
+	typedef ft::vector<int> ftv;
+	typedef stv::iterator	stviter;
+	typedef ftv::iterator	ftviter;
+
+	SUBCASE("Default Constructor")
+	{
+		stv slol;
+		ftv flol;
+
+		CHECK(slol.size() == flol.size());
+		CHECK(slol.capacity() == flol.capacity());
+	}
+
+	SUBCASE("Constructor parameter")
+	{
+		stv slol(5);
+		ftv flol(5);
+		CHECK(slol.size() == flol.size());
+		CHECK(slol.capacity() == flol.capacity());
+		for (int i = 0; i < 5; ++i)
+			CHECK(slol[i] == flol[i]);
+		stv sp(5, 3);
+		ftv fp(5, 3);
+		CHECK(slol.size() == flol.size());
+		CHECK(slol.capacity() == flol.capacity());
+		for (int i = 0; i < 5; ++i)
+			CHECK(slol[i] == flol[i]);
+	}
+
+	SUBCASE("Constructor with iterator parameter")
+	{
+		stv stmp(7); // init constructor with 7 size
+		ftv ftmp(7);
+
+		for (int i = 0; i < 7; ++i)
+		{
+			stmp.push_back(i + 1);
+			ftmp.push_back(i + 1);
+		}
+		stviter sit = stmp.begin();
+		stviter site = stmp.end();
+
+		ftviter fit = ftmp.begin();
+		ftviter fite = ftmp.end();
+		for (int i = 0; i < 7; ++i)
+		{
+			*sit++ = i * i;
+			*fit++ = i * i;
+		}
+		sit = stmp.begin();
+		fit = ftmp.begin();
+
+		stv sinter(sit + 5, site); // new constructor with deep copy
+		ftv finter(fit + 5, fite);
+//		stv sinter(site + 5, sit); // throw error when first is exceed the last
+//		ftv finter(fite + 5, fit); // should be throw error
+		cout << sinter.size() << " = " << finter.size() << endl;
+		cout << sinter.capacity() << " = " << finter.capacity() << endl;
+		sit = sinter.begin();
+		site = sinter.end();
+		fit = finter.begin();
+		fite = finter.end();
+
+		int i = 1;
+		while (fit != fite && sit != site)
+			cout << i++ << "| " << *fit++ << " == " << *sit++ << " |" << endl;
+
 	}
 }
 

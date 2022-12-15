@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 12:45:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:37:53 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,15 @@ namespace	ft
 				}
 			}
 
-			template<class InputIterator,
-				typename ft::enable_if<!ft::is_same<typename ft::iterator_traits<InputIterator>::value_type, void>::value, bool>::type>
-				vector( InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type())
-				{
-					(void)first;
-					(void)last;
-					(void)alloc;
-				}
+	//		vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::iterator_traits<InputIterator>::iterator_category* = 0)
+			template <typename InputIterator>
+			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
+			{
+				_vec = _myalloc.allocate(_capacity);
+				while (first != last)
+					_myalloc.construct(_vec + _size++, *first++);
+			}
 
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
 									   _myalloc(x._myalloc), _vec(x._vec){}
@@ -260,6 +261,7 @@ namespace	ft
 	template<typename A>
 	class vector<T, B>::myiter
 	{
+		public:
 		typedef std::ptrdiff_t			difference_type;
 		typedef A						value_type;
 		typedef A&						reference;
@@ -373,6 +375,7 @@ namespace	ft
 	template<typename A>
 	class vector<T, B>::myiter<const A>
 	{
+		public:
 		typedef std::ptrdiff_t			difference_type;
 		typedef A						value_type;
 		typedef A&						reference;
@@ -491,6 +494,7 @@ namespace	ft
 //	class vector<T, B>::myiterev
 	class myiterev
 	{
+		public:
 		typedef Iter
 		iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::iterator_category
@@ -622,6 +626,7 @@ namespace	ft
 //	class vector<T, B>::myiterev<const Iter>
 	class myiterev<const Iter>
 	{
+		public:
 		typedef Iter
 		iterator_type;
 		typedef typename ft::iterator_traits<iterator_type>::iterator_category
