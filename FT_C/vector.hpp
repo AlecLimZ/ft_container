@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 18:30:38 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:03:50 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,10 +309,115 @@ namespace	ft
 					_myalloc.destroy(_vec + _size);
 			}
 
-			iterator insert(iterator position, const value_type & val);
-			void insert(iterator position, size_type n, const value_type & val);
+			iterator insert(iterator position, const value_type & val)
+			{
+				const value_type distance = std::distance(position, begin());
+				const value_type last = _vec[_size - 1];
+				iterator ret;
+				if (_size + 1 > _capacity)
+				{
+					iterator ite = end() - 1;
+					while (ite != position)
+						*ite-- = *(ite - 1);
+					*position = val;
+					push_back(last);
+					ret = begin() + distance;
+				}
+				else
+				{
+					int max = _size;
+					_myalloc.construct(_vec + max, last);
+					_size++;
+					iterator ite = end();
+					while (ite != position)
+						_vec[max--] = *(--ite - 1);
+					*position = val;
+					ret = position;
+				}
+				return (ret);
+			}
+			void insert(iterator position, size_type n, const value_type & val)
+			{
+				iterator itmp = begin();
+				iterator itmpe = end();
+				if (_size + n > _capacity)
+				{
+					pointer tmp = _vec;
+					size_type tmpcap = _capacity;
+					_capacity = _capacity == 0 ? n : _capacity * 2;
+					_vec = _myalloc.allocate(_capacity);
+					int i = 0;
+					while (itmp != position)
+					{
+						_myalloc.construct(_vec + i, *itmp++);
+						_myalloc.destroy(tmp + i);
+						i++;
+					}
+					int c = i;
+					for (size_type j = 0; j < n; ++j)
+						_myalloc.construct(_vec + i++, val);
+					while (itmp != itmpe)
+					{
+						_myalloc.construct(_vec + i++, *itmp++);
+						_myalloc.destroy(tmp + c++);
+					}
+					_myalloc.deallocate(tmp, tmpcap);
+					_size += n;
+				}
+				else
+				{
+					_size += n;
+					int i = _size - 1;
+					int nn = n;
+					while (n-- && --itmpe != itmp)
+						_myalloc.construct(_vec + i--, *itmpe);
+					while (--itmpe != position)
+						_vec[i--] = *itmpe;
+					_vec[i--] = *position;
+					while (nn--)
+						_vec[i--] = val;
+				}
+			}
+
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
+			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+			{
+				size_type n = std::distance(first, last);
+
+				if (_size + n > _capacity)
+				{
+					size_type tmpc = _capacity;
+					pointer tmp = _vec;
+					_capacity = _capacity == 0 ? n : _capacity * 2;
+					_vec = _myalloc.allocate(_capacity);
+					iterator it = tmp;
+					int i = 0;
+					while (it != position)
+						_myalloc.construct(_vec + i++, *it++);
+					while (first != last)
+						_myalloc.construct(_vec + i++, *first++);
+					iterator ite = tmp + _size;
+					while (position != ite)
+						_myalloc.construct(_vec + i++, *position++);
+					for (size_type j = 0; j < _size; ++j)
+						_myalloc.destroy(tmp + j);
+					_myalloc.deallocate(tmp, tmpc);
+					_size += n;
+				}
+				else
+				{
+					iterator ite = end() - 1;
+					int max = _size + n - 1;
+					for (size_type i = 0; i < n; ++i)
+						_myalloc.construct(_vec + max--, *ite--);
+					while (ite != position)
+						_vec[max--] = *ite--;
+					_vec[max--] = *ite--;
+					while (last != first)
+						_vec[max--] = *--last;
+					_size += n;
+				}
+			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
 			

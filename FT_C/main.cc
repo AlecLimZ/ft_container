@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 13:32:55 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 17:08:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -598,38 +598,52 @@ TEST_CASE("Vector Insert\n")
 	sit = s1.begin();
 	CHECK(*fit == *sit);
 	sit = s1.insert(sit, 200); // implement ur ft::insert;
+	fit = f1.insert(fit, 200);
+	CHECK(std::distance(sit, s1.begin()) == std::distance(fit, f1.begin()));
 
 	for (stdv::size_type i = 0; i < s1.size(); ++i)
-		cout << s1[i] << " ";
-	cout << endl;
+		CHECK(s1[i] == f1[i]);
+
+	CHECK(s1.size() == f1.size());
+	CHECK(s1.capacity() == f1.capacity());
 
 	s1.insert(sit, 2, 300);
+	f1.insert(fit, 2, 300);
 	
 	for (stdv::size_type i = 0; i < s1.size(); ++i)
-		cout << s1[i] << " ";
-	cout << endl;
+		CHECK(s1[i] == f1[i]);
+	CHECK(s1.size() == f1.size());
+	CHECK(s1.capacity() == f1.capacity());
 
 	sit = s1.begin(); // "it" no longer valid, need get new one
+	fit = f1.begin();
+
 
 	stdv s2(2, 400);
-	for (stdv::size_type i = 0; i < s2.size(); ++i)
-		cout << s2[i] << " ";
-	cout << endl;
+	ftv f2(2, 400);
 
 	s1.insert(sit + 2, s2.begin(), s2.end());
+	f1.insert(fit + 2, f2.begin(), f2.end());
 	for (stdv::size_type i = 0; i < s1.size(); ++i)
-		cout << s1[i] << " ";
-	cout << endl;
+		CHECK(s1[i] == f1[i]);
+	CHECK(s1.size() == f1.size());
+	CHECK(s1.capacity() == f1.capacity());
 
 	int myarray[] = {501, 502, 503};
 	s1.insert(s1.begin(), myarray, myarray + 3);
+	f1.insert(f1.begin(), myarray, myarray + 3);
+
+	sit = s1.begin();
+	fit = f1.begin();
+	stditer site = s1.end();
+//	ftiter fite = f1.end();
 
 	cout << "Final s1 contains: ";
-	sit = s1.begin();
-	stditer site = s1.end();
 	while (sit != site)
-		cout << *sit++ << " ";
-	cout << endl;
+		CHECK(*sit++ == *fit++);
+	CHECK(s1.size() == f1.size());
+	CHECK(s1.capacity() == f1.capacity());
+
 }
 
 int main(int argc, char **argv)
