@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 18:53:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/18 07:57:48 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -700,6 +700,34 @@ TEST_CASE("clear")
 	f1.push_back(2202);
 	for (unsigned i = 0; i < s1.size(); ++i)
 		CHECK(s1[i] == f1[i]);
+}
+
+TEST_CASE("SWAP")
+{
+	std::vector<int> sfoo(3,100);
+	std::vector<int> sbar(5, 200);
+	ft::vector<int> ffoo(3,100);
+	ft::vector<int> fbar(5, 200);
+	
+	CHECK(sfoo.size() == ffoo.size());
+	CHECK(sfoo.capacity() == ffoo.capacity());
+	CHECK(sbar.size() == sbar.size());
+	CHECK(fbar.capacity() == fbar.capacity());
+
+	sfoo.swap(sbar);
+	ffoo.swap(fbar);
+
+	CHECK(sfoo.size() == ffoo.size());
+	CHECK(sfoo.capacity() == ffoo.capacity());
+	CHECK(sbar.size() == sbar.size());
+	CHECK(fbar.capacity() == fbar.capacity());
+
+
+	for (unsigned i = 0; i < sfoo.size(); ++i)
+		CHECK(sfoo[i] == ffoo[i]);
+	
+	for (unsigned i = 0; i < sbar.size(); ++i)
+		CHECK(sbar[i] == fbar[i]);
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 23:40:22 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/18 07:54:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -483,6 +483,29 @@ namespace	ft
 				for (size_type i = 0; i < _size; ++i)
 					_myalloc.destroy(_vec + i);
 				_size = 0;
+			}
+
+			void swap(vector & x)
+			{
+				if (this != &x)
+				{
+					pointer tmp = _vec;
+					size_type tmpc = _capacity;
+					size_type tmps = _size;
+					allocator_type tmpa = _myalloc;
+
+					_vec = x._vec;
+					x._vec = tmp;
+
+					_capacity = x._capacity;
+					x._capacity = tmpc;
+
+					_size = x._size;
+					x._size = tmps;
+
+					_myalloc = x._myalloc;
+					x._myalloc = tmpa;
+				}
 			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
