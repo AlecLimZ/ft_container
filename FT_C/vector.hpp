@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 18:03:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:39:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -417,6 +417,30 @@ namespace	ft
 						_vec[max--] = *--last;
 					_size += n;
 				}
+			}
+
+			iterator erase(iterator position)
+			{
+				iterator itp = position;
+				iterator ite = end();
+				while (position != ite)
+					*position++ = *(position + 1);
+				_myalloc.destroy(_vec + (--_size));
+				return (itp);
+			}
+
+			iterator erase(iterator first, iterator last)
+			{
+				iterator itp = first;
+				iterator ite = end();
+				size_type i = std::distance(first, last);
+				size_type old = _size;
+				_size -= i;
+				while (last != ite)
+					*first++ = *last++;
+				for (; i < old; i++)
+					_myalloc.destroy(_vec + i);
+				return (itp);
 			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 17:08:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:40:56 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -643,7 +643,33 @@ TEST_CASE("Vector Insert\n")
 		CHECK(*sit++ == *fit++);
 	CHECK(s1.size() == f1.size());
 	CHECK(s1.capacity() == f1.capacity());
+}
 
+TEST_CASE("clear")
+{
+	typedef std::vector<int> stdv;
+	typedef ft::vector<int> ftv;
+
+	stdv s1;
+	ftv f1;
+
+	for (int i = 1; i <= 10; i++)
+	{
+		s1.push_back(i);
+		f1.push_back(i);
+	}
+
+	CHECK(*(s1.erase(s1.begin() + 5)) == *(f1.erase(f1.begin() + 5)));
+	CHECK(s1.size() == f1.size());
+	
+	for (unsigned i = 0; i < s1.size(); ++i)
+		CHECK(s1[i] == f1[i]);
+
+	CHECK(*(s1.erase(s1.begin(), s1.begin() + 3)) == *(f1.erase(f1.begin(), f1.begin() + 3)));
+	CHECK(s1.size() == f1.size());
+
+	for (unsigned i = 0; i < s1.size(); ++i)
+		CHECK(s1[i] == f1[i]);
 }
 
 int main(int argc, char **argv)
