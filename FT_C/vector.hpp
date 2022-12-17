@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 19:17:40 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 23:40:22 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -319,26 +319,25 @@ namespace	ft
 				iterator ret;
 				if (_size + 1 > _capacity)
 				{
-					if (distance)
-					{
-			//			iterator ite = end() - 1;
-			//			while (ite != position)
-			//				*ite-- = *(ite - 1);
-						iterator ite = end();
-						while (ite != position)
-						{
-							*(ite - 1) = *(ite - 2);
-							ite--;
-						}
-						*position = val;
-						push_back(last);
-						ret = begin() + distance;
-					}
-					else
-					{
-						push_back(val);
-						ret = begin();
-					}
+					pointer tmp = _vec;
+					size_type tmpc = _capacity;
+					_capacity = _capacity == 0 ? 1 : _capacity * 2;
+					if (_capacity < _size + 1)
+						_capacity = _size + 1;
+					_vec = _myalloc.allocate(_capacity);
+					int p = 0;
+					iterator it = tmp;
+					while (it != position)
+						_vec[p++] = *it++;
+					_vec[p++] = val;
+					it = tmp + _size;
+					while (position != it)
+						_vec[p++] = *position++;
+					for (size_type j = 0; j < _size; ++j)
+						_myalloc.destroy(tmp + j);
+					_myalloc.deallocate(tmp, tmpc);
+					_size++;
+					return (begin() + distance);
 				}
 				else
 				{
@@ -361,7 +360,9 @@ namespace	ft
 				{
 					pointer tmp = _vec;
 					size_type tmpcap = _capacity;
-					_capacity = _capacity == 0 ? n : _capacity * 2;
+					_capacity = _capacity == 0 ? _size + n : _capacity * 2;
+					if (_capacity < _size + n)
+						_capacity = _size + n;
 					_vec = _myalloc.allocate(_capacity);
 					int i = 0;
 					while (itmp != position)
@@ -385,14 +386,29 @@ namespace	ft
 				{
 					_size += n;
 					int i = _size - 1;
+					int d = std::distance(position, itmpe); // get d before new construct
 					int nn = n;
-					while (n-- && --itmpe != itmp)
-						_myalloc.construct(_vec + i--, *itmpe);
-					while (--itmpe != position)
-						_vec[i--] = *itmpe;
-					_vec[i--] = *position;
+				//	while (n-- && --itmpe != itmp)
+				//		_myalloc.construct(_vec + i--, *itmpe);
+				//	if (itmpe != position)
+				//	{
+				//		while (--itmpe != position)
+				//			_vec[i--] = *itmpe;
+				//	}
+				//	_vec[i--] = *position;
+				//	while (nn--)
+				//		_vec[i--] = val;
+					while (n--)
+						_myalloc.construct(_vec + i--, val);
+					iterator copy = end() - (nn + 1);
+					itmpe = end() - 1;
+					while (d)
+					{
+						*itmpe-- = *copy--;
+						d--;
+					}
 					while (nn--)
-						_vec[i--] = val;
+						*position++ = val;
 				}
 			}
 
@@ -405,7 +421,9 @@ namespace	ft
 				{
 					size_type tmpc = _capacity;
 					pointer tmp = _vec;
-					_capacity = _capacity == 0 ? n : _capacity * 2;
+					_capacity = _capacity == 0 ? _size + n : _capacity * 2;
+					if (_capacity < _size + n)
+						_capacity = _size + n;
 					_vec = _myalloc.allocate(_capacity);
 					iterator it = tmp;
 					int i = 0;

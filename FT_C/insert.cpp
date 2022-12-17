@@ -31,10 +31,14 @@ int		main(void)
 	vct2.insert(vct2.end() - 2, 42);
 	printSize(vct2);
 
+	cout << "here1" << endl;
 	vct2.insert(vct2.end(), 2, 84);
+	cout << "here2" << endl;
 	printSize(vct2);
 
+	cout << "before resize" << endl;
 	vct2.resize(4);
+	cout << "after resize" << endl;
 	printSize(vct2);
 
 	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());

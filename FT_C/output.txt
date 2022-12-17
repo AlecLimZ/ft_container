@@ -1,149 +1,100 @@
-true
-		ft_eq_ope:
-REGULAR
-false
-true
-false
-true
-false
-true
-false
-true
-===END===
+size: 10
+capacity: OK
+max_size: 4611686018427387903
 
-===END===
+Content is:
+- 30
+- 27
+- 24
+- 21
+- 18
+- 15
+- 12
+- 9
+- 6
+- 3
+###############################################
+size: 3
+capacity: OK
+max_size: 4611686018427387903
 
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
+Content is:
+- 21
+- 21
+- 42
+###############################################
+size: 4
+capacity: OK
+max_size: 4611686018427387903
 
-===END===
+Content is:
+- 21
+- 42
+- 21
+- 42
+###############################################
+here1
+here2
+size: 6
+capacity: OK
+max_size: 4611686018427387903
 
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
+Content is:
+- 21
+- 42
+- 21
+- 42
+- 84
+- 84
+###############################################
+before resize
+after resize
+size: 4
+capacity: OK
+max_size: 4611686018427387903
 
-===END===
+Content is:
+- 21
+- 42
+- 21
+- 42
+###############################################
+size: 14
+capacity: KO
+max_size: 4611686018427387903
 
-CONST IT
-false
-true
-false
-true
-false
-true
-false
-true
-===END===
+Content is:
+- 21
+- 42
+- 30
+- 27
+- 24
+- 21
+- 18
+- 15
+- 12
+- 9
+- 6
+- 3
+- 21
+- 42
+###############################################
+size: 0
+capacity: OK
+max_size: 4611686018427387903
 
-===END===
+Content is:
+###############################################
+size: 7
+capacity: OK
+max_size: 4611686018427387903
 
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
-
-===END===
-
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
-
-===END===
-
-BOTH IT
-false
-true
-false
-true
-false
-true
-false
-true
-===END===
-
-===END===
-
-false
-true
-false
-true
-false
-true
-false
-true
-===END===
-
-===END===
-
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
-
-===END===
-
-true
-true
-false
-false
-false
-false
-true
-true
-===END===
-
-===END===
-
-false
-false
-true
-true
-true
-true
-false
-false
-===END===
-
-===END===
-
-true
-true
-false
-false
-false
-false
-true
-true
-===END===
-
-===END===
-
+Content is:
+- 0
+- 111
+- 111
+- 1
+- 2
+- 3
+- 4
+###############################################
