@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 18:40:56 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 18:53:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -645,7 +645,7 @@ TEST_CASE("Vector Insert\n")
 	CHECK(s1.capacity() == f1.capacity());
 }
 
-TEST_CASE("clear")
+TEST_CASE("ERASE")
 {
 	typedef std::vector<int> stdv;
 	typedef ft::vector<int> ftv;
@@ -668,6 +668,36 @@ TEST_CASE("clear")
 	CHECK(*(s1.erase(s1.begin(), s1.begin() + 3)) == *(f1.erase(f1.begin(), f1.begin() + 3)));
 	CHECK(s1.size() == f1.size());
 
+	for (unsigned i = 0; i < s1.size(); ++i)
+		CHECK(s1[i] == f1[i]);
+}
+
+TEST_CASE("clear")
+{
+	typedef std::vector<int> stdv;
+	typedef ft::vector<int> ftv;
+
+	stdv s1;
+	ftv f1;
+
+	for (int i = 100; i <= 300;)
+	{
+		s1.push_back(i);
+		f1.push_back(i);
+		i += 100;
+	}
+	CHECK(s1.size() == f1.size());
+	CHECK(s1.capacity() == f1.capacity());
+
+	for (unsigned i = 0; i < s1.size(); ++i)
+		CHECK(s1[i] == f1[i]);
+
+	s1.clear();
+	f1.clear();
+	s1.push_back(1101);
+	s1.push_back(2202);
+	f1.push_back(1101);
+	f1.push_back(2202);
 	for (unsigned i = 0; i < s1.size(); ++i)
 		CHECK(s1[i] == f1[i]);
 }

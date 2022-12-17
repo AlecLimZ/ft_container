@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 18:39:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:17:40 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ namespace	ft
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
 			{
-				if (first > last)
+				//if (first > last)
+				if (_capacity < 0)
 					throw (std::length_error("vector"));
 				_vec = _myalloc.allocate(_capacity);
 				while (first != last)
@@ -312,16 +313,32 @@ namespace	ft
 			iterator insert(iterator position, const value_type & val)
 			{
 				const value_type distance = std::distance(position, begin());
-				const value_type last = _vec[_size - 1];
+				value_type last = 0;
+				if (distance)
+					last = _vec[_size - 1];
 				iterator ret;
 				if (_size + 1 > _capacity)
 				{
-					iterator ite = end() - 1;
-					while (ite != position)
-						*ite-- = *(ite - 1);
-					*position = val;
-					push_back(last);
-					ret = begin() + distance;
+					if (distance)
+					{
+			//			iterator ite = end() - 1;
+			//			while (ite != position)
+			//				*ite-- = *(ite - 1);
+						iterator ite = end();
+						while (ite != position)
+						{
+							*(ite - 1) = *(ite - 2);
+							ite--;
+						}
+						*position = val;
+						push_back(last);
+						ret = begin() + distance;
+					}
+					else
+					{
+						push_back(val);
+						ret = begin();
+					}
 				}
 				else
 				{
@@ -441,6 +458,13 @@ namespace	ft
 				for (; i < old; i++)
 					_myalloc.destroy(_vec + i);
 				return (itp);
+			}
+
+			void clear()
+			{
+				for (size_type i = 0; i < _size; ++i)
+					_myalloc.destroy(_vec + i);
+				_size = 0;
 			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
