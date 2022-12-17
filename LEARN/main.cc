@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 19:00:52 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 13:29:12 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,7 @@ int main()
 	cout << endl;
 
 	// "it" no longer valid, get a new one
-//	it = myvector.begin();
-	cout << "TEST" << endl;
-	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
-		cout << myvector[i] << " ";
-	cout << endl;
+	it = myvector.begin();
 
 	std::vector<int> anothervector(2, 400);
 	for (vector<int>::size_type i = 0; i < anothervector.size(); ++i)

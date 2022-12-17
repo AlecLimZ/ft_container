@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/15 18:15:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/17 13:32:55 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -580,6 +580,56 @@ TEST_CASE("Modifiers")
 		CHECK(second.capacity() == f2.capacity());
 		CHECK(third.capacity() == f3.capacity());
 	}
+}
+
+TEST_CASE("Vector Insert\n")
+{
+	typedef std::vector<int> stdv;
+	typedef ft::vector<int> ftv;
+	typedef stdv::iterator stditer;
+	typedef ftv::iterator ftiter;
+
+	stdv s1(3, 100);
+	ftv f1(3, 100);
+	stditer sit;
+	ftiter fit;
+
+	fit = f1.begin();
+	sit = s1.begin();
+	CHECK(*fit == *sit);
+	sit = s1.insert(sit, 200); // implement ur ft::insert;
+
+	for (stdv::size_type i = 0; i < s1.size(); ++i)
+		cout << s1[i] << " ";
+	cout << endl;
+
+	s1.insert(sit, 2, 300);
+	
+	for (stdv::size_type i = 0; i < s1.size(); ++i)
+		cout << s1[i] << " ";
+	cout << endl;
+
+	sit = s1.begin(); // "it" no longer valid, need get new one
+
+	stdv s2(2, 400);
+	for (stdv::size_type i = 0; i < s2.size(); ++i)
+		cout << s2[i] << " ";
+	cout << endl;
+
+	s1.insert(sit + 2, s2.begin(), s2.end());
+	for (stdv::size_type i = 0; i < s1.size(); ++i)
+		cout << s1[i] << " ";
+	cout << endl;
+
+	int myarray[] = {501, 502, 503};
+	s1.insert(s1.begin(), myarray, myarray + 3);
+
+	cout << "Final s1 contains: ";
+	sit = s1.begin();
+	stditer site = s1.end();
+	while (sit != site)
+		cout << *sit++ << " ";
+	cout << endl;
 }
 
 int main(int argc, char **argv)
