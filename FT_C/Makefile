@@ -10,7 +10,7 @@ all:		$(NAME) $(HF)
 
 -include $(OBJ:.o=.d)
 
-%.o:		%.cc vector.hpp
+%.o:		%.cc *.hpp
 			$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 $(NAME):	$(OBJ)

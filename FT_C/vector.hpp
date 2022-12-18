@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/18 07:54:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/18 09:29:16 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include "color.hpp"
 # include <algorithm>
 # include <vector>
-# include "myiterator.hpp"
+# include "util.hpp"
 
 using std::cout;
 using std::endl;
@@ -511,6 +511,18 @@ namespace	ft
 			allocator_type get_allocator() const { return (allocator_type(_myalloc)); }
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
+			template <class M, class Alloc>
+				friend bool operator==(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+			template <class M, class Alloc>
+				friend bool operator!=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+			template <class M, class Alloc>
+				friend bool operator<(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+			template <class M, class Alloc>
+				friend bool operator<=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+			template <class M, class Alloc>
+				friend bool operator>(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+			template <class M, class Alloc>
+				friend bool operator>=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
 	};
 
 	/*** MY	VECTOR'S ITERATOR ***/
