@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/18 09:32:10 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:03:59 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ namespace ft
 
 	template <class Iter1, class Iter2, class Cmp>
 		bool lexicographical_compare(Iter1 a1, Iter1 a2, Iter2 b1, Iter2 b2, Cmp comp);
+
 }
 
 #endif

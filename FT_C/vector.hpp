@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/18 23:12:02 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:22:44 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,33 +250,32 @@ namespace	ft
 			value_type *data() const { return (_vec); }
 
 			/*** MODIFIERS ***/
+
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
 					size_type sz = std::distance(first, last);
-
+					for (size_type i = 0; i < _size; ++i)
+						_myalloc.destroy(_vec + i);
 					if (sz > _capacity)
 					{
 						pointer tmp = _vec;
-						size_type tmpc = _capacity;
-						_capacity = sz;
-						_vec = _myalloc.allocate(_capacity);
-						size_type tmpsize = _size;
+						if (_capacity)
+							_myalloc.deallocate(tmp, _capacity);
+						_capacity = _capacity == 0 ? sz : _capacity * 2;
+						if (_capacity < sz)
+							_capacity = sz;
+						if (_capacity)
+							_vec = _myalloc.allocate(_capacity);
 						_size = 0;
 						while (first != last)
 							_myalloc.construct(_vec + _size++, *first++);
-						for (size_type i = 0; i < tmpsize; ++i)
-							_myalloc.destroy(tmp + i);
-						_myalloc.deallocate(tmp, tmpc);
 					}
 					else
 					{
-						for (size_type i = 0; i < _size; ++i)
-							_myalloc.destroy(_vec + i);
 						_size = 0;
 						while (first != last)
 							_myalloc.construct(_vec + _size++, *first++);
-						_capacity = _size;
 					}
 				}
 

@@ -20,8 +20,12 @@ noasan:		vector.hpp
 			$(CXX) $(CXXFLAGS) -c $(SRC) $(D)
 			$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
+test:		vector.hpp
+			$(CXX) $(CXXFLAGS) -c test.cc
+			$(CXX) $(CXXFLAGS) test.o -o $(NAME)
+
 clean:
-			rm -rf $(OBJ)
+			rm -rf $(OBJ) *.o
 
 fclean:		clean
 			rm -rf $(NAME)

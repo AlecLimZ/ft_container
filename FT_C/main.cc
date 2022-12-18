@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/18 22:48:36 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:08:08 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,53 +52,6 @@ void	pft(ft::vector<A> p)
 }
 void	ft_test(void)
 {
-	{
-		std::vector<char> sv;
-		ft::vector<char> fv;
-	
-		sv.assign(0, 'c');
-		fv.assign(0, 'c');
-		pstd(sv);
-		pft(fv);
-	
-		sv.assign(64, 'A');
-		fv.assign(64, 'A');
-		pstd(sv);
-		pft(fv);
-		
-		sv.assign(32, '5');
-		fv.assign(32, '5');
-		pstd(sv);
-		pft(fv);
-		
-		sv.assign(49, '8');
-		fv.assign(49, '8');
-		pstd(sv);
-		pft(fv);
-		
-		sv.assign(77, '2');
-		fv.assign(77, '2');
-		pstd(sv);
-		pft(fv);
-		
-		sv.assign(0, 'c');
-		fv.assign(0, 'c');
-		pstd(sv);
-		pft(fv);
-		
-		sv.assign(49, '8');
-		fv.assign(49, '8');
-		pstd(sv);
-		pft(fv);
-	}
-
-	{
-		std::vector<string> sv;
-		ft::vector<string> fv;
-		sv.assign(0, "");
-		fv.assign(0, "");
-		sv.assign(64, "vector-string");
-	}
 }
 
 TEST_CASE("Iterator & const iterator")
