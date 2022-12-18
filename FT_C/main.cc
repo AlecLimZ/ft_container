@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/18 07:57:48 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/18 22:48:36 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "lib.hpp"
 #include "vector.hpp"
 #include "doctest.hpp"
+
+using std::string;
 
 int	doc(int *ac, char **av)
 {
@@ -30,9 +32,74 @@ int	doc(int *ac, char **av)
 	return (res + client_stuff_return_code);
 }
 
+template <typename A>
+void	pstd(std::vector<A> p)
+{
+	for (typename std::vector<A>::size_type i = 0; i < p.size(); ++i)
+		cout << p[i] << " ";
+	cout << endl;
+	cout << "std size: " << p.size() << " | " << "std capacity: " << p.capacity() << endl;
+}
 
+template <typename A>
+void	pft(ft::vector<A> p)
+{
+	for (typename ft::vector<A>::size_type i = 0; i < p.size(); ++i)
+		cout << p[i] << " ";
+	cout << endl;
+	cout << "ft size: " << p.size() << " | " << "ft capacity: " << p.capacity() << endl;
+	cout << endl;
+}
 void	ft_test(void)
-{}
+{
+	{
+		std::vector<char> sv;
+		ft::vector<char> fv;
+	
+		sv.assign(0, 'c');
+		fv.assign(0, 'c');
+		pstd(sv);
+		pft(fv);
+	
+		sv.assign(64, 'A');
+		fv.assign(64, 'A');
+		pstd(sv);
+		pft(fv);
+		
+		sv.assign(32, '5');
+		fv.assign(32, '5');
+		pstd(sv);
+		pft(fv);
+		
+		sv.assign(49, '8');
+		fv.assign(49, '8');
+		pstd(sv);
+		pft(fv);
+		
+		sv.assign(77, '2');
+		fv.assign(77, '2');
+		pstd(sv);
+		pft(fv);
+		
+		sv.assign(0, 'c');
+		fv.assign(0, 'c');
+		pstd(sv);
+		pft(fv);
+		
+		sv.assign(49, '8');
+		fv.assign(49, '8');
+		pstd(sv);
+		pft(fv);
+	}
+
+	{
+		std::vector<string> sv;
+		ft::vector<string> fv;
+		sv.assign(0, "");
+		fv.assign(0, "");
+		sv.assign(64, "vector-string");
+	}
+}
 
 TEST_CASE("Iterator & const iterator")
 {
