@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/17 13:29:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/19 20:30:28 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,42 +45,18 @@ namespace ft
 	};
 }
 
+using std::lexicographical_compare;
+
 int main()
 {
-	std::vector<int> myvector(3, 100);
-	std::vector<int>::iterator it;
+	char a[] = "Apple";
+	string c = "Apple";
+	string d = "apartment";
+	char b[] = "apartment";
 
-	it = myvector.begin();
-	it = myvector.insert(it , 200);
-
-	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
-		cout << myvector[i] << " ";
+	cout << lexicographical_compare(a, a + 5, b, b + 9);
 	cout << endl;
-
-	myvector.insert(it, 2, 300);
-	
-	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
-		cout << myvector[i] << " ";
-	cout << endl;
-
-	// "it" no longer valid, get a new one
-	it = myvector.begin();
-
-	std::vector<int> anothervector(2, 400);
-	for (vector<int>::size_type i = 0; i < anothervector.size(); ++i)
-		cout << anothervector[i] << " ";
-	cout << endl;
-	myvector.insert(it + 2, anothervector.begin(), anothervector.end());
-	for (vector<int>::size_type i = 0; i < myvector.size(); ++i)
-		cout << myvector[i] << " ";
-	cout << endl;
-
-	int myarray[] = {501, 502, 503};
-	myvector.insert(myvector.begin(), myarray, myarray + 3);
-
-	cout << "final myvector contains: ";
-	for (it = myvector.begin(); it < myvector.end(); ++it)
-		cout << *it << " ";
+	cout << lexicographical_compare(c.begin(), c.end(), d.begin(), d.end());
 	cout << endl;
 	return (0);
 }
