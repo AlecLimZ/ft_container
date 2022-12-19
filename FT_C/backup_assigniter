@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 18:58:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/19 00:22:44 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,19 +121,15 @@ namespace	ft
 				{
 					for (size_type i = 0; i < _size; ++i)
 						_myalloc.destroy(_vec + i);
-					if (_capacity)
-						_myalloc.deallocate(_vec, _capacity);
+					_myalloc.deallocate(_vec, _capacity);
 					_capacity = rhs._capacity;
 					_size = rhs._size;
-					if (rhs._size && _capacity)
-					{
-						const_iterator it = rhs.begin();
-						const_iterator ite = rhs.end();
-						_vec = _myalloc.allocate(_capacity);
-						int i = 0;
-						while (it != ite)
-							_myalloc.construct(_vec + i++, *it++);
-					}
+					const_iterator it = rhs.begin();
+					const_iterator ite = rhs.end();
+					_vec = _myalloc.allocate(_capacity);
+					int i = 0;
+					while (it != ite)
+						_myalloc.construct(_vec + i++, *it++);
 				}
 				return (*this);
 			}
@@ -258,10 +254,7 @@ namespace	ft
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
-					vector<value_type> lol;
-					while (first != last)
-						lol.push_back(*first++);
-					size_type sz = lol.size();
+					size_type sz = std::distance(first, last);
 					for (size_type i = 0; i < _size; ++i)
 						_myalloc.destroy(_vec + i);
 					if (sz > _capacity)
@@ -275,14 +268,14 @@ namespace	ft
 						if (_capacity)
 							_vec = _myalloc.allocate(_capacity);
 						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
+						while (first != last)
+							_myalloc.construct(_vec + _size++, *first++);
 					}
 					else
 					{
 						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
+						while (first != last)
+							_myalloc.construct(_vec + _size++, *first++);
 					}
 				}
 
