@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 00:03:59 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:38:25 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,66 @@ namespace ft
 
 	// lexicographical_compare
 	template <class Iter1, class Iter2>
-		bool lexicographical_compare(Iter1 a1, Iter1 a2, Iter2 b1, Iter2 b2);
+		bool lexicographical_compare(Iter1 a1, Iter1 a2, Iter2 b1, Iter2 b2)
+		{
+			while (a1 != a2)
+			{
+				if (b1 == b2 || *a1 > *b1)
+					return (false);
+				if (*a1 < *b1)
+					return (true);
+				a1++, b1++;
+			}
+			return (b1 != b2);
+		}
 
 	template <class Iter1, class Iter2, class Cmp>
-		bool lexicographical_compare(Iter1 a1, Iter1 a2, Iter2 b1, Iter2 b2, Cmp comp);
+		bool lexicographical_compare(Iter1 a1, Iter1 a2, Iter2 b1, Iter2 b2, Cmp comp)
+		{
+			while (a1 != a2 && b1 != b2)
+			{
+				if (!comp(*a1, *b1))
+					return (false);
+				a1++, b1++;
+			}
+			return (true);
+		}
 
+	template<typename T>
+	bool ft_less(T a, T b)
+	{
+		return (a < b);
+	}
+
+	template <typename T>
+	bool ft_not_eq(T a, T b)
+	{
+		return (a != b);
+	}
+
+	template <typename T>
+	bool ft_equal(T a, T b)
+	{
+		return (a == b);
+	}
+
+	template<typename T>
+	bool ft_greater(T a, T b)
+	{
+		return (a > b);
+	}
+
+	template<typename T>
+	bool ft_less_eq(T a, T b)
+	{
+		return (a <= b);
+	}
+
+	template<typename T>
+	bool ft_greater_eq(T a, T b)
+	{
+		return (a >= b);
+	}
 }
 
 #endif

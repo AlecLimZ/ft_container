@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 18:55:54 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:08:00 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,40 @@ void	pft(ft::vector<A> p)
 	cout << "ft size: " << p.size() << " | " << "ft capacity: " << p.capacity() << endl;
 	cout << endl;
 }
+
+template<class T, class Alloc>
+void	cmp(const std::vector<T, Alloc> & lhs, const std::vector<T, Alloc> & rhs)
+{
+	cout << "xxxSTDxxx" << endl;
+	cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << endl;
+	cout << "lt: " << (lhs < rhs) << " | le: " << (lhs <= rhs) << endl;
+	cout << "gt: " << (lhs > rhs) << " | ge: " << (lhs >= rhs) << endl;
+	cout << endl;
+}
+
+template<class T, class Alloc>
+void	cmp(const ft::vector<T, Alloc> & lhs, const ft::vector<T, Alloc> & rhs)
+{
+	cout << "xxxFTxxx" << endl;
+	cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << endl;
+	cout << "lt: " << (lhs < rhs) << " | le: " << (lhs <= rhs) << endl;
+	cout << "gt: " << (lhs > rhs) << " | ge: " << (lhs >= rhs) << endl;
+}
+
 void	ft_test(void)
 {
-	 // This test checks if vector works with iterators tagged as std::input_iterator_tag
-	std::vector<char> sv;
-	ft::vector<char> fv;
-	 
-	 std::istringstream str("1 2 3 4 5 6 7");
-	 std::istreambuf_iterator<char> it(str), end;
-	 
-	 fv.assign(it, end);
-	 pft(fv);
+	std::vector<int> vct(4);
+	std::vector<int> vct2(4);
+	ft::vector<int> fvct(4);
+	ft::vector<int> fvct2(4);
 
-	 std::istringstream lol("1 2 3 4 5 6 7");
-	 std::istreambuf_iterator<char> itf(lol), endf;
-	 sv.assign(itf, endf);
-	 pstd(sv);
+	vct2.resize(10);
+	fvct2.resize(10);
+	
+	cmp(vct, vct2);
+	cmp(fvct, fvct2);
+//	cmp(vct2, vct);
+//	cmp(fvct2, fvct);
 }
 
 int main()

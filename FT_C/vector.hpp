@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 18:58:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 17:40:08 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,20 +181,25 @@ namespace	ft
 					if (n > _capacity)
 					{
 						pointer tmp = _vec;
-						_vec = _myalloc.allocate(n);
-						_capacity = n > _capacity * 2 ? n : _capacity * 2;
+						size_type tmpc = _capacity;
+						_capacity = _capacity == 0 ? n : _capacity * 2;
+						if (_capacity < n)
+							_capacity = n;
+						if (_capacity)
+							_vec = _myalloc.allocate(n);
 						for (size_type i = 0; i < _size; ++i)
 						{
 							_myalloc.construct(_vec + i, tmp[i]);
 							_myalloc.destroy(tmp + i);
 						}
-						_myalloc.deallocate(tmp, _capacity);
-						for (size_type i = _size; i < n; ++i)
-							_myalloc.construct(_vec + i, val);
+						if (tmpc)
+							_myalloc.deallocate(tmp, tmpc);
+						while (_size < n)
+							_myalloc.construct(_vec + _size++, val);
 					}
 					else
-						for (size_type i = _size; i < n; ++i)
-							_myalloc.construct(_vec + i, val);
+						while (_size < n)
+							_myalloc.construct(_vec + _size++, val);
 				}
 				_size = n;
 			}
@@ -542,17 +547,41 @@ namespace	ft
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 			template <class M, class Alloc>
-				friend bool operator==(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator==(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					if (lhs.size() != rhs.size())
+						return (false);
+					return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), ft::ft_equal<typename vector<M, Alloc>::value_type>));
+				}
+
 			template <class M, class Alloc>
-				friend bool operator!=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator!=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (!(lhs == rhs));
+				}
+
 			template <class M, class Alloc>
-				friend bool operator<(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator<(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+				}
 			template <class M, class Alloc>
-				friend bool operator<=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator<=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return !(lhs > rhs);
+				}
+			
 			template <class M, class Alloc>
-				friend bool operator>(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator>(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (rhs < lhs);
+				}
+
 			template <class M, class Alloc>
-				friend bool operator>=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator>=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return !(lhs < rhs);
+				}
 	};
 
 	/*** MY	VECTOR'S ITERATOR ***/
@@ -1057,7 +1086,6 @@ namespace	ft
 		friend difference_type operator-(const myiterev<X> & lhs, const myiterev<Y> & rhs)
 		{ return rhs._data - lhs._data; }
 	};
-
 // this line before the end of the namespace ft
 }
 	

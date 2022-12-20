@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 00:08:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 16:16:15 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,33 @@ void	pft(ft::vector<A> p)
 	cout << "ft size: " << p.size() << " | " << "ft capacity: " << p.capacity() << endl;
 	cout << endl;
 }
-void	ft_test(void)
+
+template <typename W>
+bool testcmp(W c1, W c2)
 {
+	return (c1 == c2);
+}
+void	ft_test(void)
+{}
+
+TEST_CASE("Operator Relation for vector")
+{
+	std::vector<int> a;
+	a.push_back(7);
+	std::vector<int> b;
+	b.push_back(7);
+	
+	ft::vector<int> fa;
+	fa.push_back(7);
+	ft::vector<int> fb;
+	fb.push_back(7);
+
+	CHECK((a == b) == (fa == fb));
+	CHECK((a != b) == (fa != fb));
+	CHECK((a > b) == (fa > fb));
+	CHECK((a >= b) == (fa >= fb));
+	CHECK((a < b) == (fa < fb));
+	CHECK((a <= b) == (fa <= fb));
 }
 
 TEST_CASE("Iterator & const iterator")
