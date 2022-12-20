@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 16:16:15 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 18:01:36 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ bool testcmp(W c1, W c2)
 	return (c1 == c2);
 }
 void	ft_test(void)
-{}
+{
+}
 
 TEST_CASE("Operator Relation for vector")
 {

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 17:08:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/20 18:55:36 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,13 @@ void	cmp(const ft::vector<T, Alloc> & lhs, const ft::vector<T, Alloc> & rhs)
 
 void	ft_test(void)
 {
-	std::vector<int> vct(4);
-	std::vector<int> vct2(4);
-	ft::vector<int> fvct(4);
-	ft::vector<int> fvct2(4);
-
-	vct2.resize(10);
-	fvct2.resize(10);
-	
-	cmp(vct, vct2);
-	cmp(fvct, fvct2);
-//	cmp(vct2, vct);
-//	cmp(fvct2, fvct);
+	const std::size_t max_size = std::vector<int>().max_size();
+	std::vector<int> v(max_size + 1);
 }
 
 int main()
 {
 	ft_test();
-#ifdef noasan
 	system("leaks main");
-#endif
 	return (0);
 }
