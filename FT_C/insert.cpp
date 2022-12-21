@@ -1,56 +1,83 @@
-#include "common.hpp"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   insert.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mleblanc <mleblanc@student.42quebec.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/09 19:51:25 by mleblanc          #+#    #+#             */
+/*   Updated: 2022/12/21 18:51:05 by leng-chu         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-single element (1)
-	iterator insert (iterator position, const value_type& val);
+#include "vector_prelude.hpp"
 
-fill (2)
-    void insert (iterator position, size_type n, const value_type& val);
-
-range (3)
-	template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last);
-*/
-
-#define TESTED_TYPE int
-
-int		main(void)
+void vec_test_insert()
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct3;
+    SETUP_ARRAYS();
 
-	for (unsigned long int i = 0; i < vct.size(); ++i)
-		vct[i] = (vct.size() - i) * 3;
-	printSize(vct);
+    {
+        strvector v;
 
-	vct2.insert(vct2.end(), 42);
-	vct2.insert(vct2.begin(), 2, 21);
-	printSize(vct2);
+        strvector::iterator it = v.insert(v.end(), b_string[54]);
 
-	vct2.insert(vct2.end() - 2, 42);
-	printSize(vct2);
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
 
-	cout << "here1" << endl;
-	vct2.insert(vct2.end(), 2, 84);
-	cout << "here2" << endl;
-	printSize(vct2);
+        it = v.insert(v.end(), b_string[23]);
 
-	cout << "before resize" << endl;
-	vct2.resize(4);
-	cout << "after resize" << endl;
-	printSize(vct2);
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
 
-	vct2.insert(vct2.begin() + 2, vct.begin(), vct.end());
-	vct.clear();
-	printSize(vct2);
+        it = v.insert(v.begin(), b_string[19]);
 
-	printSize(vct);
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
 
-	for (int i = 0; i < 5; ++i)
-		vct3.insert(vct3.end(), i);
-	vct3.insert(vct3.begin() + 1, 2, 111);
-	printSize(vct3);
+        it = v.insert(v.begin() + 1, b_string[0]);
 
-	return (0);
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.begin() + 1, b_string[1]);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.begin() + 2, b_string[2]);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.begin() + 3, b_string[3]);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.begin() + 2, b_string[4]);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.end(), b_string[5]);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+    }
+
+    {
+        intvector v;
+
+        intvector::iterator it = v.insert(v.begin(), 64);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+
+        it = v.insert(v.end(), 420);
+
+        PRINT_LINE("It:", *it);
+        CHECK_AND_PRINT_ALL(v);
+    }
 }
+
+MAIN(vec_test_insert)

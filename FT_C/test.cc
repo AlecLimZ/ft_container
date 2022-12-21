@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/21 17:01:05 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/21 18:50:46 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,20 @@ void	cmp(const ft::vector<T, Alloc> & lhs, const ft::vector<T, Alloc> & rhs)
 void print(const int& n) { std::cout << " " << n; }
 void	ft_test(void)
 {
-	const ft::vector<long> v(10, 6);
+	string b_string = "qazwsxedcrfvtgbyhnujmiklopqwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjklzxcvbnm";
+	ft::vector<char> v;
 
-	//std::for_each(v.rbegin(), v.rend(), print);
-	std::for_each(v.rend(), v.rbegin(), print); // rbegin give const
-//	std::for_each(v.rend(), v.rend(), print);
-//	std::for_each(v.rbegin(), v.rbegin(), print);
+	ft::vector<char>::iterator it = v.insert(v.end(), b_string[54]);
+	cout << "It: " << *it << endl;
+
+	it = v.insert(v.end(), b_string[23]);
+	cout << "It: " << *it << endl;
+	it = v.insert(v.begin(), b_string[19]);
+	cout << "It: " << *it << endl;
+	it = v.insert(v.begin() + 1, b_string[0]);
+	cout << "It: " << *it << endl;
+	it = v.insert(v.begin() + 1, b_string[1]);
+	cout << "It: " << *it << endl;
 }
 
 int main()

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/19 18:58:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/21 17:12:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,11 @@ using std::cin;
 
 namespace	ft
 {
-		template <typename Iter>
-		class myiterev;
 	template <typename T, class Allocator = std::allocator<T> >
 	class vector
 	{
-	//	template <typename Iter>
-	//	class myiterev;
+		template <typename Iter>
+		class myiterev;
 		template <typename A>
 		class myiter;
 		public:
@@ -70,14 +68,14 @@ namespace	ft
 
 			explicit vector(size_type count, const value_type & value = value_type(),
 					const Allocator & alloc = allocator_type())
-				: _capacity(count), _size(0), _myalloc(alloc)
+				: _capacity(count), _size(count), _myalloc(alloc)
 			{
-				_vec = _myalloc.allocate(_capacity);
+				if (count < 0 || count > max_size())
+					throw (std::length_error("ft::vector"));
+				if (_capacity)
+					_vec = _myalloc.allocate(_capacity);
 				for (size_type i = 0; i < count; ++i)
-				{
 					_myalloc.construct(_vec + i, value);
-					_size++;
-				}
 			}
 
 			//		template <typename InputIterator>
@@ -88,9 +86,10 @@ namespace	ft
 			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
 			{
 				//if (first > last)
-				if (_capacity < 0)
-					throw (std::length_error("vector"));
-				_vec = _myalloc.allocate(_capacity);
+				if (_capacity < 0 || _capacity > max_size())
+					throw (std::length_error("ft::vector"));
+				if (_capacity)
+					_vec = _myalloc.allocate(_capacity);
 				while (first != last)
 					_myalloc.construct(_vec + _size++, *first++);
 			}
@@ -98,7 +97,10 @@ namespace	ft
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
 									   _myalloc(allocator_type())
 			{
-				_vec = _myalloc.allocate(_capacity);
+				if (_capacity < 0)
+					throw (std::length_error("vector"));
+				if (_capacity)
+					_vec = _myalloc.allocate(_capacity);
 				const_iterator it = x.begin();
 				const_iterator ite = x.end();
 				int i = 0;
@@ -129,7 +131,8 @@ namespace	ft
 					{
 						const_iterator it = rhs.begin();
 						const_iterator ite = rhs.end();
-						_vec = _myalloc.allocate(_capacity);
+						if (_capacity)
+							_vec = _myalloc.allocate(_capacity);
 						int i = 0;
 						while (it != ite)
 							_myalloc.construct(_vec + i++, *it++);
@@ -143,13 +146,15 @@ namespace	ft
 			{ return (iterator(this->_vec)); }
 
 			const_iterator begin() const
-			{ return (const_iterator(this->_vec)); }
+			{ 
+				return (const_iterator(this->_vec)); }
 
 			iterator end()
 			{ return (iterator(this->_vec + this->_size)); }
 
 			const_iterator end() const
-			{ return (const_iterator(this->_vec + this->_size)); }
+			{ 
+				return (const_iterator(this->_vec + this->_size)); }
 
 			reverse_iterator rbegin()
 			{
@@ -181,20 +186,25 @@ namespace	ft
 					if (n > _capacity)
 					{
 						pointer tmp = _vec;
-						_vec = _myalloc.allocate(n);
-						_capacity = n > _capacity * 2 ? n : _capacity * 2;
+						size_type tmpc = _capacity;
+						_capacity = _capacity == 0 ? n : _capacity * 2;
+						if (_capacity < n)
+							_capacity = n;
+						if (_capacity)
+							_vec = _myalloc.allocate(n);
 						for (size_type i = 0; i < _size; ++i)
 						{
 							_myalloc.construct(_vec + i, tmp[i]);
 							_myalloc.destroy(tmp + i);
 						}
-						_myalloc.deallocate(tmp, _capacity);
-						for (size_type i = _size; i < n; ++i)
-							_myalloc.construct(_vec + i, val);
+						if (tmpc)
+							_myalloc.deallocate(tmp, tmpc);
+						while (_size < n)
+							_myalloc.construct(_vec + _size++, val);
 					}
 					else
-						for (size_type i = _size; i < n; ++i)
-							_myalloc.construct(_vec + i, val);
+						while (_size < n)
+							_myalloc.construct(_vec + _size++, val);
 				}
 				_size = n;
 			}
@@ -205,13 +215,15 @@ namespace	ft
 				if (n > _capacity)
 				{
 					pointer tmp = _vec;
-					_vec = _myalloc.allocate(n);
+					if (n)
+						_vec = _myalloc.allocate(n);
 					for (size_type i = 0; i < _size; ++i)
 					{
 						_myalloc.construct(_vec + i, tmp[i]);
 						_myalloc.destroy(tmp + i);
 					}
-					_myalloc.deallocate(tmp, _capacity);
+					if (_capacity)
+						_myalloc.deallocate(tmp, _capacity);
 					_capacity = n;
 				}
 			}
@@ -220,13 +232,15 @@ namespace	ft
 				if (_capacity > _size)
 				{
 					pointer tmp = _vec;
-					_vec = _myalloc.allocate(_size);
+					if (_size)
+						_vec = _myalloc.allocate(_size);
 					for (size_type i = 0; i < _size; ++i)
 					{
 						_myalloc.construct(_vec + i, tmp[i]);
 						_myalloc.destroy(tmp + i);
 					}
-					_myalloc.deallocate(tmp, _capacity);
+					if (_capacity)
+						_myalloc.deallocate(tmp, _capacity);
 					_capacity = _size;
 				}
 			}
@@ -320,14 +334,16 @@ namespace	ft
 					size_type tmpcap = _capacity;
 					_capacity = _capacity == 0 ? 1 : _capacity * 2;
 					pointer tmp = _vec;
-					_vec = _myalloc.allocate(_capacity);
+					if (_capacity)
+						_vec = _myalloc.allocate(_capacity);
 					size_type i = 0;
 					for (; i < tmpcap; ++i)
 					{
 						_myalloc.construct(_vec + i, tmp[i]);
 						_myalloc.destroy(tmp + i);
 					}
-					_myalloc.deallocate(tmp, tmpcap);
+					if (tmpcap)
+						_myalloc.deallocate(tmp, tmpcap);
 					_myalloc.construct(_vec + i, val);
 				}
 				else
@@ -342,7 +358,7 @@ namespace	ft
 
 			iterator insert(iterator position, const value_type & val)
 			{
-				const value_type distance = std::distance(position, begin());
+				const size_type distance = std::distance(position, begin());
 				value_type last = 0;
 				if (distance)
 					last = _vec[_size - 1];
@@ -354,7 +370,8 @@ namespace	ft
 					_capacity = _capacity == 0 ? 1 : _capacity * 2;
 					if (_capacity < _size + 1)
 						_capacity = _size + 1;
-					_vec = _myalloc.allocate(_capacity);
+					if (_capacity)
+						_vec = _myalloc.allocate(_capacity);
 					int p = 0;
 					iterator it = tmp;
 					while (it != position)
@@ -365,7 +382,8 @@ namespace	ft
 						_vec[p++] = *position++;
 					for (size_type j = 0; j < _size; ++j)
 						_myalloc.destroy(tmp + j);
-					_myalloc.deallocate(tmp, tmpc);
+					if (tmpc)
+						_myalloc.deallocate(tmp, tmpc);
 					_size++;
 					return (begin() + distance);
 				}
@@ -393,7 +411,8 @@ namespace	ft
 					_capacity = _capacity == 0 ? _size + n : _capacity * 2;
 					if (_capacity < _size + n)
 						_capacity = _size + n;
-					_vec = _myalloc.allocate(_capacity);
+					if (_capacity)
+						_vec = _myalloc.allocate(_capacity);
 					int i = 0;
 					while (itmp != position)
 					{
@@ -409,7 +428,8 @@ namespace	ft
 						_myalloc.construct(_vec + i++, *itmp++);
 						_myalloc.destroy(tmp + c++);
 					}
-					_myalloc.deallocate(tmp, tmpcap);
+					if (tmpcap)
+						_myalloc.deallocate(tmp, tmpcap);
 					_size += n;
 				}
 				else
@@ -454,7 +474,8 @@ namespace	ft
 					_capacity = _capacity == 0 ? _size + n : _capacity * 2;
 					if (_capacity < _size + n)
 						_capacity = _size + n;
-					_vec = _myalloc.allocate(_capacity);
+					if (_capacity)
+						_vec = _myalloc.allocate(_capacity);
 					iterator it = tmp;
 					int i = 0;
 					while (it != position)
@@ -466,7 +487,8 @@ namespace	ft
 						_myalloc.construct(_vec + i++, *position++);
 					for (size_type j = 0; j < _size; ++j)
 						_myalloc.destroy(tmp + j);
-					_myalloc.deallocate(tmp, tmpc);
+					if (tmpc)
+						_myalloc.deallocate(tmp, tmpc);
 					_size += n;
 				}
 				else
@@ -488,9 +510,12 @@ namespace	ft
 			{
 				iterator itp = position;
 				iterator ite = end();
-				while (position != ite)
-					*position++ = *(position + 1);
-				_myalloc.destroy(_vec + (--_size));
+				size_type range = std::distance(position, ite);
+				if (range > 1)
+					while (position != ite)
+						*position++ = *(position + 1);
+				if (range)
+					_myalloc.destroy(_vec + (--_size));
 				return (itp);
 			}
 
@@ -499,12 +524,12 @@ namespace	ft
 				iterator itp = first;
 				iterator ite = end();
 				size_type i = std::distance(first, last);
-				size_type old = _size;
-				_size -= i;
-				while (last != ite)
-					*first++ = *last++;
-				for (; i < old; i++)
-					_myalloc.destroy(_vec + i);
+				size_type range = std::distance(last, ite);
+				if (range)
+					while (last != ite)
+						*first++ = *last++;
+				while (i--)
+					_myalloc.destroy(_vec + (--_size));
 				return (itp);
 			}
 
@@ -542,17 +567,41 @@ namespace	ft
 			
 			/*** NON-MEMBER FUNCTION OVERLOADS ***/
 			template <class M, class Alloc>
-				friend bool operator==(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator==(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					if (lhs.size() != rhs.size())
+						return (false);
+					return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), ft::ft_equal<typename vector<M, Alloc>::value_type>));
+				}
+
 			template <class M, class Alloc>
-				friend bool operator!=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator!=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (!(lhs == rhs));
+				}
+
 			template <class M, class Alloc>
-				friend bool operator<(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator<(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+				}
 			template <class M, class Alloc>
-				friend bool operator<=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator<=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return !(lhs > rhs);
+				}
+			
 			template <class M, class Alloc>
-				friend bool operator>(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator>(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return (rhs < lhs);
+				}
+
 			template <class M, class Alloc>
-				friend bool operator>=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs);
+				friend bool operator>=(const vector<M, Alloc> & lhs, const vector<M, Alloc> & rhs)
+				{
+					return !(lhs < rhs);
+				}
 	};
 
 	/*** MY	VECTOR'S ITERATOR ***/
@@ -787,10 +836,9 @@ namespace	ft
 	};
 
 	/*** Reverse Iterator ***/
-	//template <typename T, class B>
+	template <typename T, class B>
 	template <typename Iter>
-//	class vector<T, B>::myiterev
-	class myiterev
+	class vector<T, B>::myiterev
 	{
 		public:
 		typedef Iter
@@ -816,8 +864,14 @@ namespace	ft
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 		
 		myiterev(value_type *vec) :_data(vec){}
+		
+		//myiterev(typename vector<T, B>::const_reverse_iterator other)
+		//: _data(other._data){}
+		
+		myiterev(myiterev<const typename std::remove_const<Iter>::type> other)
+		: _data(other._data){}
 
-		myiterev(const myiterev & other)
+		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
 		: _data(other._data){}
 
 		~myiterev(){}
@@ -919,10 +973,9 @@ namespace	ft
 	};
 	
 	/*** Const Reverse Iterator ***/
-//	template <typename T, class B>
+	template <typename T, class B>
 	template <typename Iter>
-//	class vector<T, B>::myiterev<const Iter>
-	class myiterev<const Iter>
+	class vector<T, B>::myiterev<const Iter>
 	{
 		public:
 		typedef Iter
@@ -942,18 +995,35 @@ namespace	ft
 
 		protected:
 		pointer	_data;
+		template <typename L>
+		friend class	myiterev;
 
 		public:
 		myiterev(): _data(nullptr){}
 
-		explicit myiterev(typename vector<value_type>::const_iterator & x)
+//		typedef myiter<const value_type>	const_iterator;
+//
+		explicit myiterev(vector<T, B>::const_iterator x)
 		: _data(x._data - 1){}
-		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 
+//		explicit myiterev(vector<T, B>:myiter<const value_type> x)
+//		: _data(x._data - 1){}
+		
+//		explicit myiterev(typename vector<T, B>::myiter<typename std::remove_const<typename vector<T, B>::template myiter<const value_type> >::type> x)
+//		: _data(x._data - 1){}
+
+		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
+		
 		myiterev(value_type *vec) : _data(vec){}
 
+		myiterev(myiterev<const typename std::remove_const<Iter>::type> other)
+		: _data(other._data){}
+
 		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
-			: _data(other._data){}
+		: _data(other._data){}
+
+//		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
+//			: _data(other._data){}
 
 		~myiterev(){}
 
@@ -1057,7 +1127,6 @@ namespace	ft
 		friend difference_type operator-(const myiterev<X> & lhs, const myiterev<Y> & rhs)
 		{ return rhs._data - lhs._data; }
 	};
-
 // this line before the end of the namespace ft
 }
 	
