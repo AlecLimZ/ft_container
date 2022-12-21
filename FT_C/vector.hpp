@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 20:13:03 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:46:00 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -525,7 +525,7 @@ namespace	ft
 				iterator ite = end();
 				size_type i = std::distance(first, last);
 				size_type range = std::distance(last, ite);
-				if (range > 1)
+				if (range)
 					while (last != ite)
 						*first++ = *last++;
 				while (i--)

@@ -1,32 +1,122 @@
-############### [0] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [1] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [2] ###############
-eq: 1 | ne: 0
-lt: 1 | le: 1
-gt: 0 | ge: 1
-############### [3] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [4] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [5] ###############
-eq: 1 | ne: 0
-lt: 1 | le: 1
-gt: 0 | ge: 1
-############### [6] ###############
-eq: 1 | ne: 0
-lt: 1 | le: 1
-gt: 0 | ge: 1
-############### [7] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
+size: 10
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- AAAAAAAAAA
+- BBBBBBBBB
+- CCCCCCCC
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+CHECK 1
+[0] erase: 2
+size: 9
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- AAAAAAAAAA
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+CHECK 2
+[1] erase: 0
+size: 8
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+- J
+###############################################
+CHECK 3
+[2] erase: 7
+size: 7
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- BBBBBBBBB
+- DDDDDDD
+- EEEEEE
+- FFFFF
+- GGGG
+- HHH
+- II
+###############################################
+CHECK 4
+[3] erase: 0
+size: 4
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- FFFFF
+- GGGG
+- HHH
+- II
+###############################################
+CHECK 5
+[4] erase: 1
+size: 2
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- FFFFF
+- GGGG
+###############################################
+size: 4
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- FFFFF
+- GGGG
+- Hello
+- Hi there
+###############################################
+[5] erase: 1
+size: 1
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- FFFFF
+###############################################
+size: 5
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+- FFFFF
+- ONE
+- TWO
+- THREE
+- FOUR
+###############################################
+[6] erase: 0
+size: 0
+capacity: OK
+max_size: 768614336404564650
+
+Content is:
+###############################################
