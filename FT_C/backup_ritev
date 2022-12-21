@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/21 17:12:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/21 17:02:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace	ft
 		typedef myiter<value_type>			iterator;
 		typedef myiter<const value_type>	const_iterator;	
 		typedef myiterev<iterator>			reverse_iterator;
-		typedef myiterev<const iterator>	const_reverse_iterator;
+		typedef myiterev<const_iterator>	const_reverse_iterator;
 		/*** END OF MEMBER TYPES ***/
 
 		protected:
@@ -162,7 +162,8 @@ namespace	ft
 			}
 			const_reverse_iterator rbegin() const
 			{
-				return (const_reverse_iterator(end()));
+				//return (const_reverse_iterator(end()));
+				return (const_reverse_iterator(this->_vec + this->_size));
 			}
 			reverse_iterator rend()
 			{
@@ -170,7 +171,8 @@ namespace	ft
 			}
 			reverse_iterator rend() const
 			{
-				return (const_reverse_iterator(begin()));
+				//return (const_reverse_iterator(begin()));
+				return (const_reverse_iterator(this->_vec));
 			}
 
 			/*** CAPACITY ***/

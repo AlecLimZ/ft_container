@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 18:55:36 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/21 17:01:05 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,20 @@ void	cmp(const ft::vector<T, Alloc> & lhs, const ft::vector<T, Alloc> & rhs)
 	cout << "lt: " << (lhs < rhs) << " | le: " << (lhs <= rhs) << endl;
 	cout << "gt: " << (lhs > rhs) << " | ge: " << (lhs >= rhs) << endl;
 }
-
+void print(const int& n) { std::cout << " " << n; }
 void	ft_test(void)
 {
-	const std::size_t max_size = std::vector<int>().max_size();
-	std::vector<int> v(max_size + 1);
+	const ft::vector<long> v(10, 6);
+
+	//std::for_each(v.rbegin(), v.rend(), print);
+	std::for_each(v.rend(), v.rbegin(), print); // rbegin give const
+//	std::for_each(v.rend(), v.rend(), print);
+//	std::for_each(v.rbegin(), v.rbegin(), print);
 }
 
 int main()
 {
 	ft_test();
-	system("leaks main");
+	//system("leaks main");
 	return (0);
 }
