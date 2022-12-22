@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 18:01:36 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 19:52:45 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -682,11 +682,16 @@ TEST_CASE("Vector Insert\n")
 	sit = s1.begin();
 	fit = f1.begin();
 	stditer site = s1.end();
-//	ftiter fite = f1.end();
+	ftiter fite = f1.end();
 
 	cout << "Final s1 contains: ";
 	while (sit != site)
-		CHECK(*sit++ == *fit++);
+		cout << *sit++ << " ";
+	cout << endl;
+	cout << "Final f1 contains: ";
+	while (fit != fite)
+		cout << *fit++ << " ";
+	cout << endl;
 	CHECK(s1.size() == f1.size());
 	CHECK(s1.capacity() == f1.capacity());
 }

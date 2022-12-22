@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 17:29:22 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 19:50:00 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,17 +518,16 @@ namespace	ft
 					iterator ite = end() - n;
 					while (_size < max)
 						_myalloc.construct(_vec + _size++, *ite++);
-					iterator pn = position + n;
-					value_type holder;
-					if (_size)
-						holder = *position;
-					while (first != last)
+					if (_size > 0)
 					{
-						*pn = holder;
-						*position++ = *first++;
-						holder = *position;
+						ite = end() - (n + 1);
+						iterator pass = ite - n;
+						while (pass >= position)
+							*ite-- = *pass--;
 					}
-					_size = max;
+					while (first != last)
+						*position++ = *first++;
+	//				_size += n;
 	//				iterator ite = end() - 1;
 	//				int max = _size + n - 1;
 	//				for (size_type i = 0; i < n; ++i)
