@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/21 17:12:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 15:39:17 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,16 +358,13 @@ namespace	ft
 
 			iterator insert(iterator position, const value_type & val)
 			{
-				const size_type distance = std::distance(position, begin());
-				value_type last = 0;
-				if (distance)
-					last = _vec[_size - 1];
+				const size_type distance = std::distance(begin(), position);
 				iterator ret;
 				if (_size + 1 > _capacity)
 				{
 					pointer tmp = _vec;
 					size_type tmpc = _capacity;
-					_capacity = _capacity == 0 ? 1 : _capacity * 2;
+					_capacity = _capacity == 0 ? _size + 1 : _capacity * 2;
 					if (_capacity < _size + 1)
 						_capacity = _size + 1;
 					if (_capacity)
@@ -375,13 +372,13 @@ namespace	ft
 					int p = 0;
 					iterator it = tmp;
 					while (it != position)
-						_vec[p++] = *it++;
-					_vec[p++] = val;
+						_myalloc.construct(_vec + p++, *it++);
+					_myalloc.construct(_vec + p++, val);
 					it = tmp + _size;
 					while (position != it)
-						_vec[p++] = *position++;
+						_myalloc.construct(_vec + p++, *position++);
 					for (size_type j = 0; j < _size; ++j)
-						_myalloc.destroy(tmp + j);
+							_myalloc.destroy(tmp + j);
 					if (tmpc)
 						_myalloc.deallocate(tmp, tmpc);
 					_size++;
@@ -390,13 +387,27 @@ namespace	ft
 				else
 				{
 					int max = _size;
-					_myalloc.construct(_vec + max, last);
+					iterator last = end();
+					if (_size)
+						*last = _vec[_size - 1];
+					_myalloc.construct(_vec + max, *last);
 					_size++;
 					iterator ite = end();
-					while (ite != position)
-						_vec[max--] = *(--ite - 1);
-					*position = val;
+		//			while (ite != position)
+		//				_vec[max--] = *(--ite - 1);
+		//			*position = val;
+		//			ret = position;
 					ret = position;
+					value_type holder = *position;
+					value_type holder2;
+					*position++ = val;
+					while (position != ite)
+					{
+						holder2 = *position;
+						*position = holder;
+						holder = holder2;
+						position++;
+					}
 				}
 				return (ret);
 			}
