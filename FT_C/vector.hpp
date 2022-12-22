@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 15:39:17 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 16:33:59 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -504,16 +504,31 @@ namespace	ft
 				}
 				else
 				{
-					iterator ite = end() - 1;
-					int max = _size + n - 1;
-					for (size_type i = 0; i < n; ++i)
-						_myalloc.construct(_vec + max--, *ite--);
-					while (ite != position)
-						_vec[max--] = *ite--;
-					_vec[max--] = *ite--;
-					while (last != first)
-						_vec[max--] = *--last;
-					_size += n;
+					size_type max = _size + n;
+					iterator ite = end() - n;
+					while (_size < max)
+						_myalloc.construct(_vec + _size++, *ite++);
+					iterator pn = position + n;
+					value_type holder;
+					if (_size)
+						holder = *position;
+					while (first != last)
+					{
+						*pn = holder;
+						*position++ = *first++;
+						holder = *position;
+					}
+					_size = max;
+	//				iterator ite = end() - 1;
+	//				int max = _size + n - 1;
+	//				for (size_type i = 0; i < n; ++i)
+	//					_myalloc.construct(_vec + max--, *ite--);
+	//				while (ite != position)
+	//					_vec[max--] = *ite--;
+	//				_vec[max--] = *ite--;
+	//				while (last != first)
+	//					_vec[max--] = *--last;
+	//				_size += n;
 				}
 			}
 
