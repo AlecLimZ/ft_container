@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 16:33:59 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 17:29:22 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,12 +175,19 @@ namespace	ft
 
 			/*** CAPACITY ***/
 			size_type size() const { return (_size); }
-			size_type max_size() const { return (_myalloc.max_size()); }
+			size_type max_size() const {
+				if (ft::is_same<char, value_type>::value
+					|| ft::is_same<unsigned char, value_type>::value)
+					return (_myalloc.max_size() / 2);
+				return (_myalloc.max_size());
+			}
 			void resize(size_type n, value_type val = value_type())
 			{
+				if (n > max_size() || n < 0)
+					throw (std::length_error("ft::vector"));
 				if (n < _size)
-					for (size_type i = n; i < _size; ++i)
-						_myalloc.destroy(_vec + i);
+					while (_size > n)
+						_myalloc.destroy(_vec + (--_size));
 				else if (n > _size)
 				{
 					if (n > _capacity)
@@ -191,22 +198,23 @@ namespace	ft
 						if (_capacity < n)
 							_capacity = n;
 						if (_capacity)
-							_vec = _myalloc.allocate(n);
-						for (size_type i = 0; i < _size; ++i)
+							_vec = _myalloc.allocate(_capacity);
+						size_type i = 0;
+						for (; i < _size; ++i)
 						{
 							_myalloc.construct(_vec + i, tmp[i]);
 							_myalloc.destroy(tmp + i);
 						}
 						if (tmpc)
 							_myalloc.deallocate(tmp, tmpc);
-						while (_size < n)
-							_myalloc.construct(_vec + _size++, val);
+						while (i < n)
+							_myalloc.construct(_vec + i++, val);
+						_size = i;
 					}
 					else
 						while (_size < n)
 							_myalloc.construct(_vec + _size++, val);
 				}
-				_size = n;
 			}
 			size_type capacity() const { return (_capacity); }
 			bool empty() const { return (_size == 0); }
@@ -413,6 +421,8 @@ namespace	ft
 			}
 			void insert(iterator position, size_type n, const value_type & val)
 			{
+				if (n > max_size() || n < 0)
+					throw (std::length_error("ft::vector"));
 				iterator itmp = begin();
 				iterator itmpe = end();
 				if (_size + n > _capacity)
