@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 19:50:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/22 20:13:46 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -637,7 +637,16 @@ namespace	ft
 				{
 					return !(lhs < rhs);
 				}
+
+			template <class M, class Alloc>
+				friend void swap(vector<T, Alloc> & lhs, vector<M, Alloc> & rhs);
 	};
+
+	template <class M, class Alloc>
+		void swap(vector<M, Alloc> & lhs, vector<M, Alloc> & rhs)
+		{
+			lhs.swap(rhs);
+	}
 
 	/*** MY	VECTOR'S ITERATOR ***/
 	template <typename T, class B>
