@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 20:13:46 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 16:37:02 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,18 @@ namespace	ft
 
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
-			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
+		//	: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
+			: _capacity(0), _size(0), _myalloc(alloc)
 			{
 				//if (first > last)
 				if (_capacity < 0 || _capacity > max_size())
 					throw (std::length_error("ft::vector"));
-				if (_capacity)
-					_vec = _myalloc.allocate(_capacity);
+		//		if (_capacity)
+		//			_vec = _myalloc.allocate(_capacity);
 				while (first != last)
-					_myalloc.construct(_vec + _size++, *first++);
+			//		_myalloc.construct(_vec + _size++, *first++);
+					push_back(*first++);
+				shrink_to_fit();
 			}
 
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),

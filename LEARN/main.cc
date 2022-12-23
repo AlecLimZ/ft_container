@@ -6,10 +6,13 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/20 14:08:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 16:15:04 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sstream>
+#include <iostream>
+#include <stdlib.h>
 #include "myclass.hpp"
 #include "iter.hpp"
 #include <iostream>
@@ -22,6 +25,9 @@
 #include <type_traits> // for enable_if
 #include <numeric> // for std::reduce & accumulate()
 #include <fstream>
+#include <cstdlib>
+#include <memory>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -82,48 +88,35 @@ namespace ft
 	};
 }
 
+template <typename A>
+void	pcout(string msg, A input)
+{
+	cout << msg << input << endl;
+}
+
 int main()
 {
-	char foo[] = "Apple";
-	char bar[] = "apartment";
+	std::istringstream in{"Hello, world"};
+	std::istreambuf_iterator<char> it{in}, end;
+	std::vector<int> box = {34, 34, 55};
+	std::vector<char> lol(1,'a');
 
-	cout << boolalpha;
-	cout << "Comparing foo and bar lexicographically (foo < bar)" << endl;
-	cout << "Using default comparison (operator<): " << endl;
-	cout << std::lexicographical_compare(foo, foo + 5, bar, bar + 9) << endl;
-	cout << ft::lexicographical_compare(foo, foo + 5, bar, bar + 9) << endl;
-	cout << endl;
+		try
+		{
+			std::vector<char>::iterator first = lol.begin();
+		//	std::vector<int>::iterator last = std::uninitialized_copy(box.begin(), box.end(), first);
+			std::vector<char>::iterator last = std::uninitialized_copy(it, end, first);
 
-	cout << "Using mycomp as comparison object: " << endl;
-	cout << std::lexicographical_compare(foo, foo + 5, bar, bar + 9, mycomp) << endl;
-	cout << ft::lexicographical_compare(foo, foo + 5, bar, bar + 9, mycomp) << endl;
-	cout << endl;
-
-	vector<string> v1;
-	v1.push_back("One");
-	v1.push_back("Two");
-	v1.push_back("Three");
-
-	vector<string> v2;
-	v2.push_back("one");
-	v2.push_back("two");
-	v2.push_back("three");
-
-	bool result;
-	result = lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
-	bool result2;
-	result2 = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
-
-	if (result == true)
-		cout << "std: v1 is less than v2." << endl;
-	if (result2 == true)
-		cout << "ft: v1 is less than v2." << endl;
-	v1[0] = "two";
-	result = lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
-	result2 = ft::lexicographical_compare(v1.begin(), v1.end(), v2.begin(), v2.end());
-	if (result == false)
-		cout << "std: v1 is not less than v2." << endl;
-	if (result2 == false)
-		cout << "ft: v1 is not less than v2." << endl;
+			while (first != last)
+				cout << *first++ << " ";
+			cout << endl;
+			first = lol.begin();
+			while (first != last)
+				cout << *first++ << " ";
+			cout << endl;
+			cout << lol.size() << endl;
+			cout << lol.capacity() << endl;
+		}
+		catch(...){}
 	return (0);
 }
