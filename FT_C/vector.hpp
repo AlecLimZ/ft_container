@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 16:37:02 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:01:46 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,9 +283,9 @@ namespace	ft
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
-					vector<value_type> lol;
-					while (first != last)
-						lol.push_back(*first++);
+					vector<value_type> lol(first , last);
+				//	while (first != last)
+				//		lol.push_back(*first++);
 					size_type sz = lol.size();
 					for (size_type i = 0; i < _size; ++i)
 						_myalloc.destroy(_vec + i);
@@ -299,16 +299,10 @@ namespace	ft
 							_capacity = sz;
 						if (_capacity)
 							_vec = _myalloc.allocate(_capacity);
-						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
 					}
-					else
-					{
-						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
-					}
+					_size = 0;
+					for (size_type j = 0; j < sz; ++j)
+						_myalloc.construct(_vec + _size++, lol[j]);
 				}
 
 			void assign(size_type n, const value_type & val)
