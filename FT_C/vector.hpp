@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 17:38:35 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 18:39:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,12 +283,23 @@ namespace	ft
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
-					vector<value_type, Allocator> lol(first , last);
-				//	while (first != last)
-				//		lol.push_back(*first++);
-					size_type sz = lol.size();
-					for (size_type i = 0; i < _size; ++i)
-						_myalloc.destroy(_vec + i);
+					clear();
+					size_type sz;
+					if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category) 
+							== typeid(std::input_iterator_tag))
+					{
+						vector<value_type, Allocator> lol(first , last);
+						sz = lol.size();
+						if (sz > _capacity)
+							swap(lol);
+						else
+						{
+							for (size_type j = 0; j < sz; ++j)
+								_myalloc.construct(_vec + _size++, lol[j]);
+						}
+						return ;
+					}
+					sz = std::distance(first , last);
 					if (sz > _capacity)
 					{
 						pointer tmp = _vec;
@@ -300,9 +311,8 @@ namespace	ft
 						if (_capacity)
 							_vec = _myalloc.allocate(_capacity);
 					}
-					_size = 0;
-					for (size_type j = 0; j < sz; ++j)
-						_myalloc.construct(_vec + _size++, lol[j]);
+					while (first != last)
+						_myalloc.construct(_vec + _size++, *first++);
 				}
 
 			void assign(size_type n, const value_type & val)
