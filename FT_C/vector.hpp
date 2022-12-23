@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 18:39:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 18:53:55 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,25 @@ namespace	ft
 
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
-		//	: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
 			: _capacity(0), _size(0), _myalloc(alloc)
 			{
-				//if (first > last)
 				if (_capacity < 0 || _capacity > max_size())
 					throw (std::length_error("ft::vector"));
-		//		if (_capacity)
-		//			_vec = _myalloc.allocate(_capacity);
-				while (first != last)
-			//		_myalloc.construct(_vec + _size++, *first++);
-					push_back(*first++);
-				shrink_to_fit();
+				if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category) 
+							== typeid(std::input_iterator_tag))
+				{
+					while (first != last)
+						push_back(*first++);
+					shrink_to_fit();
+				}
+				else
+				{
+					_capacity = std::distance(first, last);
+					if (_capacity)
+						_vec = _myalloc.allocate(_capacity);
+					while (first != last)
+						_myalloc.construct(_vec + _size++, *first++);
+				}
 			}
 
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
@@ -493,11 +500,23 @@ namespace	ft
 			template <class InputIterator>
 			void insert(iterator position, InputIterator first1, InputIterator last1, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			{
-				vector<value_type, Allocator> lol(first1, last1);
-				//size_type n = std::distance(first, last);
-				size_type n = lol.size();
-				iterator first = lol.begin();
-				iterator last = lol.end();
+				iterator first;
+				iterator last;
+				size_type n;
+				vector<value_type, Allocator> lol;
+				int F = 0;
+				if (typeid(typename ft::iterator_traits<InputIterator>::iterator_category) 
+							== typeid(std::input_iterator_tag))
+				{
+					vector<value_type, Allocator> haha(first1, last1);
+					lol.swap(haha);
+					n = lol.size();
+					first = lol.begin();
+					last = lol.end();
+					F = 1;
+				}
+				else
+					n = std::distance(first1, last1);
 
 				if (_size + n > _capacity)
 				{
@@ -512,8 +531,12 @@ namespace	ft
 					int i = 0;
 					while (it != position)
 						_myalloc.construct(_vec + i++, *it++);
-					while (first != last)
-						_myalloc.construct(_vec + i++, *first++);
+					if (F)
+						while (first != last)
+							_myalloc.construct(_vec + i++, *first++);
+					else
+						while (first1 != last1)
+							_myalloc.construct(_vec + i++, *first1++);
 					iterator ite = tmp + _size;
 					while (position != ite)
 						_myalloc.construct(_vec + i++, *position++);
@@ -536,8 +559,12 @@ namespace	ft
 						while (pass >= position)
 							*ite-- = *pass--;
 					}
-					while (first != last)
-						*position++ = *first++;
+					if (F)
+						while (first != last)
+							*position++ = *first++;
+					else
+						while (first1 != last1)
+							*position++ = *first1++;
 	//				_size += n;
 	//				iterator ite = end() - 1;
 	//				int max = _size + n - 1;
