@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 17:01:46 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:12:19 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ namespace	ft
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
-					vector<value_type> lol(first , last);
+					vector<value_type, Allocator> lol(first , last);
 				//	while (first != last)
 				//		lol.push_back(*first++);
 					size_type sz = lol.size();
@@ -481,9 +481,13 @@ namespace	ft
 			}
 
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+			void insert(iterator position, InputIterator first1, InputIterator last1, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			{
-				size_type n = std::distance(first, last);
+				vector<value_type, Allocator> lol(first1, last1);
+				//size_type n = std::distance(first, last);
+				size_type n = lol.size();
+				iterator first = lol.begin();
+				iterator last = lol.end();
 
 				if (_size + n > _capacity)
 				{
@@ -670,6 +674,8 @@ namespace	ft
 			myiter(void) :_data(nullptr){}
 			myiter(value_type * vec) :_data(vec){}
 			myiter(myiter const & src) :_data(src._data){}
+			myiter(vector<T, B>::iterator & src) :_data(src._data){}
+			myiter(vector<T, B>::iterator src) :_data(src._data){}
 			myiter & operator=(myiter const & rhs)
 			{
 				if (this != &rhs)
