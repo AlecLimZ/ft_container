@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 17:12:19 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:38:35 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ namespace	ft
 			{
 				return (reverse_iterator(begin()));
 			}
-			reverse_iterator rend() const
+			const_reverse_iterator rend() const
 			{
 				return (const_reverse_iterator(begin()));
 			}

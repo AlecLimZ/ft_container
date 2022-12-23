@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/21 17:02:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:37:53 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace	ft
 		typedef myiter<value_type>			iterator;
 		typedef myiter<const value_type>	const_iterator;	
 		typedef myiterev<iterator>			reverse_iterator;
-		typedef myiterev<const_iterator>	const_reverse_iterator;
+		typedef myiterev<const iterator>	const_reverse_iterator;
 		/*** END OF MEMBER TYPES ***/
 
 		protected:
@@ -83,15 +83,18 @@ namespace	ft
 
 			template <typename InputIterator>
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
-			: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
+		//	: _capacity(std::distance(first, last)), _size(0), _myalloc(alloc)
+			: _capacity(0), _size(0), _myalloc(alloc)
 			{
 				//if (first > last)
 				if (_capacity < 0 || _capacity > max_size())
 					throw (std::length_error("ft::vector"));
-				if (_capacity)
-					_vec = _myalloc.allocate(_capacity);
+		//		if (_capacity)
+		//			_vec = _myalloc.allocate(_capacity);
 				while (first != last)
-					_myalloc.construct(_vec + _size++, *first++);
+			//		_myalloc.construct(_vec + _size++, *first++);
+					push_back(*first++);
+				shrink_to_fit();
 			}
 
 			vector(vector const & x) : _capacity(x._capacity), _size(x._size),
@@ -147,14 +150,16 @@ namespace	ft
 
 			const_iterator begin() const
 			{ 
-				return (const_iterator(this->_vec)); }
+				return (const_iterator(this->_vec));
+			}
 
 			iterator end()
 			{ return (iterator(this->_vec + this->_size)); }
 
 			const_iterator end() const
 			{ 
-				return (const_iterator(this->_vec + this->_size)); }
+				return (const_iterator(this->_vec + this->_size));
+			}
 
 			reverse_iterator rbegin()
 			{
@@ -162,27 +167,34 @@ namespace	ft
 			}
 			const_reverse_iterator rbegin() const
 			{
+				return (end());
 				//return (const_reverse_iterator(end()));
-				return (const_reverse_iterator(this->_vec + this->_size));
 			}
 			reverse_iterator rend()
 			{
 				return (reverse_iterator(begin()));
 			}
-			reverse_iterator rend() const
+			const_reverse_iterator rend() const
 			{
-				//return (const_reverse_iterator(begin()));
-				return (const_reverse_iterator(this->_vec));
+				return (begin());
+		//		return (const_reverse_iterator(begin()));
 			}
 
 			/*** CAPACITY ***/
 			size_type size() const { return (_size); }
-			size_type max_size() const { return (_myalloc.max_size()); }
+			size_type max_size() const {
+				if (ft::is_same<char, value_type>::value
+					|| ft::is_same<unsigned char, value_type>::value)
+					return (_myalloc.max_size() / 2);
+				return (_myalloc.max_size());
+			}
 			void resize(size_type n, value_type val = value_type())
 			{
+				if (n > max_size() || n < 0)
+					throw (std::length_error("ft::vector"));
 				if (n < _size)
-					for (size_type i = n; i < _size; ++i)
-						_myalloc.destroy(_vec + i);
+					while (_size > n)
+						_myalloc.destroy(_vec + (--_size));
 				else if (n > _size)
 				{
 					if (n > _capacity)
@@ -193,22 +205,23 @@ namespace	ft
 						if (_capacity < n)
 							_capacity = n;
 						if (_capacity)
-							_vec = _myalloc.allocate(n);
-						for (size_type i = 0; i < _size; ++i)
+							_vec = _myalloc.allocate(_capacity);
+						size_type i = 0;
+						for (; i < _size; ++i)
 						{
 							_myalloc.construct(_vec + i, tmp[i]);
 							_myalloc.destroy(tmp + i);
 						}
 						if (tmpc)
 							_myalloc.deallocate(tmp, tmpc);
-						while (_size < n)
-							_myalloc.construct(_vec + _size++, val);
+						while (i < n)
+							_myalloc.construct(_vec + i++, val);
+						_size = i;
 					}
 					else
 						while (_size < n)
 							_myalloc.construct(_vec + _size++, val);
 				}
-				_size = n;
 			}
 			size_type capacity() const { return (_capacity); }
 			bool empty() const { return (_size == 0); }
@@ -274,9 +287,9 @@ namespace	ft
 			template<class InputIterator>
 				void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 				{
-					vector<value_type> lol;
-					while (first != last)
-						lol.push_back(*first++);
+					vector<value_type, Allocator> lol(first , last);
+				//	while (first != last)
+				//		lol.push_back(*first++);
 					size_type sz = lol.size();
 					for (size_type i = 0; i < _size; ++i)
 						_myalloc.destroy(_vec + i);
@@ -290,16 +303,10 @@ namespace	ft
 							_capacity = sz;
 						if (_capacity)
 							_vec = _myalloc.allocate(_capacity);
-						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
 					}
-					else
-					{
-						_size = 0;
-						for (size_type j = 0; j < sz; ++j)
-							_myalloc.construct(_vec + _size++, lol[j]);
-					}
+					_size = 0;
+					for (size_type j = 0; j < sz; ++j)
+						_myalloc.construct(_vec + _size++, lol[j]);
 				}
 
 			void assign(size_type n, const value_type & val)
@@ -360,16 +367,13 @@ namespace	ft
 
 			iterator insert(iterator position, const value_type & val)
 			{
-				const size_type distance = std::distance(position, begin());
-				value_type last = 0;
-				if (distance)
-					last = _vec[_size - 1];
+				const size_type distance = std::distance(begin(), position);
 				iterator ret;
 				if (_size + 1 > _capacity)
 				{
 					pointer tmp = _vec;
 					size_type tmpc = _capacity;
-					_capacity = _capacity == 0 ? 1 : _capacity * 2;
+					_capacity = _capacity == 0 ? _size + 1 : _capacity * 2;
 					if (_capacity < _size + 1)
 						_capacity = _size + 1;
 					if (_capacity)
@@ -377,13 +381,13 @@ namespace	ft
 					int p = 0;
 					iterator it = tmp;
 					while (it != position)
-						_vec[p++] = *it++;
-					_vec[p++] = val;
+						_myalloc.construct(_vec + p++, *it++);
+					_myalloc.construct(_vec + p++, val);
 					it = tmp + _size;
 					while (position != it)
-						_vec[p++] = *position++;
+						_myalloc.construct(_vec + p++, *position++);
 					for (size_type j = 0; j < _size; ++j)
-						_myalloc.destroy(tmp + j);
+							_myalloc.destroy(tmp + j);
 					if (tmpc)
 						_myalloc.deallocate(tmp, tmpc);
 					_size++;
@@ -392,18 +396,34 @@ namespace	ft
 				else
 				{
 					int max = _size;
-					_myalloc.construct(_vec + max, last);
+					iterator last = end();
+					if (_size)
+						*last = _vec[_size - 1];
+					_myalloc.construct(_vec + max, *last);
 					_size++;
 					iterator ite = end();
-					while (ite != position)
-						_vec[max--] = *(--ite - 1);
-					*position = val;
+		//			while (ite != position)
+		//				_vec[max--] = *(--ite - 1);
+		//			*position = val;
+		//			ret = position;
 					ret = position;
+					value_type holder = *position;
+					value_type holder2;
+					*position++ = val;
+					while (position != ite)
+					{
+						holder2 = *position;
+						*position = holder;
+						holder = holder2;
+						position++;
+					}
 				}
 				return (ret);
 			}
 			void insert(iterator position, size_type n, const value_type & val)
 			{
+				if (n > max_size() || n < 0)
+					throw (std::length_error("ft::vector"));
 				iterator itmp = begin();
 				iterator itmpe = end();
 				if (_size + n > _capacity)
@@ -465,9 +485,13 @@ namespace	ft
 			}
 
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+			void insert(iterator position, InputIterator first1, InputIterator last1, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			{
-				size_type n = std::distance(first, last);
+				vector<value_type, Allocator> lol(first1, last1);
+				//size_type n = std::distance(first, last);
+				size_type n = lol.size();
+				iterator first = lol.begin();
+				iterator last = lol.end();
 
 				if (_size + n > _capacity)
 				{
@@ -495,16 +519,30 @@ namespace	ft
 				}
 				else
 				{
-					iterator ite = end() - 1;
-					int max = _size + n - 1;
-					for (size_type i = 0; i < n; ++i)
-						_myalloc.construct(_vec + max--, *ite--);
-					while (ite != position)
-						_vec[max--] = *ite--;
-					_vec[max--] = *ite--;
-					while (last != first)
-						_vec[max--] = *--last;
-					_size += n;
+					size_type max = _size + n;
+					iterator ite = end() - n;
+					while (_size < max)
+						_myalloc.construct(_vec + _size++, *ite++);
+					if (_size > 0)
+					{
+						ite = end() - (n + 1);
+						iterator pass = ite - n;
+						while (pass >= position)
+							*ite-- = *pass--;
+					}
+					while (first != last)
+						*position++ = *first++;
+	//				_size += n;
+	//				iterator ite = end() - 1;
+	//				int max = _size + n - 1;
+	//				for (size_type i = 0; i < n; ++i)
+	//					_myalloc.construct(_vec + max--, *ite--);
+	//				while (ite != position)
+	//					_vec[max--] = *ite--;
+	//				_vec[max--] = *ite--;
+	//				while (last != first)
+	//					_vec[max--] = *--last;
+	//				_size += n;
 				}
 			}
 
@@ -604,7 +642,16 @@ namespace	ft
 				{
 					return !(lhs < rhs);
 				}
+
+			template <class M, class Alloc>
+				friend void swap(vector<T, Alloc> & lhs, vector<M, Alloc> & rhs);
 	};
+
+	template <class M, class Alloc>
+		void swap(vector<M, Alloc> & lhs, vector<M, Alloc> & rhs)
+		{
+			lhs.swap(rhs);
+	}
 
 	/*** MY	VECTOR'S ITERATOR ***/
 	template <typename T, class B>
@@ -630,7 +677,11 @@ namespace	ft
 		public:
 			myiter(void) :_data(nullptr){}
 			myiter(value_type * vec) :_data(vec){}
-			myiter(myiter const & src) :_data(src._data){}
+			//myiter(const myiter & src) :_data(src._data){}
+			myiter(const myiter<typename std::remove_const<value_type>::type> & src)
+				:_data(src._data){}
+			myiter(vector<T, B>::iterator & src) :_data(src._data){}
+			myiter(vector<T, B>::iterator src) :_data(src._data){}
 			myiter & operator=(myiter const & rhs)
 			{
 				if (this != &rhs)
@@ -1015,6 +1066,9 @@ namespace	ft
 //		: _data(x._data - 1){}
 
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
+		
+		myiterev(const vector<T, B>::const_iterator & x): _data(x._data - 1){}
+		//myiterev(vector<T, B>::const_iterator x): _data(x._data - 1){}
 		
 		myiterev(value_type *vec) : _data(vec){}
 
