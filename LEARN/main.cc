@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 14:00:11 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/26 17:31:43 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include <memory>
 #include <string>
 #include "../FT_C/vector.hpp"
+#include <map>
 
 using std::cout;
 using std::endl;
@@ -44,23 +45,37 @@ using std::array;
 using std::ifstream;
 using std::boolalpha;
 
+bool fncomp(char lhs, char rhs)
+{
+	return (lhs < rhs);
+}
+
+struct classcomp
+{
+	bool operator() (const char & lhs, const char & rhs) const
+	{
+		return (lhs < rhs);
+	}
+};
+
 int main()
 {
-	ft::vector<int> ftv;
-	std::vector<int> stdv;
+	std::map<char, int> first;
 
-	for (int i = 1; i <= 7; ++i)
-	{
-		ftv.push_back(i);
-		stdv.push_back(i);
-	}
+	first['a'] = 10;
+	first['b'] = 30;
+	first['c'] = 50;
+	first['d'] = 70;
 
-	typedef std::vector<int>::reverse_iterator stditrev;
-	typedef ft::vector<int>::reverse_iterator ftitrev;
+	cout << first.size() << endl;
+	for (std::map<char, int>::size_type i = 'a'; i < 'd'; ++i)
+		cout << first[i] << endl;
 
-	stditrev stdb(stdv.end());
-	ftitrev ftb(ftv.end());
+	//std::map<char, int> second(first.begin(), first.end());
 
-	cout << "base stdb: " << *(stdb.base()) << endl;
-	cout << "base ftb: " << *(ftb.base()) << endl;
+//	std::map<char, int> third(second);
+
+//	bool(*fn_pt)(char, char) = fncomp;
+//	std::map<char, int, bool(*)(char, char)> fifth(fn_pt);
+	return (0);
 }

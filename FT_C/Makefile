@@ -16,7 +16,7 @@ all:		$(NAME) $(HF)
 $(NAME):	$(OBJ)
 			$(CXX) $(CXXFLAGS) $^ -o $@ -fsanitize=address
 
-noasan:		vector.hpp
+noasan:		vector.hpp map.hpp
 			$(CXX) $(CXXFLAGS) -c $(SRC) $(D)
 			$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
