@@ -6,22 +6,17 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 14:14:28 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:43:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <iterator>
-# include <iostream>
+# include <iterator> // for std::random_access_iterator_tag
 # include <cstddef> // for linux ptrdiff_t
-# include <stdexcept>
-# include "color.hpp"
-# include <algorithm>
-# include <vector>
+# include <stdexcept> // for error
 # include "util.hpp"
-# include "lib.hpp"
 
 namespace	ft
 {
@@ -93,7 +88,7 @@ namespace	ft
 				}
 				else
 				{
-					_capacity = std::distance(first, last);
+					_capacity = ft::distance(first, last);
 					if (_capacity)
 						_vec = _myalloc.allocate(_capacity);
 					while (first != last)
@@ -303,7 +298,7 @@ namespace	ft
 						}
 						return ;
 					}
-					sz = std::distance(first , last);
+					sz = ft::distance(first , last);
 					if (sz > _capacity)
 					{
 						pointer tmp = _vec;
@@ -377,7 +372,7 @@ namespace	ft
 
 			iterator insert(iterator position, const value_type & val)
 			{
-				const size_type distance = std::distance(begin(), position);
+				const size_type distance = ft::distance(begin(), position);
 				iterator ret;
 				if (_size + 1 > _capacity)
 				{
@@ -468,7 +463,7 @@ namespace	ft
 				{
 					_size += n;
 					int i = _size - 1;
-					int d = std::distance(position, itmpe); // get d before new construct
+					int d = ft::distance(position, itmpe); // get d before new construct
 					int nn = n;
 				//	while (n-- && --itmpe != itmp)
 				//		_myalloc.construct(_vec + i--, *itmpe);
@@ -513,7 +508,7 @@ namespace	ft
 					F = 1;
 				}
 				else
-					n = std::distance(first1, last1);
+					n = ft::distance(first1, last1);
 
 				if (_size + n > _capacity)
 				{
@@ -580,7 +575,7 @@ namespace	ft
 			{
 				iterator itp = position;
 				iterator ite = end();
-				size_type range = std::distance(position, ite);
+				size_type range = ft::distance(position, ite);
 				if (range > 1)
 					while (position != ite)
 						*position++ = *(position + 1);
@@ -593,8 +588,8 @@ namespace	ft
 			{
 				iterator itp = first;
 				iterator ite = end();
-				size_type i = std::distance(first, last);
-				size_type range = std::distance(last, ite);
+				size_type i = ft::distance(first, last);
+				size_type range = ft::distance(last, ite);
 				if (range)
 					while (last != ite)
 						*first++ = *last++;

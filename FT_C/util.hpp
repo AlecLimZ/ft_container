@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/22 18:34:20 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:36:39 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,18 @@ namespace ft
 	}
 
 	// distance
+	template <class InputIt>
+	typename ft::iterator_traits<InputIt>::difference_type
+	distance(InputIt first, InputIt last)
+	{
+		typename ft::iterator_traits<InputIt>::difference_type d = 0;
+		while (first != last)
+		{
+			first++;
+			d++;
+		}
+		return (d);
+	}
 }
 
 #endif
