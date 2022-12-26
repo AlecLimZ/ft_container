@@ -20,9 +20,13 @@ noasan:		vector.hpp
 			$(CXX) $(CXXFLAGS) -c $(SRC) $(D)
 			$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
 
-test:		vector.hpp
-			$(CXX) $(CXXFLAGS) -c test.cc
-			$(CXX) $(CXXFLAGS) test.o -o $(NAME)
+vector:		vector.hpp
+			$(CXX) $(CXXFLAGS) -c testvector.cc
+			$(CXX) $(CXXFLAGS) testvector.o -o $(NAME) -fsanitize=address
+
+vectornoasan:		vector.hpp
+			$(CXX) $(CXXFLAGS) -c testvector.cc $(D)
+			$(CXX) $(CXXFLAGS) testvector.o -o $(NAME)
 
 clean:
 			rm -rf $(OBJ) *.o

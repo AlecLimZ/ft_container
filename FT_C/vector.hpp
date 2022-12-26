@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/23 18:53:55 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:14:28 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@
 # include <algorithm>
 # include <vector>
 # include "util.hpp"
-
-using std::cout;
-using std::endl;
-using std::cin;
+# include "lib.hpp"
 
 namespace	ft
 {
