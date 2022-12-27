@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/27 14:57:04 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/27 17:14:50 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ namespace	ft
 			key_compare		_compare;
 
 		public:
+			/***CONSTRUCTOR & DESTRUCTOR***/
 			explicit map(const Compare & comp = key_compare(), const allocator_type & alloc = Allocator())
 				:_capacity(0), _size(0), _myalloc(alloc), _map(0), _compare(comp){
 					cout << "constructor map default" << endl;
@@ -79,12 +80,55 @@ namespace	ft
 				cout << "destructor map" << endl;
 			}
 
-			// Element access
+			/*** ITERATOR ***/
+
+			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
 			{
-				(void)k;
+				if (_size == 0)
+				{
+					_size++;
+					_capacity = _size;
+					_map = _myalloc.allocate(_capacity);
+					_myalloc.construct(_map, std::make_pair(k, 0));
+				}
 				return (_map->second);
 			}
+
+			/*** CAPACITY ***/
+			bool empty() const
+			{
+				return (_size == 0);
+			}
+
+			size_type size() const
+			{
+				return (_size);
+			}
+
+			size_type max_size() const
+			{
+				if (ft::is_same<char, key_type>::value
+					&& ft::is_same<char, mapped_type>::value)
+					return (_myalloc.max_size() / 16);
+				if ((sizeof(key_type) == sizeof(short)
+						&& sizeof(key_type) >= sizeof(mapped_type))
+						||
+						(sizeof(mapped_type) == sizeof(short)
+						 && sizeof(mapped_type) >= sizeof(key_type)))
+					return (_myalloc.max_size() / 8);
+				if ((sizeof(key_type) == sizeof(wchar_t)
+						&& sizeof(key_type) >= sizeof(mapped_type))
+						||
+						(sizeof(mapped_type) == sizeof(wchar_t)
+						 && sizeof(mapped_type) >= sizeof(key_type)))
+					return (_myalloc.max_size() / 5);
+				return (_myalloc.max_size() / 3);
+			}
+			/*** MODIFIERS ***/
+			/*** OBSERVERS ***/
+			/*** OPERATIONS ***/
+			/*** ALLOCATOR ***/
 	};
 }
 
