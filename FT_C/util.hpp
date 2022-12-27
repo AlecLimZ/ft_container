@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 14:36:39 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:02:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,75 @@ namespace ft
 			d++;
 		}
 		return (d);
+	}
+
+	// ft::pair
+	template <class T1, class T2>
+	struct pair
+	{
+		typedef T1	first_type;
+		typedef T2	second_type;
+
+		first_type	first;
+		second_type	second;
+
+		// constructor
+		pair(){};
+		template<class U, class V>
+		pair(const pair<U, V> & pr)
+		: first(pr.first), second(pr.second){}
+		pair(const first_type & a, const second_type & b)
+			: first(a), second(b){}
+
+		// operator=
+		pair & operator=(const pair & pr)
+		{
+			if (this != &pr)
+			{
+				first = pr.first;
+				second = pr.second;
+			}
+			return (*this);
+		}
+
+		// relational operator
+		template <class A, class B>
+		friend bool operator==(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return (lhs.first == rhs.first && lhs.second == rhs.second);
+		}
+		template <class A, class B>
+		friend bool operator!=(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return !(lhs == rhs);
+		}
+		template <class A, class B>
+		friend bool operator<(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return (lhs.first < rhs.first || (lhs.first < rhs.first && lhs.second < rhs.second));
+		}
+		template <class A, class B>
+		friend bool operator<=(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return (!(rhs < lhs));
+		}
+		template <class A, class B>
+		friend bool operator>(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return (rhs < lhs);
+		}
+		template <class A, class B>
+		friend bool operator>=(const pair<A, B> & lhs, const pair<A, B> & rhs)
+		{
+			return (!(lhs < rhs));
+		}
+	};
+
+	// ft::make_pair
+	template <class T1, class T2>
+	pair<T1, T2> make_pair(T1 x, T2 y)
+	{
+		return (pair<T1, T2>(x, y));
 	}
 }
 

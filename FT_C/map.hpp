@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 17:42:06 by leng-chu         ###   ########.fr       */
+/*   Updated: 2022/12/27 14:57:04 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ namespace	ft
 			// Element access
 			mapped_type & operator[](const key_type & k)
 			{
-				return (_map[k].second);
+				(void)k;
+				return (_map->second);
 			}
 	};
 }
