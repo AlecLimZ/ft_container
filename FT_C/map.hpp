@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/27 17:14:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 12:32:50 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ namespace	ft
 			>
 	class map
 	{
-		template <typename A>
+		template <typename V>
 		class mapiter;
-		template <typename A>
+		template <typename V>
 		class mapitrev;
 		public:
 			typedef Key	key_type;
@@ -81,6 +81,8 @@ namespace	ft
 			}
 
 			/*** ITERATOR ***/
+			iterator begin()
+			{ return (iterator(this->_map)); }
 
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
@@ -129,6 +131,145 @@ namespace	ft
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/
 			/*** ALLOCATOR ***/
+	};
+
+	template<typename K, typename T, typename C, typename A>
+	template <typename V>
+	class map<K, T, C, A>::mapiter
+	{
+		public:
+			typedef map<K, T, C, A> 		MAP;
+			typedef MAP::difference_type	difference_type;
+			typedef V						value_type;
+			typedef V&						reference;
+			typedef V*						pointer;
+			std::bidirectional_iterator_tag	iterator_category;
+
+		protected:
+			pointer	_map;
+			friend class	mapiter<const V>;
+
+		public:
+			mapiter(void): _map(nullptr)
+			{}
+			~mapiter(void){}
+			mapiter(value_type *map): _map(map){}
+			mapiter(const mapiter & src) : _map(src._map){}
+			mapiter & operator=(mapiter const & rhs)
+			{
+				if (this != rhs)
+					_map = rhs._map;
+				return (*this);
+			}
+
+			template<typename X, typename Y>
+			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
+			{ return (lhs._data == rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
+			{ return (lhs._data != rhs._data); }
+
+			mapiter & operator++()
+			{
+				_map++;
+				return (*this);
+			}
+
+			mapiter operator++(int)
+			{
+				mapiter old(*this);
+				this->_map++;
+				return (old);
+			}
+
+			mapiter & operator--()
+			{
+				this->_map--;
+				return (*this);
+			}
+
+			mapiter operator--(int)
+			{
+				mapiter old(*this);
+				this->_map--;
+				return (old);
+			}
+
+			reference operator*() const
+			{ return (*_map); }
+
+			pointer operator->() const
+			{ return (this->_map); }
+	};
+	
+	template<typename K, typename T, typename C, typename A>
+	template <typename V>
+	class map<K, T, C, A>::mapiter<const V>
+	{
+		public:
+			typedef map<K, T, C, A> 		MAP;
+			typedef MAP::difference_type	difference_type;
+			typedef V						value_type;
+			typedef const V&				const_reference;
+			typedef const V*				const_pointer;
+			std::bidirectional_iterator_tag	iterator_category;
+
+		protected:
+			pointer	_map;
+
+		public:
+			mapiter(void): _map(nullptr)
+			{}
+			~mapiter(void){}
+			mapiter(value_type *map): _map(map){}
+			mapiter(const mapiter<typename std::remove_const<value_type>::type> & src) : _map(src._map){}
+			mapiter & operator=(mapiter const & rhs)
+			{
+				if (this != rhs)
+					_map = rhs._map;
+				return (*this);
+			}
+
+			template<typename X, typename Y>
+			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
+			{ return (lhs._data == rhs._data); }
+			
+			template<typename X, typename Y>
+			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
+			{ return (lhs._data != rhs._data); }
+
+			mapiter & operator++()
+			{
+				_map++;
+				return (*this);
+			}
+
+			mapiter operator++(int)
+			{
+				mapiter old(*this);
+				this->_map++;
+				return (old);
+			}
+
+			mapiter & operator--()
+			{
+				this->_map--;
+				return (*this);
+			}
+
+			mapiter operator--(int)
+			{
+				mapiter old(*this);
+				this->_map--;
+				return (old);
+			}
+
+			const_reference operator*() const
+			{ return (*_map); }
+
+			const_pointer operator->() const
+			{ return (this->_map); }
 	};
 }
 

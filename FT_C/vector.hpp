@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 15:44:53 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 12:08:56 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -701,6 +701,7 @@ namespace	ft
 
 		public:
 			myiter(void) :_data(nullptr){}
+			~myiter(void){}
 			myiter(value_type * vec) :_data(vec){}
 			myiter(myiter const & src) :_data(src._data){}
 			myiter(vector<T, B>::iterator & src) :_data(src._data){}

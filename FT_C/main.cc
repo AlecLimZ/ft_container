@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/27 17:16:09 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 12:28:39 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ int	doc(int *ac, char **av)
 
 void	ft_test(void)
 {
-	std::map<char, int> smap;
-	ft::map<char, int> fmap;
+	typedef std::map<char, int> SMAP;
+	typedef ft::map<char, int> FMAP;
+	
+	SMAP smap;
+	FMAP fmap;
 
 	cout << smap.size() << endl;
 	cout << fmap.size() << endl;
@@ -49,6 +52,10 @@ void	ft_test(void)
 //	fmap['b'] = 30;
 //	fmap['c'] = 50;
 //	fmap['d'] = 70;
+	SMAP::const_iterator sit = smap.begin();
+	FMAP::const_iterator fit = fmap.begin();
+	cout << sit->second << endl;
+	cout << fit->second << endl;
 	cout << smap.size() << endl;
 	cout << fmap.size() << endl;
 
