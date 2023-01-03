@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/26 17:31:43 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 17:50:33 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,37 +45,49 @@ using std::array;
 using std::ifstream;
 using std::boolalpha;
 
-bool fncomp(char lhs, char rhs)
+template<typename T>
+typedef struct s_rbt
 {
-	return (lhs < rhs);
-}
+	int	black;
+	int	red;
+	T	node;
+}	t_rbt;
 
-struct classcomp
+class RedBlackTree
 {
-	bool operator() (const char & lhs, const char & rhs) const
-	{
-		return (lhs < rhs);
-	}
+	protected:
+	public:
+		RedBlackTree(void){}
+		~RedBlackTree(void){}
+		RedBlackTree(const RedBlackTree & rhs)
+		{
+			nullNode = new RedBlackNode;
+			nullNode->left = nullNode->right = nullNode;
+
+			header = new RedBlackNode{rhs.header->element};
+			header->left = nullNode;
+			header->right = clone(rhs.header->right);
+		}
+		void	printTree() const
+		{
+			if (header->right == nullptr)
+				cout << "Empty tree" << endl;
+			else
+				printTree(header->right);
+		}
+		void	printTree(RedBlackNode *t) const
+		{
+			if (t != t->left)
+			{
+				printTree(t->left);
+				cout << t->element << endl;
+				printTree(t->right);
+			}
+		}
+
 };
 
 int main()
 {
-	std::map<char, int> first;
-
-	first['a'] = 10;
-	first['b'] = 30;
-	first['c'] = 50;
-	first['d'] = 70;
-
-	cout << first.size() << endl;
-	for (std::map<char, int>::size_type i = 'a'; i < 'd'; ++i)
-		cout << first[i] << endl;
-
-	//std::map<char, int> second(first.begin(), first.end());
-
-//	std::map<char, int> third(second);
-
-//	bool(*fn_pt)(char, char) = fncomp;
-//	std::map<char, int, bool(*)(char, char)> fifth(fn_pt);
 	return (0);
 }
