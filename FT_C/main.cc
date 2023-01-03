@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/03 12:28:39 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:21:53 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,25 @@ void	ft_test(void)
 	SMAP smap;
 	FMAP fmap;
 
-	cout << smap.size() << endl;
-	cout << fmap.size() << endl;
-	smap['a'] = 10;
-//	smap['b'] = 30;
-//	smap['c'] = 50;
-//	smap['d'] = 70;
+	smap['d'] = 10;
+	smap['b'] = 30;
+	smap['c'] = 50;
+	smap['a'] = 70;
 	fmap['a'] = 10;
-//	fmap['b'] = 30;
-//	fmap['c'] = 50;
-//	fmap['d'] = 70;
-	SMAP::const_iterator sit = smap.begin();
-	FMAP::const_iterator fit = fmap.begin();
-	cout << sit->second << endl;
-	cout << fit->second << endl;
-	cout << smap.size() << endl;
-	cout << fmap.size() << endl;
+	fmap['d'] = 30;
+	fmap['c'] = 50;
+	fmap['b'] = 70;
 
-//	for (std::map<char, int>::size_type i = 'a'; i <= 'd'; ++i)
-//		cout << smap[i] << " ";
-//	cout << endl;
+	for (std::map<char, int>::size_type i = 'a'; i <= 'd'; ++i)
+		cout << smap[i] << " ";
+	cout << endl;
+
+	FMAP::iterator fit = fmap.begin();
+	FMAP::iterator fite = fmap.end();
+	while (fit != fite)
+		cout << (fit++)->first << " ";
+	cout << endl;
+	
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/03 12:32:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/03 15:25:45 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ namespace	ft
 		public:
 			/***CONSTRUCTOR & DESTRUCTOR***/
 			explicit map(const Compare & comp = key_compare(), const allocator_type & alloc = Allocator())
-				:_capacity(0), _size(0), _myalloc(alloc), _map(0), _compare(comp){
+				:_capacity(2), _size(0), _myalloc(alloc), _map(nullptr), _compare(comp){
+					_map = _myalloc.allocate(_capacity);
 					cout << "constructor map default" << endl;
 				}
 			template <class InputIterator>
@@ -77,12 +78,24 @@ namespace	ft
 			}
 			~map()
 			{
+				for (size_type i = 0; i < _capacity; ++i)
+					_myalloc.destroy(_map + i);
+				_myalloc.deallocate(_map, _capacity);
 				cout << "destructor map" << endl;
 			}
 
 			/*** ITERATOR ***/
 			iterator begin()
 			{ return (iterator(this->_map)); }
+			
+			const_iterator begin() const
+			{ return (const_iterator(this->_map)); }
+
+			iterator end()
+			{ return (iterator(this->_map + _size)); }
+
+			const_iterator end() const
+			{ return (const_iterator(this->_map + _size)); }
 
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
@@ -93,8 +106,68 @@ namespace	ft
 					_capacity = _size;
 					_map = _myalloc.allocate(_capacity);
 					_myalloc.construct(_map, std::make_pair(k, 0));
+					return (_map->second);
 				}
-				return (_map->second);
+				for (size_type i = 0; i < _size; ++i)
+					if ((_map + i)->first == k)
+						return ((_map + i)->second);
+				size_type i = 0;
+				int s = 0;
+				int a = 0;
+				if (_size + 1 > _capacity)
+				{
+					pointer tmp = _map;
+					size_type tmpc = _capacity;
+					_capacity = _capacity == 0 || _capacity < _size + 1 ? 
+						_size + 1 : _capacity * 2;
+					if (_capacity)
+						_map = _myalloc.allocate(_capacity);
+					for (;i < _size + a; ++i)
+					{
+						if (_compare(k, (tmp + i)->first) && a == 0)
+						{
+							_myalloc.construct(_map + i, std::make_pair(k , 0));
+							s = i;
+							a++;
+						}
+						_myalloc.construct(_map + i + a, std::make_pair((tmp + i)->first, (tmp + i)->second));
+						_myalloc.destroy(tmp + i);
+					}
+					if (tmpc)
+						_myalloc.deallocate(tmp, tmpc);
+					if (a == 0)
+						_myalloc.construct(_map + i, std::make_pair(k, 0));
+				}
+				else
+				{
+					size_type pos = 0;
+					for (size_type i = 0; i < _size; ++i)
+					{
+						if (_compare(k, (_map + i)->first))
+						{
+							pos = i;
+							break ;
+						}
+					}
+					if (pos)
+					{
+						_myalloc.construct(_map + _size, std::make_pair((_map + _size - 1)->first , (_map + _size - 1)->second));
+						for (size_type i = _size - 1; i > pos; --i)
+						{
+							_myalloc.destroy(_map + i);
+							_myalloc.construct(_map + i, std::make_pair((_map + i - 1)->first , (_map + i - 1)->second));
+						}
+						_myalloc.destroy(_map + pos);
+						_myalloc.construct(_map + pos, std::make_pair(k , 0));
+						_size++;
+						return ((_map + pos)->second);
+					}
+					_myalloc.construct(_map + _size, std::make_pair(k , 0));
+				}
+				_size++;
+				if (a)
+					return ((_map + s)->second);
+				return ((_map + i)->second);
 			}
 
 			/*** CAPACITY ***/
@@ -164,11 +237,11 @@ namespace	ft
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._data == rhs._data); }
+			{ return (lhs._map == rhs._map); }
 			
 			template<typename X, typename Y>
 			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._data != rhs._data); }
+			{ return (lhs._map != rhs._map); }
 
 			mapiter & operator++()
 			{
@@ -233,11 +306,11 @@ namespace	ft
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._data == rhs._data); }
+			{ return (lhs._map == rhs._map); }
 			
 			template<typename X, typename Y>
 			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._data != rhs._data); }
+			{ return (lhs._map != rhs._map); }
 
 			mapiter & operator++()
 			{
