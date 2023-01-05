@@ -1,5 +1,5 @@
 NAME			=	main
-SRC				=	main.cc myclass.cc
+SRC				=	main.cc
 OBJ				=	$(SRC:%.cc=%.o)
 H				=	-I.
 CXXFLAGS		+=	-Wall -Wextra -Werror $(H) -pedantic -std=c++98
