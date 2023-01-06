@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:03:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/05 17:52:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:07:00 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ Cref<Comparable> RedBlackTree<Comparable>::findMin() const
 {
 	if (isEmpty())
 		return Cref<Comparable>();
-	Node *itr = header->right;
+	Node *itr = header;
 
 	while (itr->left != nullNode)
 		itr = itr->left;
@@ -123,7 +123,7 @@ RedBlackTree<Comparable>::findMax() const
 {
 	if (isEmpty())
 		return Cref<Comparable>();
-	Node	*itr = header->right;
+	Node	*itr = header;
 
 	while(itr->right != nullNode)
 		itr = itr->right;
@@ -138,7 +138,7 @@ Cref<Comparable>
 RedBlackTree<Comparable>::find(const Comparable & x) const
 {
 	nullNode->element = x;
-	Node	*curr = header->right;
+	Node	*curr = header;
 
 	for (; ;)
 	{
@@ -157,8 +157,8 @@ RedBlackTree<Comparable>::find(const Comparable & x) const
 template <class Comparable>
 void RedBlackTree<Comparable>::makeEmpty()
 {
-	reclaimMemory(header->right);
-	header->right = nullNode;
+	reclaimMemory(header);
+	header = nullNode;
 }
 
 // Test if the tree is logically empty.
@@ -166,7 +166,7 @@ void RedBlackTree<Comparable>::makeEmpty()
 template <class Comparable>
 bool RedBlackTree<Comparable>::isEmpty() const
 {
-	return header->right == nullNode;
+	return header == nullNode;
 }
 
 // Deep copy
@@ -176,7 +176,7 @@ const RedBlackTree<Comparable> & RedBlackTree<Comparable>::operator=(const RedBl
 	if (this != &rhs)
 	{
 		makeEmpty();
-		header->right = clone(rhs.header->right);
+		header = clone(rhs.header);
 	}
 	return (*this);
 }
@@ -211,7 +211,7 @@ void	RedBlackTree<Comparable>::handleReorient(const Comparable & item)
 		current = rotate(item, great);
 		current->color = BLACK;
 	}
-	header->right->color = BLACK;
+	header->color = BLACK;
 }
 
 // Internal routine that performs a single or double rotation

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 17:32:01 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:06:48 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ using std::boolalpha;
 
 using namespace std;
 
+namespace tutor
+{
 struct Node
 {
 	int		data;
@@ -521,20 +523,20 @@ class RBTree
 				printHelper(this->root, "", true);
 		}
 };
+}
+
+void	test()
+{
+	RedBlackTree<int> bst;
+	bst.insert(55);
+	bst.insert(51);
+	bst.insert(577);
+	bst.displayRBT(bst.getNode());
+}
 
 int main()
 {
-	RBTree bst;
-	bst.insert(8);
-	bst.insert(18);
-	bst.insert(5);
-	bst.insert(15);
-	bst.insert(17);
-	bst.insert(25);
-	bst.insert(40);
-	bst.insert(80);
-	bst.deleteNode(25);
-	bst.prettyPrint();
-	bst.inorder();
+	test();
+	system("leaks main");
 	return (0);
 }
