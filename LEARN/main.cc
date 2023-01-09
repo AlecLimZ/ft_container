@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 16:31:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 19:06:48 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:58:18 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 #include <string>
 #include "../FT_C/vector.hpp"
 #include <map>
-#include "RedBlackTree.hpp"
+#include "RBT.hpp"
 
 using std::cout;
 using std::endl;
@@ -527,11 +527,11 @@ class RBTree
 
 void	test()
 {
-	RedBlackTree<int> bst;
+	RedBlackTree bst;
 	bst.insert(55);
-	bst.insert(51);
-	bst.insert(577);
-	bst.displayRBT(bst.getNode());
+	bst.insert(10);
+	bst.insert(44);
+	bst.inorder();
 }
 
 int main()

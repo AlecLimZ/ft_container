@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:03:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 19:07:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 14:02:02 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ using namespace std;
 // Construct the tree.
 // negInf is a value less than or equal to all others.
 template <class Comparable>
-RedBlackTree<Comparable>::RedBlackTree(const Comparable & negInf)
+RedBlackTree<Comparable>::RedBlackTree(const Comparable & negInf):size(1)
 {
 	nullNode = new Node;
 	nullNode->left = nullNode->right = nullNode;
@@ -27,7 +27,7 @@ RedBlackTree<Comparable>::RedBlackTree(const Comparable & negInf)
 }
 
 template <class Comparable>
-RedBlackTree<Comparable>::RedBlackTree(void)
+RedBlackTree<Comparable>::RedBlackTree(void):size(0)
 {
 	nullNode = new Node;
 	nullNode->left = nullNode->right = nullNode;
@@ -69,6 +69,7 @@ void	RedBlackTree<Comparable>::insert(const Comparable & x)
 	current = parent = grand = header;
 	nullNode->element = x;
 
+	size++;
 	while (current->element != x)
 	{
 		great = grand; grand = parent; parent = current;
@@ -90,6 +91,7 @@ void	RedBlackTree<Comparable>::insert(const Comparable & x)
 	else
 		parent->right = current;
 	handleReorient(x);
+	display();
 }
 
 // Remove item x from the tree.
@@ -102,56 +104,56 @@ void	RedBlackTree<Comparable>::remove(const Comparable & x)
 
 // Find the smallest item the tree.
 // Return the smallest item wrapped in a Cref object
-template <class Comparable>
-Cref<Comparable> RedBlackTree<Comparable>::findMin() const
-{
-	if (isEmpty())
-		return Cref<Comparable>();
-	Node *itr = header;
-
-	while (itr->left != nullNode)
-		itr = itr->left;
-
-	return Cref<Comparable>(itr->element);
-}
+//template <class Comparable>
+//Cref<Comparable> RedBlackTree<Comparable>::findMin() const
+//{
+//	if (isEmpty())
+//		return Cref<Comparable>();
+//	Node *itr = header;
+//
+//	while (itr->left != nullNode)
+//		itr = itr->left;
+//
+//	return Cref<Comparable>(itr->element);
+//}
 
 // Find the largest item in the tree.
 // Return the largest item wrapped in a Cref object.
-template <class Comparable>
-Cref<Comparable>
-RedBlackTree<Comparable>::findMax() const
-{
-	if (isEmpty())
-		return Cref<Comparable>();
-	Node	*itr = header;
-
-	while(itr->right != nullNode)
-		itr = itr->right;
-
-	return Cref<Comparable>(itr->element);
-}
+//template <class Comparable>
+//Cref<Comparable>
+//RedBlackTree<Comparable>::findMax() const
+//{
+//	if (isEmpty())
+//		return Cref<Comparable>();
+//	Node	*itr = header;
+//
+//	while(itr->right != nullNode)
+//		itr = itr->right;
+//
+//	return Cref<Comparable>(itr->element);
+//}
 
 // Find item x in the tree.
 // Return the matching item wrapped in a Cref object.
-template <class Comparable>
-Cref<Comparable>
-RedBlackTree<Comparable>::find(const Comparable & x) const
-{
-	nullNode->element = x;
-	Node	*curr = header;
-
-	for (; ;)
-	{
-		if (x < curr->element)
-			curr = curr->left;
-		else if (curr->element < x)
-			curr = curr->right;
-		else if (curr != nullNode)
-			return Cref<Comparable>(curr->element);
-		else
-			return Cref<Comparable>();
-	}
-}
+//template <class Comparable>
+//Cref<Comparable>
+//RedBlackTree<Comparable>::find(const Comparable & x) const
+//{
+//	nullNode->element = x;
+//	Node	*curr = header;
+//
+//	for (; ;)
+//	{
+//		if (x < curr->element)
+//			curr = curr->left;
+//		else if (curr->element < x)
+//			curr = curr->right;
+//		else if (curr != nullNode)
+//			return Cref<Comparable>(curr->element);
+//		else
+//			return Cref<Comparable>();
+//	}
+//}
 
 // Make the tree logically empty.
 template <class Comparable>
@@ -177,6 +179,7 @@ const RedBlackTree<Comparable> & RedBlackTree<Comparable>::operator=(const RedBl
 	{
 		makeEmpty();
 		header = clone(rhs.header);
+		size = rhs.size;
 	}
 	return (*this);
 }
@@ -185,7 +188,7 @@ const RedBlackTree<Comparable> & RedBlackTree<Comparable>::operator=(const RedBl
 template <class Comparable>
 RedBlackNode<Comparable> * RedBlackTree<Comparable>::clone(Node *t) const
 {
-	if (t == t->left)
+	if (t == nullNode)
 		return nullNode;
 	else
 		return new RedBlackNode<Comparable>(t->element, clone(t->left),
@@ -207,7 +210,9 @@ void	RedBlackTree<Comparable>::handleReorient(const Comparable & item)
 	{
 		grand->color = RED;
 		if ((item < grand->element) != (item < parent->element))
+		{
 			parent = rotate(item, grand); // Start dbl rotate
+		}
 		current = rotate(item, great);
 		current->color = BLACK;
 	}
@@ -226,8 +231,9 @@ RedBlackNode<Comparable> * RedBlackTree<Comparable>::rotate(const Comparable & i
 {
 	if (item < theParent->element)
 	{
-		item < theParent->left->element ?
-			rotateWithLeftChild(theParent->left) :
+		if (item < theParent->left->element)
+			rotateWithLeftChild(theParent->left);
+		else
 			rotateWithRightChild(theParent->left);
 		return theParent->left;
 	}
@@ -256,17 +262,21 @@ template <class Comparable>
 void RedBlackTree<Comparable>::
 rotateWithRightChild(Node * & k1) const
 {
-	Node *k2 = k1->right;
+//	Node *k2 = k1->right;
+//	k1->right = k2->left;
+//	k2->left = k1;
+//	k1 = k2;
+	Node	*k2 = k1->right;
 	k1->right = k2->left;
-	k2->left = k1;
-	k1 = k2;
+	if (k2->left != nullNode)
+		k2->left->parent
 }
 
 // Internal method to reclaim internal nodes in subtree t.
 template <class Comparable>
 void RedBlackTree<Comparable>::reclaimMemory(Node *t) const
 {
-	if (t != t->left)
+	if (t != nullNode)
 	{
 		reclaimMemory(t->left);
 		reclaimMemory(t->right);
@@ -283,13 +293,20 @@ typename RedBlackTree<Comparable>::Node	*RedBlackTree<Comparable>::getNode(void)
 
 //Display using algorithm inorder(tree)
 template <class Comparable>
-void RedBlackTree<Comparable>::displayRBT(Node *t)
+void RedBlackTree<Comparable>::inorder_in(Node *t)
 {
 	if (t == nullNode)
 		return ;
 	Node	*root = t;
-	displayRBT(t->left);
+	inorder_in(t->left);
 	if (root)
 		cout << root->element << " ";
-	displayRBT(t->right);
+	inorder_in(t->right);
+}
+
+template <class Comparable>
+void RedBlackTree<Comparable>::display(void)
+{
+	inorder_in(header);
+	cout << endl;
 }

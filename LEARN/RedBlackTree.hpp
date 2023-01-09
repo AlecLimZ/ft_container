@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:53:59 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 17:32:30 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:20:33 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ template <class Comparable>
 class RedBlackTree
 {
 	public:
-		RedBlackTree(void);
 		RedBlackTree(const Comparable & negInf);
 		RedBlackTree(const RedBlackTree & rhs);
 		~RedBlackTree();

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/03 15:21:53 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 12:26:11 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "map.hpp"
 #include "doctest.hpp"
 #include <map>
+#include "RedBlackTree.hpp"
 
 using std::string;
 
@@ -36,30 +37,13 @@ int	doc(int *ac, char **av)
 
 void	ft_test(void)
 {
-	typedef std::map<char, int> SMAP;
-	typedef ft::map<char, int> FMAP;
-	
-	SMAP smap;
-	FMAP fmap;
+//	typedef std::map<char, int> SMAP;
+//	typedef ft::map<char, int> FMAP;
+	RedBlackTree<int> lol;
 
-	smap['d'] = 10;
-	smap['b'] = 30;
-	smap['c'] = 50;
-	smap['a'] = 70;
-	fmap['a'] = 10;
-	fmap['d'] = 30;
-	fmap['c'] = 50;
-	fmap['b'] = 70;
-
-	for (std::map<char, int>::size_type i = 'a'; i <= 'd'; ++i)
-		cout << smap[i] << " ";
-	cout << endl;
-
-	FMAP::iterator fit = fmap.begin();
-	FMAP::iterator fite = fmap.end();
-	while (fit != fite)
-		cout << (fit++)->first << " ";
-	cout << endl;
+	lol.insert(55);
+	lol.insert(10);
+	lol.insert(44);
 	
 }
 

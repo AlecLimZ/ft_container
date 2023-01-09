@@ -6,14 +6,12 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 15:53:59 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 17:32:30 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 12:23:11 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef REDBLACKTREE_H
 # define REDBLACKTREE_H
-
-# include "Wrapper.h"
 
 template <class Comparable>
 class RedBlackTree;
@@ -30,9 +28,9 @@ class RedBlackTree
 		RedBlackTree(const RedBlackTree & rhs);
 		~RedBlackTree();
 
-		Cref<Comparable> findMin() const;
-		Cref<Comparable> findMax() const;
-		Cref<Comparable> find(const Comparable & x) const;
+//		Cref<Comparable> findMin() const;
+//		Cref<Comparable> findMax() const;
+//		Cref<Comparable> find(const Comparable & x) const;
 		bool isEmpty() const;
 
 		void 	makeEmpty();
@@ -54,6 +52,7 @@ class RedBlackTree
 		Node	*parent;
 		Node	*grand;
 		Node	*great;
+		int		size;
 
 		// Uusal recursive stuff
 		void	reclaimMemory(Node *t) const;
@@ -66,12 +65,15 @@ class RedBlackTree
 		void	rotateWithLeftChild(Node * & k2) const;
 		void	rotateWithRightChild(Node * & k1) const;
 
+		//inorder print
+		void	inorder_in(Node *t);
+
 	public:
 		// get root node
 		Node	*getNode(void);
 
 		// Display
-		void	displayRBT(Node *t);
+		void	display(void);
 };
 
 template <class Comparable>

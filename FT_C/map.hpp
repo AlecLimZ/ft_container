@@ -6,14 +6,13 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 11:13:42 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 11:24:58 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include "color.hpp"
 # include <iterator>
 # include "util.hpp"
 # include "lib.hpp"

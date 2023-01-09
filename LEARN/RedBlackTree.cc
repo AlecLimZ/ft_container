@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 16:03:37 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/06 19:07:00 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 13:27:24 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@ using namespace std;
 
 #include "RedBlackTree.hpp"
 
-// Construct the tree.
-// negInf is a value less than or equal to all others.
 template <class Comparable>
 RedBlackTree<Comparable>::RedBlackTree(const Comparable & negInf)
 {
@@ -24,14 +22,6 @@ RedBlackTree<Comparable>::RedBlackTree(const Comparable & negInf)
 	nullNode->left = nullNode->right = nullNode;
 	header = new Node(negInf);
 	header->left = header->right = nullNode;
-}
-
-template <class Comparable>
-RedBlackTree<Comparable>::RedBlackTree(void)
-{
-	nullNode = new Node;
-	nullNode->left = nullNode->right = nullNode;
-	header = nullNode;
 }
 
 // Copy constructor
@@ -45,27 +35,20 @@ RedBlackTree<Comparable>::RedBlackTree(const RedBlackTree<Comparable> & rhs)
 	*this = rhs;
 }
 
-// Destroy the tree.
+// Destroy the tree
 template <class Comparable>
 RedBlackTree<Comparable>::~RedBlackTree()
 {
 	makeEmpty();
-	if (header != nullNode)
-		delete header;
 	delete nullNode;
+	delete header;
 }
 
 // Insert item x into the tree.
 // Throws DuplicateItemException if x is already present.
 template <class Comparable>
-void	RedBlackTree<Comparable>::insert(const Comparable & x)
+void RedBlackTree<Comparable>::insert(const Comparable & x)
 {
-	if (header == nullNode)
-	{
-		header = new Node(x);
-		header->left = header->right = nullNode;
-		return ;
-	}
 	current = parent = grand = header;
 	nullNode->element = x;
 
@@ -74,12 +57,11 @@ void	RedBlackTree<Comparable>::insert(const Comparable & x)
 		great = grand; grand = parent; parent = current;
 		current = x < current->element ? current->left : current->right;
 
-		// Check if two red children the fix it
+		// Check if two red children
 		if (current->left->color == RED && current->right->color == RED)
 			handleReorient(x);
 	}
 
-	// Insertion fails if already present
 	if (current != nullNode)
 		return ;
 	current = new Node(x, nullNode, nullNode);
@@ -92,53 +74,40 @@ void	RedBlackTree<Comparable>::insert(const Comparable & x)
 	handleReorient(x);
 }
 
-// Remove item x from the tree.
-// Not implemented in this version
 template <class Comparable>
-void	RedBlackTree<Comparable>::remove(const Comparable & x)
+void RedBlackTree<Comparable>::remove(const Comparable & x)
 {
-	cout << "Sorry, remove unimplemented; " << x << " still present" << endl;
+	(void)x;
+	cout << "sorry, no remove yet" << endl;
 }
 
-// Find the smallest item the tree.
-// Return the smallest item wrapped in a Cref object
 template <class Comparable>
 Cref<Comparable> RedBlackTree<Comparable>::findMin() const
 {
 	if (isEmpty())
 		return Cref<Comparable>();
-	Node *itr = header;
-
+	Node *itr = header->right;
 	while (itr->left != nullNode)
 		itr = itr->left;
-
 	return Cref<Comparable>(itr->element);
 }
 
-// Find the largest item in the tree.
-// Return the largest item wrapped in a Cref object.
 template <class Comparable>
-Cref<Comparable>
-RedBlackTree<Comparable>::findMax() const
+Cref<Comparable> RedBlackTree<Comparable>::findMax() const
 {
 	if (isEmpty())
 		return Cref<Comparable>();
-	Node	*itr = header;
-
-	while(itr->right != nullNode)
+	Node *itr = header->right;
+	while (itr->right != nullNode)
 		itr = itr->right;
-
 	return Cref<Comparable>(itr->element);
 }
 
-// Find item x in the tree.
-// Return the matching item wrapped in a Cref object.
 template <class Comparable>
-Cref<Comparable>
-RedBlackTree<Comparable>::find(const Comparable & x) const
+Cref<Comparable> RedBlackTree<Comparable>::find(const Comparable & x) const
 {
 	nullNode->element = x;
-	Node	*curr = header;
+	Node *curr = header->right;
 
 	for (; ;)
 	{
@@ -153,76 +122,55 @@ RedBlackTree<Comparable>::find(const Comparable & x) const
 	}
 }
 
-// Make the tree logically empty.
 template <class Comparable>
-void RedBlackTree<Comparable>::makeEmpty()
+void	RedBlackTree<Comparable>::makeEmpty()
 {
-	reclaimMemory(header);
-	header = nullNode;
+	reclaimMemory(header->right);
+	header->right = nullNode;
 }
 
-// Test if the tree is logically empty.
-// Return true if empty, false otherwise
-template <class Comparable>
-bool RedBlackTree<Comparable>::isEmpty() const
-{
-	return header == nullNode;
-}
-
-// Deep copy
-template <class Comparable>
+template<class Comparable>
 const RedBlackTree<Comparable> & RedBlackTree<Comparable>::operator=(const RedBlackTree<Comparable> & rhs)
 {
 	if (this != &rhs)
 	{
 		makeEmpty();
-		header = clone(rhs.header);
+		header->right = clone(rhs.header->right);
 	}
 	return (*this);
 }
 
-// Internal method to clone subtree.
 template <class Comparable>
-RedBlackNode<Comparable> * RedBlackTree<Comparable>::clone(Node *t) const
+RedBlackNode<Comparable> *
+RedBlackTree<Comparable>::clone(Node *t) const
 {
 	if (t == t->left)
 		return nullNode;
 	else
-		return new RedBlackNode<Comparable>(t->element, clone(t->left),
-						clone(t->right), t->color);
+		return new RedBlackNode<Comparable>(t->element, clone(t->left), clone(t->right), t->color);
 }
 
-// Internal routine that is called during an insertion
-// if a node has two red children. Performs flip and rotations.
-// item is the item begin inserted.
 template <class Comparable>
-void	RedBlackTree<Comparable>::handleReorient(const Comparable & item)
+void RedBlackTree<Comparable>::handleReorient(const Comparable & item)
 {
-	// Do the color flip
 	current->color = RED;
 	current->left->color = BLACK;
 	current->right->color = BLACK;
 
-	if (parent->color == RED) // Have to rotate
+	if (parent->color == RED)
 	{
 		grand->color = RED;
-		if ((item < grand->element) != (item < parent->element))
-			parent = rotate(item, grand); // Start dbl rotate
+		if (item < grand->element != item < parent->element)
+			parent = rotate(item, grand);
 		current = rotate(item, great);
 		current->color = BLACK;
 	}
-	header->color = BLACK;
+	header->right->color = BLACK;
 }
 
-// Internal routine that performs a single or double rotation
-// Because the result is attached to the parent, there are four cases.
-// Called by handleReorient.
-// item is the item in handleReorient
-// parent is the parent of the root of the rotated subtree.
-// return the root of the rotated subtree.
-
 template <class Comparable>
-RedBlackNode<Comparable> * RedBlackTree<Comparable>::rotate(const Comparable & item, Node *theParent) const
+RedBlackNode<Comparable> *
+RedBlackTree<Comparable>::rotate(const Comparable & item, Node *theParent) const
 {
 	if (item < theParent->element)
 	{
@@ -240,18 +188,16 @@ RedBlackNode<Comparable> * RedBlackTree<Comparable>::rotate(const Comparable & i
 	}
 }
 
-// Rotate binary tree node with left child.
 template <class Comparable>
 void RedBlackTree<Comparable>::
 rotateWithLeftChild(Node * & k2) const
 {
-	Node *k1 = k2->left;
+	Node	*k1 = k2->left;
 	k2->left = k1->right;
 	k1->right = k2;
 	k2 = k1;
 }
 
-// Rotate binary tree node with right child.
 template <class Comparable>
 void RedBlackTree<Comparable>::
 rotateWithRightChild(Node * & k1) const
@@ -262,7 +208,6 @@ rotateWithRightChild(Node * & k1) const
 	k1 = k2;
 }
 
-// Internal method to reclaim internal nodes in subtree t.
 template <class Comparable>
 void RedBlackTree<Comparable>::reclaimMemory(Node *t) const
 {
@@ -274,22 +219,19 @@ void RedBlackTree<Comparable>::reclaimMemory(Node *t) const
 	}
 }
 
-//get Node
 template <class Comparable>
 typename RedBlackTree<Comparable>::Node	*RedBlackTree<Comparable>::getNode(void)
 {
-	return (header);
+	return (header->right);
 }
 
-//Display using algorithm inorder(tree)
 template <class Comparable>
-void RedBlackTree<Comparable>::displayRBT(Node *t)
+void	RedBlackTree<Comparable>::displayRBT(Node *t)
 {
 	if (t == nullNode)
 		return ;
-	Node	*root = t;
-	displayRBT(t->left);
-	if (root)
-		cout << root->element << " ";
-	displayRBT(t->right);
+	Node *root = t;
+	displayRBT(root->left);
+	cout << root->element << " ";
+	displayRBT(root->right);
 }
