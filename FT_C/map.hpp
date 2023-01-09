@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/03 15:25:45 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 11:13:42 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace	ft
 		class Key,
 		class T,
 		class Compare = std::less<Key>,
-		class Allocator = std::allocator<std::pair<const Key, T> >
+		class Allocator = std::allocator<ft::pair<const Key, T> >
 			>
 	class map
 	{
@@ -35,7 +35,7 @@ namespace	ft
 		public:
 			typedef Key	key_type;
 			typedef T	mapped_type;
-			typedef std::pair<const Key, T>	value_type;
+			typedef ft::pair<const Key, T>	value_type;
 			typedef std::size_t	size_type;
 			typedef std::ptrdiff_t	difference_type;
 			typedef Compare	key_compare;
@@ -48,6 +48,7 @@ namespace	ft
 			typedef mapiter<const value_type> const_iterator;
 			typedef mapitrev<iterator>	reverse_iterator;
 			typedef mapitrev<const_iterator> const_reverse_iterator;
+			//typedef Allocator::rebind
 
 		protected:
 			size_type		_capacity;
@@ -105,7 +106,7 @@ namespace	ft
 					_size++;
 					_capacity = _size;
 					_map = _myalloc.allocate(_capacity);
-					_myalloc.construct(_map, std::make_pair(k, 0));
+					_myalloc.construct(_map, ft::make_pair(k, 0));
 					return (_map->second);
 				}
 				for (size_type i = 0; i < _size; ++i)
@@ -126,17 +127,17 @@ namespace	ft
 					{
 						if (_compare(k, (tmp + i)->first) && a == 0)
 						{
-							_myalloc.construct(_map + i, std::make_pair(k , 0));
+							_myalloc.construct(_map + i, ft::make_pair(k , 0));
 							s = i;
 							a++;
 						}
-						_myalloc.construct(_map + i + a, std::make_pair((tmp + i)->first, (tmp + i)->second));
+						_myalloc.construct(_map + i + a, ft::make_pair((tmp + i)->first, (tmp + i)->second));
 						_myalloc.destroy(tmp + i);
 					}
 					if (tmpc)
 						_myalloc.deallocate(tmp, tmpc);
 					if (a == 0)
-						_myalloc.construct(_map + i, std::make_pair(k, 0));
+						_myalloc.construct(_map + i, ft::make_pair(k, 0));
 				}
 				else
 				{
@@ -151,18 +152,18 @@ namespace	ft
 					}
 					if (pos)
 					{
-						_myalloc.construct(_map + _size, std::make_pair((_map + _size - 1)->first , (_map + _size - 1)->second));
+						_myalloc.construct(_map + _size, ft::make_pair((_map + _size - 1)->first , (_map + _size - 1)->second));
 						for (size_type i = _size - 1; i > pos; --i)
 						{
 							_myalloc.destroy(_map + i);
-							_myalloc.construct(_map + i, std::make_pair((_map + i - 1)->first , (_map + i - 1)->second));
+							_myalloc.construct(_map + i, ft::make_pair((_map + i - 1)->first , (_map + i - 1)->second));
 						}
 						_myalloc.destroy(_map + pos);
-						_myalloc.construct(_map + pos, std::make_pair(k , 0));
+						_myalloc.construct(_map + pos, ft::make_pair(k , 0));
 						_size++;
 						return ((_map + pos)->second);
 					}
-					_myalloc.construct(_map + _size, std::make_pair(k , 0));
+					_myalloc.construct(_map + _size, ft::make_pair(k , 0));
 				}
 				_size++;
 				if (a)
