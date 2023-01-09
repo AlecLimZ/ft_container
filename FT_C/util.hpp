@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2022/12/27 16:02:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:24:27 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ namespace ft
 		second_type	second;
 
 		// constructor
-		pair(){};
+		pair():first(), second() {};
 		template<class U, class V>
 		pair(const pair<U, V> & pr)
 		: first(pr.first), second(pr.second){}

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 15:37:19 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:06:50 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include "map.hpp"
 #include "doctest.hpp"
 #include <map>
-#include "RBT.hpp"
 
 using std::string;
 
@@ -37,13 +36,33 @@ int	doc(int *ac, char **av)
 
 void	ft_test(void)
 {
-//	typedef std::map<char, int> SMAP;
-//	typedef ft::map<char, int> FMAP;
-	RedBlackTree<int> lol;
+	typedef std::map<char, int> SMAP;
+	typedef ft::map<char, int> FMAP;
 
-	lol.insert(55);
-	lol.insert(10);
-	lol.insert(44);
+	SMAP	map;
+	FMAP	fmap;
+
+	map['a'] = 55;
+	map['b'] = 10;
+	map['c'] = 44;
+	
+	fmap['a'] = 55;
+	fmap['c'] = 44;
+	fmap['b'] = 10;
+	
+
+	fmap.print();
+	cout << endl;
+
+	cout << fmap['a'] << endl;
+	cout << fmap['b'] << endl;
+	cout << fmap['c'] << endl;
+
+	//FMAP::iterator ite = fmap.end();
+
+//	lol.insert(55);
+//	lol.insert(10);
+//	lol.insert(44);
 }
 
 int main(int argc, char **argv)

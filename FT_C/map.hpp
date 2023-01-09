@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 11:24:58 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:06:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iterator>
 # include "util.hpp"
 # include "lib.hpp"
+# include "RBT.hpp"
 
 namespace	ft
 {
@@ -47,127 +48,73 @@ namespace	ft
 			typedef mapiter<const value_type> const_iterator;
 			typedef mapitrev<iterator>	reverse_iterator;
 			typedef mapitrev<const_iterator> const_reverse_iterator;
-			//typedef Allocator::rebind
+			typedef RedBlackTree<Key, mapped_type, value_type, key_compare> RBTclass;
+			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodePtr NodePtr;
 
 		protected:
-			size_type		_capacity;
 			size_type		_size;
 			allocator_type	_myalloc;
-			pointer			_map;
+			RBTclass		_rbtmap;
 			key_compare		_compare;
 
 		public:
 			/***CONSTRUCTOR & DESTRUCTOR***/
 			explicit map(const Compare & comp = key_compare(), const allocator_type & alloc = Allocator())
-				:_capacity(2), _size(0), _myalloc(alloc), _map(nullptr), _compare(comp){
-					_map = _myalloc.allocate(_capacity);
+				:_size(0), _myalloc(alloc), _compare(comp){
 					cout << "constructor map default" << endl;
 				}
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
-			: _capacity(0), _size(0), _myalloc(alloc), _compare(comp)
+			: _size(0), _myalloc(alloc), _compare(comp)
 			{
 		//		if (_capacity < 0 || _capacity > max_size())
 		//			throw(std::length_error("ft::map"));
 				(void)first;
 				(void)last;
 			}
-			map(const map & x): _capacity(x._capacity), _size(x._size), _myalloc(x._myalloc), _compare(x._compare)
+			map(const map & x): _size(x._size), _myalloc(x._myalloc), _compare(x._compare)
 			{
 				// _map need to deep copy
 			}
 			~map()
 			{
-				for (size_type i = 0; i < _capacity; ++i)
-					_myalloc.destroy(_map + i);
-				_myalloc.deallocate(_map, _capacity);
+			//	for (size_type i = 0; i < _capacity; ++i)
+			//		_myalloc.destroy(_map + i);
+			//	_myalloc.deallocate(_map, _capacity);
 				cout << "destructor map" << endl;
 			}
 
+			//test
+			void	print(void)
+			{
+				_rbtmap.inorder();
+			}
 			/*** ITERATOR ***/
 			iterator begin()
-			{ return (iterator(this->_map)); }
+			{
+				NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
+				return (iterator(start));
+			}
 			
 			const_iterator begin() const
-			{ return (const_iterator(this->_map)); }
+			{ return (const_iterator(_rbtmap.minimum(_rbtmap.getRoot()))); }
 
 			iterator end()
-			{ return (iterator(this->_map + _size)); }
+			{ return (iterator(_rbtmap.getNull())); }
 
 			const_iterator end() const
-			{ return (const_iterator(this->_map + _size)); }
+			{ return (const_iterator(_rbtmap.getNull())); }
 
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
 			{
-				if (_size == 0)
+				NodePtr check = _rbtmap.searchTree(k);
+				if (check == _rbtmap.getNull())
 				{
+					check = _rbtmap.insert(k);
 					_size++;
-					_capacity = _size;
-					_map = _myalloc.allocate(_capacity);
-					_myalloc.construct(_map, ft::make_pair(k, 0));
-					return (_map->second);
 				}
-				for (size_type i = 0; i < _size; ++i)
-					if ((_map + i)->first == k)
-						return ((_map + i)->second);
-				size_type i = 0;
-				int s = 0;
-				int a = 0;
-				if (_size + 1 > _capacity)
-				{
-					pointer tmp = _map;
-					size_type tmpc = _capacity;
-					_capacity = _capacity == 0 || _capacity < _size + 1 ? 
-						_size + 1 : _capacity * 2;
-					if (_capacity)
-						_map = _myalloc.allocate(_capacity);
-					for (;i < _size + a; ++i)
-					{
-						if (_compare(k, (tmp + i)->first) && a == 0)
-						{
-							_myalloc.construct(_map + i, ft::make_pair(k , 0));
-							s = i;
-							a++;
-						}
-						_myalloc.construct(_map + i + a, ft::make_pair((tmp + i)->first, (tmp + i)->second));
-						_myalloc.destroy(tmp + i);
-					}
-					if (tmpc)
-						_myalloc.deallocate(tmp, tmpc);
-					if (a == 0)
-						_myalloc.construct(_map + i, ft::make_pair(k, 0));
-				}
-				else
-				{
-					size_type pos = 0;
-					for (size_type i = 0; i < _size; ++i)
-					{
-						if (_compare(k, (_map + i)->first))
-						{
-							pos = i;
-							break ;
-						}
-					}
-					if (pos)
-					{
-						_myalloc.construct(_map + _size, ft::make_pair((_map + _size - 1)->first , (_map + _size - 1)->second));
-						for (size_type i = _size - 1; i > pos; --i)
-						{
-							_myalloc.destroy(_map + i);
-							_myalloc.construct(_map + i, ft::make_pair((_map + i - 1)->first , (_map + i - 1)->second));
-						}
-						_myalloc.destroy(_map + pos);
-						_myalloc.construct(_map + pos, ft::make_pair(k , 0));
-						_size++;
-						return ((_map + pos)->second);
-					}
-					_myalloc.construct(_map + _size, ft::make_pair(k , 0));
-				}
-				_size++;
-				if (a)
-					return ((_map + s)->second);
-				return ((_map + i)->second);
+				return (check->data.second);
 			}
 
 			/*** CAPACITY ***/
@@ -219,14 +166,16 @@ namespace	ft
 			std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
-			pointer	_map;
+			NodePtr	_map;
 			friend class	mapiter<const V>;
 
 		public:
 			mapiter(void): _map(nullptr)
 			{}
 			~mapiter(void){}
-			mapiter(value_type *map): _map(map){}
+			mapiter(NodePtr map): _map(map)
+			{
+			}
 			mapiter(const mapiter & src) : _map(src._map){}
 			mapiter & operator=(mapiter const & rhs)
 			{
@@ -273,7 +222,7 @@ namespace	ft
 			{ return (*_map); }
 
 			pointer operator->() const
-			{ return (this->_map); }
+			{ return (&_map->data); }
 	};
 	
 	template<typename K, typename T, typename C, typename A>
@@ -289,14 +238,14 @@ namespace	ft
 			std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
-			pointer	_map;
+			NodePtr	_map;
 
 		public:
 			mapiter(void): _map(nullptr)
 			{}
 			~mapiter(void){}
-			mapiter(value_type *map): _map(map){}
-			mapiter(const mapiter<typename std::remove_const<value_type>::type> & src) : _map(src._map){}
+			mapiter(NodePtr map): _map(map){}
+			mapiter(const mapiter<typename std::remove_const<NodePtr>::type> & src) : _map(src._map){}
 			mapiter & operator=(mapiter const & rhs)
 			{
 				if (this != rhs)

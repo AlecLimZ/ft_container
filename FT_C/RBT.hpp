@@ -6,16 +6,18 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 15:33:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 18:06:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef RBT_HPP
+# define RBT_HPP
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
-template <typename T>
+template <typename T, typename Key, typename M>
 struct Node
 {
 	T		data;
@@ -23,13 +25,16 @@ struct Node
 	Node	*left;
 	Node	*right;
 	int		color;
+	Node(Key key, M m):data(ft::make_pair(key, m)){}
+	Node(void):data(){}
 };
 
-template <typename T, class Compare = std::less<T> >
+template <typename Key, typename M, typename T, class Compare = std::less<T> >
 class RedBlackTree
 {
 	public:
-		typedef Node<T>*	NodePtr;
+		typedef Node<T, Key, M>		NodeM;
+		typedef Node<T, Key, M>*	NodePtr;
 	private:
 		NodePtr	root;
 		NodePtr	nullNode;
@@ -37,7 +42,7 @@ class RedBlackTree
 
 		void	initializeNULLNode(NodePtr node, NodePtr parent)
 		{
-			node->data = 0;
+			node->data.first = 0;
 			node->parent = parent;
 			node->left = nullptr;
 			node->right = nullptr;
@@ -50,17 +55,17 @@ class RedBlackTree
 			if (node != nullNode)
 			{
 				inOrderHelper(node->left);
-				cout << node->data << " ";
+				cout << node->data.first << " ";
 				inOrderHelper(node->right);
 			}
 		}
 
-		NodePtr	searchTreeHelper(NodePtr node, int key)
+		NodePtr	searchTreeHelper(NodePtr node, Key key)
 		{
-			if (node == nullNode || key == node->data)
+			if (node == nullNode || key == node->data.first)
 				return node;
 		//	if (key < node->data)
-			if (_cmp(key, node->data))
+			if (_cmp(key, node->data.first))
 				return searchTreeHelper(node->left, key);
 			return searchTreeHelper(node->right, key);
 		}
@@ -77,7 +82,7 @@ class RedBlackTree
 		}
 
 		// For balancing the tree after insertion
-		void insertFix(NodePtr k)
+		void	insertFix(NodePtr k)
 		{
 			NodePtr	u;
 
@@ -136,7 +141,7 @@ class RedBlackTree
 	public:
 		RedBlackTree()
 		{
-			nullNode = new Node<T>;
+			nullNode = new NodeM;
 			nullNode->color = 0;
 			nullNode->left = nullptr;
 			nullNode->right = nullptr;
@@ -163,7 +168,7 @@ class RedBlackTree
 			inOrderHelper(this->root);
 		}
 
-		NodePtr	searchTree(int k)
+		NodePtr	searchTree(Key k)
 		{
 			return searchTreeHelper(this->root, k);
 		}
@@ -216,11 +221,11 @@ class RedBlackTree
 			x->parent = y;
 		}
 
-		void	insert(int key)
+		NodePtr	insert(Key key)
 		{
-			NodePtr	node = new Node<T>;
+			NodePtr	node = new NodeM(key, 0);
 			node->parent = nullptr;
-			node->data = key;
+			//node->data = ft::make_pair(key, 0);
 			node->left = nullNode;
 			node->right = nullNode;
 			node->color = 1;
@@ -232,7 +237,7 @@ class RedBlackTree
 			{
 				y = x;
 				//if (node->data < x->data)
-				if (_cmp(node->data, x->data))
+				if (_cmp(node->data.first, x->data.first))
 					x = x->left;
 				else
 					x = x->right;
@@ -242,7 +247,7 @@ class RedBlackTree
 			if (y == nullptr)
 				root = node;
 			//else if (node->data < y->data)
-			else if (_cmp(node->data, y->data))
+			else if (_cmp(node->data.first, y->data.first))
 				y->left = node;
 			else
 				y->right = node;
@@ -250,17 +255,24 @@ class RedBlackTree
 			if (node->parent == nullptr)
 			{
 				node->color = 0;
-				return ;
+				return (node);
 			}
 
 			if (node->parent->parent == nullptr)
-				return ;
+				return (node);
 
 			insertFix(node);
+			return (node);
 		}
 
 		NodePtr	getRoot()
 		{
 			return (this->root);
 		}
+
+		NodePtr getNull()
+		{
+			return (this->nullNode);
+		}
 };
+#endif
