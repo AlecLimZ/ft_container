@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 12:26:11 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/09 15:37:19 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "map.hpp"
 #include "doctest.hpp"
 #include <map>
-#include "RedBlackTree.hpp"
+#include "RBT.hpp"
 
 using std::string;
 
@@ -44,7 +44,6 @@ void	ft_test(void)
 	lol.insert(55);
 	lol.insert(10);
 	lol.insert(44);
-	
 }
 
 int main(int argc, char **argv)
