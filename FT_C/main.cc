@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 18:06:50 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:54:10 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,34 @@ int	doc(int *ac, char **av)
 	return (res + client_stuff_return_code);
 }
 
-void	ft_test(void)
+TEST_CASE("Iterator")
 {
 	typedef std::map<char, int> SMAP;
 	typedef ft::map<char, int> FMAP;
 
-	SMAP	map;
-	FMAP	fmap;
+	SMAP	sm;
+	FMAP	fm;
 
-	map['a'] = 55;
-	map['b'] = 10;
-	map['c'] = 44;
+	sm['a'] = 55;
+	for (char i = 'a'; i <= 'z'; ++i)
+		fm[i] = 77;
 	
-	fmap['a'] = 55;
-	fmap['c'] = 44;
-	fmap['b'] = 10;
-	
+//	SMAP::iterator sit = sm.begin();
+//	SMAP::iterator site = sm.end();
+//	while (sit != site)
+//		cout << (sit++)->first << " ";
+//	cout << endl;
 
-	fmap.print();
+	FMAP::iterator fit = fm.begin();
+	FMAP::iterator fite = fm.end();
+
+	while (fit != fite)
+		cout << (fit++)->first << " ";
 	cout << endl;
+}
 
-	cout << fmap['a'] << endl;
-	cout << fmap['b'] << endl;
-	cout << fmap['c'] << endl;
-
-	//FMAP::iterator ite = fmap.end();
-
-//	lol.insert(55);
-//	lol.insert(10);
-//	lol.insert(44);
+void	ft_test(void)
+{
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 18:06:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:52:55 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,16 @@ namespace	ft
 			/*** ITERATOR ***/
 			iterator begin()
 			{
-				NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
-				return (iterator(start));
+		//		NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
+		//		return (iterator(start));
+				return (iterator(&_rbtmap));
 			}
 			
 			const_iterator begin() const
 			{ return (const_iterator(_rbtmap.minimum(_rbtmap.getRoot()))); }
 
 			iterator end()
-			{ return (iterator(_rbtmap.getNull())); }
+			{ return (iterator(&_rbtmap, _rbtmap.getNull())); }
 
 			const_iterator end() const
 			{ return (const_iterator(_rbtmap.getNull())); }
@@ -108,12 +109,11 @@ namespace	ft
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
 			{
-				NodePtr check = _rbtmap.searchTree(k);
-				if (check == _rbtmap.getNull())
-				{
-					check = _rbtmap.insert(k);
-					_size++;
-				}
+		//		NodePtr check = _rbtmap.searchTree(k);
+		//		if (check == _rbtmap.getNull())
+		//		{
+				NodePtr	check = _rbtmap.insert(k);
+		//		}
 				return (check->data.second);
 			}
 
@@ -125,7 +125,7 @@ namespace	ft
 
 			size_type size() const
 			{
-				return (_size);
+				return (_rbtmap.getSize());
 			}
 
 			size_type max_size() const
@@ -166,16 +166,20 @@ namespace	ft
 			std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
-			NodePtr	_map;
+			RBTclass	*_rc;
+			NodePtr		_map;
+			key_compare	_compare;
 			friend class	mapiter<const V>;
 
 		public:
 			mapiter(void): _map(nullptr)
 			{}
 			~mapiter(void){}
-			mapiter(NodePtr map): _map(map)
-			{
-			}
+		//		NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
+			mapiter(RBTclass *map): _rc(map), _map(_rc->minimum(_rc->getRoot()))
+			{}
+			mapiter(RBTclass *map, NodePtr n): _rc(map), _map(n)
+			{}
 			mapiter(const mapiter & src) : _map(src._map){}
 			mapiter & operator=(mapiter const & rhs)
 			{
@@ -186,22 +190,57 @@ namespace	ft
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._map == rhs._map); }
+			{
+				return (lhs._map->data.first == rhs._map->data.first);
+			}
 			
 			template<typename X, typename Y>
 			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._map != rhs._map); }
+			{ return (!(lhs == rhs)); }
 
 			mapiter & operator++()
 			{
-				_map++;
+				NodePtr nullNode = _rc->getNull();
+				if ((_map->left == nullNode || _map->right == nullNode)
+						&& _map->parent == nullptr)
+						_map = nullNode;
+				else if (_compare(_map->data.first, _map->parent->data.first)
+						&& _map->right == nullNode)
+						_map = _map->parent;
+				else if (_map->right != nullNode)
+					_map = _rc->minimum(_map->right);
+				else
+				{
+						NodePtr p = _map->parent;
+						while (_compare(p->data.first, _map->data.first))
+							p = p->parent;
+						_map = p;
+				}
 				return (*this);
 			}
 
 			mapiter operator++(int)
 			{
 				mapiter old(*this);
-				this->_map++;
+				NodePtr nullNode = _rc->getNull();
+				if ((_map->left == nullNode || _map->right == nullNode)
+						&& _map->parent == nullptr)
+						_map = nullNode;
+				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first)
+						&& _map->right == nullNode)
+						_map = _map->parent;
+				else if (_map->right != nullNode)
+					_map = _rc->minimum(_map->right);
+				else
+				{
+						NodePtr p = _map->parent;
+						while (p != nullptr && _compare(p->data.first, _map->data.first))
+							p = p->parent;
+						if (p == nullptr)
+							_map = nullNode;
+						else
+							_map = p;
+				}
 				return (old);
 			}
 
@@ -219,7 +258,7 @@ namespace	ft
 			}
 
 			reference operator*() const
-			{ return (*_map); }
+			{ return (*_map->data); }
 
 			pointer operator->() const
 			{ return (&_map->data); }

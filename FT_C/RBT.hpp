@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/09 18:06:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:53:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ class RedBlackTree
 	public:
 		typedef Node<T, Key, M>		NodeM;
 		typedef Node<T, Key, M>*	NodePtr;
+		typedef std::size_t			size_type;
 	private:
 		NodePtr	root;
 		NodePtr	nullNode;
 		Compare	_cmp;
+		size_type _size;
 
 		void	initializeNULLNode(NodePtr node, NodePtr parent)
 		{
@@ -139,7 +141,7 @@ class RedBlackTree
 		}
 
 	public:
-		RedBlackTree()
+		RedBlackTree(): _size(0)
 		{
 			nullNode = new NodeM;
 			nullNode->color = 0;
@@ -237,12 +239,17 @@ class RedBlackTree
 			{
 				y = x;
 				//if (node->data < x->data)
+				if (node->data.first == x->data.first)
+				{
+					delete node;
+					return (x);
+				}
 				if (_cmp(node->data.first, x->data.first))
 					x = x->left;
 				else
 					x = x->right;
 			}
-
+			_size++;
 			node->parent = y;
 			if (y == nullptr)
 				root = node;
@@ -265,14 +272,19 @@ class RedBlackTree
 			return (node);
 		}
 
-		NodePtr	getRoot()
+		NodePtr	getRoot() const
 		{
 			return (this->root);
 		}
 
-		NodePtr getNull()
+		NodePtr getNull() const
 		{
 			return (this->nullNode);
+		}
+
+		size_type getSize() const
+		{
+			return (this->_size);
 		}
 };
 #endif
