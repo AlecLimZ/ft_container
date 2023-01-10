@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 15:54:10 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:45:24 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ TEST_CASE("Iterator")
 	SMAP	sm;
 	FMAP	fm;
 
-	sm['a'] = 55;
 	for (char i = 'a'; i <= 'z'; ++i)
 		fm[i] = 77;
 	
@@ -58,6 +57,10 @@ TEST_CASE("Iterator")
 	while (fit != fite)
 		cout << (fit++)->first << " ";
 	cout << endl;
+	
+//	while (fite != fit)
+//		cout << (fite--)->first << " ";
+//	cout << endl;
 }
 
 void	ft_test(void)

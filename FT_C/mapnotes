@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 17:42:28 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:55:05 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,16 +98,13 @@ namespace	ft
 			}
 			
 			const_iterator begin() const
-			{
-			//	return (const_iterator(_rbtmap.minimum(_rbtmap.getRoot())));
-				return (const_iterator(&_rbtmap));
-			}
+			{ return (const_iterator(_rbtmap.minimum(_rbtmap.getRoot()))); }
 
 			iterator end()
 			{ return (iterator(&_rbtmap, _rbtmap.getNull())); }
 
 			const_iterator end() const
-			{ return (const_iterator(&_rbtmap, _rbtmap.getNull())); }
+			{ return (const_iterator(_rbtmap.getNull())); }
 
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
@@ -179,17 +176,11 @@ namespace	ft
 			{}
 			~mapiter(void){}
 		//		NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
-			mapiter(RBTclass *rc): _rc(rc)
-			{
-				if (_rc->getSize() == 0)
-					_map = _rc->getNull();
-				else
-					_map = _rc->minimum(_rc->getRoot());
-			}
-			mapiter(RBTclass *rc, NodePtr n): _rc(rc), _map(n)
+			mapiter(RBTclass *map): _rc(map), _map(_rc->minimum(_rc->getRoot()))
 			{}
-			mapiter(const mapiter & src)
-			: _rc(src._rc), _map(src._map), _compare(src._compare){}
+			mapiter(RBTclass *map, NodePtr n): _rc(map), _map(n)
+			{}
+			mapiter(const mapiter & src) : _map(src._map){}
 			mapiter & operator=(mapiter const & rhs)
 			{
 				if (this != rhs)
@@ -309,9 +300,7 @@ namespace	ft
 			{ return (*_map->data); }
 
 			pointer operator->() const
-			{
-				return (&_map->data);
-			}
+			{ return (&_map->data); }
 	};
 	
 	template<typename K, typename T, typename C, typename A>
@@ -327,24 +316,14 @@ namespace	ft
 			std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
-			const RBTclass	*_rc;
-			NodePtr		_map;
-			key_compare	_compare;
+			NodePtr	_map;
 
 		public:
 			mapiter(void): _map(nullptr)
 			{}
 			~mapiter(void){}
-			mapiter(const RBTclass *rc): _rc(rc)
-			{
-				if (_rc->getSize() == 0)
-					_map = _rc->getNull();
-				else
-					_map = _rc->minimum(_rc->getRoot());
-			}
-			mapiter(RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
-			mapiter(const mapiter<typename std::remove_const<value_type>::type> & src)
-			: _rc(src._rc), _map(src._map), _compare(src._compare){}
+			mapiter(NodePtr map): _map(map){}
+			mapiter(const mapiter<typename std::remove_const<NodePtr>::type> & src) : _map(src._map){}
 			mapiter & operator=(mapiter const & rhs)
 			{
 				if (this != rhs)
@@ -354,113 +333,43 @@ namespace	ft
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._map->data.first == rhs._map->data.first); }
+			{ return (lhs._map == rhs._map); }
 			
 			template<typename X, typename Y>
 			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (!(lhs == rhs)); }
+			{ return (lhs._map != rhs._map); }
 
 			mapiter & operator++()
 			{
-				NodePtr nullNode = _rc->getNull();
-				if (_rc->getSize() == 0)
-					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
-						&& _map->parent == nullptr) || _map->parent == nullNode)
-					_map = nullNode;
-				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
-					_map = _map->parent;
-				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
-				else
-				{
-					NodePtr p = _map->parent;
-					while (p != nullptr && _compare(p->data.first, _map->data.first))
-						p = p->parent;
-					if (p == nullptr)
-						_map = nullNode;
-					else
-						_map = p;
-				}
+				_map++;
 				return (*this);
 			}
 
 			mapiter operator++(int)
 			{
 				mapiter old(*this);
-				NodePtr nullNode = _rc->getNull();
-				if (_rc->getSize() == 0)
-					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
-						&& _map->parent == nullptr) || _map->parent == nullNode)
-					_map = nullNode;
-				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
-					_map = _map->parent;
-				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
-				else
-				{
-					NodePtr p = _map->parent;
-					while (p != nullptr && _compare(p->data.first, _map->data.first))
-						p = p->parent;
-					if (p == nullptr)
-						_map = nullNode;
-					else
-						_map = p;
-				}
+				this->_map++;
 				return (old);
 			}
 
 			mapiter & operator--()
 			{
-				NodePtr nullNode = _rc->getNull();
-				if (_rc->getSize() == 0)
-					_map = nullNode;
-				else if (_map == nullNode && _rc->getSize() >= 1)
-					_map = _rc->maximum(_rc->getRoot());
-				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
-				else
-				{
-					NodePtr p = _map->parent;
-					while (p != nullptr && _compare(_map->data.first, p->data.first))
-						p = p->parent;
-					if (p == nullptr)
-						_map = nullNode;
-					else
-						_map = p;
-				}
+				this->_map--;
 				return (*this);
 			}
 
 			mapiter operator--(int)
 			{
 				mapiter old(*this);
-				NodePtr nullNode = _rc->getNull();
-				if (_rc->getSize() == 0)
-					_map = nullNode;
-				else if (_map == nullNode && _rc->getSize() >= 1)
-					_map = _rc->maximum(_rc->getRoot());
-				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
-				else
-				{
-					NodePtr p = _map->parent;
-					while (p != nullptr && _compare(_map->data.first, p->data.first))
-						p = p->parent;
-					if (p == nullptr)
-						_map = nullNode;
-					else
-						_map = p;
-				}
+				this->_map--;
 				return (old);
 			}
 
 			const_reference operator*() const
-			{ return (*_map->data); }
+			{ return (*_map); }
 
 			const_pointer operator->() const
-			{ return (&_map->data); }
+			{ return (this->_map); }
 	};
 }
 

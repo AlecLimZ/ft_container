@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 15:53:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:25:56 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,22 @@ class RedBlackTree
 				node = node->left;
 			return node;
 		}
+		
+		NodePtr	minimum(NodePtr node) const
+		{
+			while (node->left != nullNode)
+				node = node->left;
+			return node;
+		}
 
 		NodePtr	maximum(NodePtr node)
+		{
+			while (node->right != nullNode)
+				node = node->right;
+			return node;
+		}
+		
+		NodePtr	maximum(NodePtr node) const
 		{
 			while (node->right != nullNode)
 				node = node->right;
