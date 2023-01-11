@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 17:45:24 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:12:58 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ TEST_CASE("Iterator")
 	FMAP	fm;
 
 	for (char i = 'a'; i <= 'z'; ++i)
+	{
+		sm[i] = 77;
 		fm[i] = 77;
+	}
 	
 //	SMAP::iterator sit = sm.begin();
 //	SMAP::iterator site = sm.end();
@@ -51,21 +54,37 @@ TEST_CASE("Iterator")
 //		cout << (sit++)->first << " ";
 //	cout << endl;
 
+	SMAP::iterator sit = sm.begin();
+	SMAP::iterator site = sm.end();
 	FMAP::iterator fit = fm.begin();
 	FMAP::iterator fite = fm.end();
 
-	while (fit != fite)
-		cout << (fit++)->first << " ";
-	cout << endl;
-	
-//	while (fite != fit)
-//		cout << (fite--)->first << " ";
-//	cout << endl;
+	while (fit != fite && sit != site)
+		CHECK((fit++)->first == (sit++)->first);
+	sit = sm.begin();
+	fit = fm.begin();
+	while (fit != fite && sit != site)
+	{ fite--; site--;}
+	fite = fm.end();
+	site = sm.end();
+	while (++fit != fite && ++sit != site)
+		CHECK((fit)->first == (sit)->first);
+	sit = sm.begin();
+	fit = fm.begin();
+	while (--fite != fit && --site != sit);
+	fite = fm.end();
+	site = sm.end();
+	while (fit != fite && sit != site)
+	{
+		CHECK((fit != fite) == (sit != site));
+		fit++; fite--;
+		sit++; site--;
+	}
+	CHECK((fit == fite) == (sit == site));
 }
 
 void	ft_test(void)
-{
-}
+{}
 
 int main(int argc, char **argv)
 {

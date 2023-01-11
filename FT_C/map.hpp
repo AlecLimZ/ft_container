@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 17:42:28 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:01:36 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ namespace	ft
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapiter & operator=(mapiter const & rhs)
 			{
-				if (this != rhs)
+				if (this != &rhs)
 					_map = rhs._map;
 				return (*this);
 			}
