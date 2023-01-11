@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 15:40:42 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:20:42 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,18 @@ namespace	ft
 			map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			: _size(0), _myalloc(alloc), _compare(comp)
 			{
-		//		if (_capacity < 0 || _capacity > max_size())
-		//			throw(std::length_error("ft::map"));
-				(void)first;
-				(void)last;
+				if (_size > max_size())
+					throw(std::length_error("ft::map"));
+				NodePtr	check;
+				value_type tmp;
+				while (first != last)
+				{
+					check = _rbtmap.insert(first->first);
+					if (check->data.second == tmp.second)
+						check->data.second = first->second;
+					first++;
+				}
+				_size = _rbtmap.getSize();
 			}
 			map(const map & x): _size(x._size), _myalloc(x._myalloc), _compare(x._compare)
 			{
