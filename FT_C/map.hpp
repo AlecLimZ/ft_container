@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:38:42 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:40:42 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,22 +133,32 @@ namespace	ft
 
 			size_type max_size() const
 			{
-				if (ft::is_same<char, key_type>::value
-					&& ft::is_same<char, mapped_type>::value)
-					return (_myalloc.max_size() / 16);
-				if ((sizeof(key_type) == sizeof(short)
-						&& sizeof(key_type) >= sizeof(mapped_type))
-						||
-						(sizeof(mapped_type) == sizeof(short)
-						 && sizeof(mapped_type) >= sizeof(key_type)))
-					return (_myalloc.max_size() / 8);
-				if ((sizeof(key_type) == sizeof(wchar_t)
-						&& sizeof(key_type) >= sizeof(mapped_type))
-						||
-						(sizeof(mapped_type) == sizeof(wchar_t)
-						 && sizeof(mapped_type) >= sizeof(key_type)))
-					return (_myalloc.max_size() / 5);
-				return (_myalloc.max_size() / 3);
+//				if (sizeof(key_type) == sizeof(std::string)
+//						&& sizeof(mapped_type) == sizeof(std::string))
+//					return (230584300921369395);
+//				if (sizeof(key_type) == sizeof(std::string)
+//						|| sizeof(mapped_type) == sizeof(std::string))
+//					return (_myalloc.max_size() / 2);
+//				if (ft::is_same<char, key_type>::value
+//					&& ft::is_same<char, mapped_type>::value)
+//					return (_myalloc.max_size() / 16);
+//				if ((sizeof(key_type) == sizeof(short)
+//						&& sizeof(key_type) >= sizeof(mapped_type))
+//						||
+//						(sizeof(mapped_type) == sizeof(short)
+//						 && sizeof(mapped_type) >= sizeof(key_type)))
+//					return (_myalloc.max_size() / 8);
+//				if ((sizeof(key_type) == sizeof(wchar_t)
+//						&& sizeof(key_type) >= sizeof(mapped_type))
+//						||
+//						(sizeof(mapped_type) == sizeof(wchar_t)
+//						 && sizeof(mapped_type) >= sizeof(key_type)))
+//					return (_myalloc.max_size() / 5);
+//				return (_myalloc.max_size() / 3);
+				std::allocator<char> tmp;
+				if (sizeof(value_type) == 2)
+					return (tmp.max_size() / 32);
+				return (tmp.max_size() / (32 + sizeof(value_type)));
 			}
 			/*** MODIFIERS ***/
 			/*** OBSERVERS ***/

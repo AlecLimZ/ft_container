@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:34:48 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 15:35:35 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,34 @@ TEST_CASE("Iterator")
 	CHECK((fit == fite) == (sit == site));
 }
 
+template <typename lol>
+struct foo
+{
+	lol a;
+	int b;
+};
+
 void	ft_test(void)
 {
+	typedef char	T1;
+	//typedef double	T2;
+	typedef foo<std::string>	T2;
+	//typedef double	T1;
+	//typedef double	T2;
+//	typedef int	T2;
+	typedef ft::map<T1, T2> FMAP;
+	typedef std::map<T1, T2> SMAP;
+
+	//std::allocator<std::pair<T1, int> > check;
+	std::allocator<std::pair<T1, T2> > check;
+//	std::allocator<int> check;
+
+	FMAP f; SMAP s;
+
+	cout << sizeof(std::pair<T1, T2>) << endl;
+	cout << "check max size allocator: " << check.max_size() << endl;
+	cout << "f: " << f.max_size() << endl;
+	cout << "s: " << s.max_size() << endl;
 }
 
 int main(int argc, char **argv)
