@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:12:58 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:34:48 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,8 @@ TEST_CASE("Iterator")
 }
 
 void	ft_test(void)
-{}
+{
+}
 
 int main(int argc, char **argv)
 {

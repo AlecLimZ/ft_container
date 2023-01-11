@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 17:25:56 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:37:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ struct Node
 	Node	*left;
 	Node	*right;
 	int		color;
-	Node(Key key, M m):data(ft::make_pair(key, m)){}
+	Node(Key key):data(key)
+	{}
 	Node(void):data(){}
 };
 
@@ -239,7 +240,7 @@ class RedBlackTree
 
 		NodePtr	insert(Key key)
 		{
-			NodePtr	node = new NodeM(key, 0);
+			NodePtr	node = new NodeM(key);
 			node->parent = nullptr;
 			//node->data = ft::make_pair(key, 0);
 			node->left = nullNode;

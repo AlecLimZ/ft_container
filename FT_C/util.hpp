@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/10 17:37:54 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:34:28 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,6 +171,8 @@ namespace ft
 		: first(pr.first), second(pr.second){}
 		pair(const first_type & a, const second_type & b)
 			: first(a), second(b){}
+		pair(const first_type & a)
+			: first(a), second(){}
 
 		// operator=
 		pair & operator=(const pair & pr)

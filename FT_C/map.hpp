@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:01:36 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/11 12:38:42 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ namespace	ft
 			/***CONSTRUCTOR & DESTRUCTOR***/
 			explicit map(const Compare & comp = key_compare(), const allocator_type & alloc = Allocator())
 				:_size(0), _myalloc(alloc), _compare(comp){
-					cout << "constructor map default" << endl;
+			//		cout << "constructor map default" << endl;
 				}
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
@@ -81,7 +81,7 @@ namespace	ft
 			//	for (size_type i = 0; i < _capacity; ++i)
 			//		_myalloc.destroy(_map + i);
 			//	_myalloc.deallocate(_map, _capacity);
-				cout << "destructor map" << endl;
+		//		cout << "destructor map" << endl;
 			}
 
 			//test
@@ -342,7 +342,7 @@ namespace	ft
 				else
 					_map = _rc->minimum(_rc->getRoot());
 			}
-			mapiter(RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
+			mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
 			mapiter(const mapiter<typename std::remove_const<value_type>::type> & src)
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapiter & operator=(mapiter const & rhs)
