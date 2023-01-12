@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:34:28 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:07:59 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,12 @@ namespace ft
 	template <class Iterator>
 	struct iterator_traits
 	{
-		typedef typename Iterator::iterator_category	iterator_category;
 		typedef typename Iterator::value_type			value_type;
 		typedef typename Iterator::difference_type		difference_type;
 		typedef difference_type							distance_type;
 		typedef typename Iterator::pointer				pointer;
 		typedef typename Iterator::reference			reference;
+		typedef typename Iterator::iterator_category	iterator_category;
 	};
 
 	// iterator_trait specialization for pointer to non-const

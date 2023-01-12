@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 16:20:42 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:46:24 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,16 @@ namespace	ft
 			const_iterator end() const
 			{ return (const_iterator(&_rbtmap, _rbtmap.getNull())); }
 
+			reverse_iterator rbegin()
+			{
+				return (reverse_iterator(--end()));
+			}
+
+			reverse_iterator rend()
+			{
+				return (reverse_iterator(begin()));
+			}
+
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
 			{
@@ -184,13 +194,14 @@ namespace	ft
 			typedef V						value_type;
 			typedef V&						reference;
 			typedef V*						pointer;
-			std::bidirectional_iterator_tag	iterator_category;
+			typedef std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
 			RBTclass	*_rc;
 			NodePtr		_map;
 			key_compare	_compare;
 			friend class	mapiter<const V>;
+			friend class	mapitrev<iterator>;
 
 		public:
 			mapiter(void): _map(nullptr)
@@ -211,7 +222,11 @@ namespace	ft
 			mapiter & operator=(mapiter const & rhs)
 			{
 				if (this != &rhs)
+				{
+					_rc = rhs._rc;
 					_map = rhs._map;
+					_compare = rhs._compare;
+				}
 				return (*this);
 			}
 
@@ -293,7 +308,7 @@ namespace	ft
 					while (p != nullptr && _compare(_map->data.first, p->data.first))
 						p = p->parent;
 					if (p == nullptr)
-						_map = nullNode;
+						_map = nullptr;
 					else
 						_map = p;
 				}
@@ -316,7 +331,7 @@ namespace	ft
 					while (p != nullptr && _compare(_map->data.first, p->data.first))
 						p = p->parent;
 					if (p == nullptr)
-						_map = nullNode;
+						_map = nullptr;
 					else
 						_map = p;
 				}
@@ -342,7 +357,7 @@ namespace	ft
 			typedef V						value_type;
 			typedef const V&				const_reference;
 			typedef const V*				const_pointer;
-			std::bidirectional_iterator_tag	iterator_category;
+			typedef std::bidirectional_iterator_tag	iterator_category;
 
 		protected:
 			const RBTclass	*_rc;
@@ -366,7 +381,11 @@ namespace	ft
 			mapiter & operator=(mapiter const & rhs)
 			{
 				if (this != rhs)
+				{
+					_rc = rhs._rc;
 					_map = rhs._map;
+					_compare = rhs._compare;
+				}
 				return (*this);
 			}
 
@@ -476,9 +495,88 @@ namespace	ft
 
 			const_reference operator*() const
 			{ return (*_map->data); }
-
+			
 			const_pointer operator->() const
 			{ return (&_map->data); }
+	};
+
+	template<typename K, typename T, typename C, typename A>
+	template<typename Iter>
+	class map<K, T, C, A>::mapitrev
+	{
+		public:
+			typedef map<K, T, C, A>				MAP;
+			typedef Iter						iterator_type;
+			typedef typename ft::iterator_traits<iterator>::value_type
+				value_type;
+			typedef typename ft::iterator_traits<iterator>::difference_type
+				difference_type;
+			typedef typename ft::iterator_traits<iterator>::pointer
+				pointer;
+			typedef typename ft::iterator_traits<iterator>::reference
+				reference;
+			typedef typename ft::iterator_traits<iterator>::iterator_category
+				iterator_category;
+		protected:
+			iterator	_it;
+
+		public:
+			mapitrev(void): _it(nullptr){}
+			~mapitrev(void){}
+			mapitrev(iterator it): _it(it){}
+			mapitrev(const mapitrev & src): _it(src._it){}
+			mapitrev & operator=(mapitrev const & rhs)
+			{
+				if (this != &rhs)
+					_it = rhs._it;
+				return (*this);
+			}
+
+			template<typename X, typename Y>
+			friend bool operator==(const mapitrev<X> & lhs, const mapitrev<Y> & rhs)
+			{
+				return (lhs._it == rhs._it);
+			}
+
+			template<typename X, typename Y>
+			friend bool operator!=(const mapitrev<X> & lhs, const mapitrev<Y> & rhs)
+			{
+				return (!(lhs == rhs));
+			}
+
+			mapitrev & operator++()
+			{
+				_it--;
+				return (*this);
+			}
+
+			mapitrev operator++(int)
+			{
+				mapitrev old(_it--);
+				return (old);
+			}
+
+			mapitrev & operator--()
+			{
+				_it++;
+				return (*this);
+			}
+
+			mapitrev operator--(int)
+			{
+				mapitrev old(_it++);
+				return (old);
+			}
+
+			reference operator*() const
+			{
+				return (*_it.map);
+			}
+
+			pointer operator->() const
+			{
+				return (&_it._map->data);
+			}
 	};
 }
 
