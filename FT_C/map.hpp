@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 18:51:46 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 19:41:51 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,12 +129,14 @@ namespace	ft
 
 			reverse_iterator rend()
 			{
-				return (++reverse_iterator(begin()));
+				//return (++reverse_iterator(begin()));
+				return (reverse_iterator(begin()));
 			}
 
 			const_reverse_iterator rend() const
 			{
-				return (++const_reverse_iterator(begin()));
+				//return (++const_reverse_iterator(begin()));
+				return (const_reverse_iterator(begin()));
 			}
 
 			/*** ELEMENT ACCESS ***/
@@ -544,11 +546,20 @@ namespace	ft
 			: _rc(nullptr), _map(nullptr), _compare(){}
 			~mapitrev(void){}
 			mapitrev(reverse_iterator it)
-			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			: _rc(it._rc), _map(it._map), _compare(it._compare)
+			{}
 	//		mapitrev(const_iterator it)
 	//		: _rc(it._rc), _map(it._map), _compare(it._compare){}
 			mapitrev(iterator it)
-			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			: _rc(it._rc), _map(it._map), _compare(it._compare)
+			{
+		//		if (_map == nullptr)
+		//			cout << "pass" << endl;
+		//		else if (_map == _rc->getNull())
+		//			cout << "null" << endl;
+				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
+						_map = _rc->getNull();
+			}
 			mapitrev(const mapitrev & src)
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapitrev & operator=(mapitrev const & rhs)
@@ -565,7 +576,9 @@ namespace	ft
 			iterator_type base() const
 			{
 			//mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
-				return (++iterator(_rc, _map));
+				mapitrev tmp(*this);
+				--tmp;
+				return (iterator(_rc, tmp._map));
 			}
 
 			template<typename X, typename Y>
@@ -585,8 +598,8 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-//				else if (_map == nullNode && _rc->getSize() >= 1)
-//					_map = _rc->maximum(_rc->getRoot());
+				else if (_map == nullNode && _rc->getSize() >= 1)
+					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
 					_map = _rc->maximum(_map->left);
 				else
@@ -609,8 +622,8 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-//				else if (_map == nullNode && _rc->getSize() >= 1)
-//					_map = _rc->maximum(_rc->getRoot());
+				else if (_map == nullNode && _rc->getSize() >= 1)
+					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
 					_map = _rc->maximum(_map->left);
 				else
@@ -704,10 +717,8 @@ namespace	ft
 				value_type;
 			typedef typename	ft::iterator_traits<iterator_type>::difference_type
 				difference_type;
-			typedef const typename	ft::iterator_traits<iterator_type>::reference
-				const_reference;
-			typedef const typename	ft::iterator_traits<iterator_type>::pointer
-				const_pointer;
+			typedef const value_type& const_reference;
+			typedef const value_type* const_pointer;
 			typedef typename	ft::iterator_traits<iterator>::iterator_category
 				iterator_category;
 		protected:
@@ -719,11 +730,22 @@ namespace	ft
 			: _rc(nullptr), _map(nullptr), _compare(){}
 			~mapitrev(void){}
 			mapitrev(reverse_iterator it)
-			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			: _rc(it._rc), _map(it._map), _compare(it._compare)
+			{}
 			mapitrev(const_iterator it)
-			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			: _rc(it._rc), _map(it._map), _compare(it._compare)
+			{
+			//	if (_map == _rc->minimum(_rc->getRoot()))
+				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
+						_map = _rc->getNull();
+			}
 			mapitrev(iterator it)
-			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			: _rc(it._rc), _map(it._map), _compare(it._compare)
+			{
+			//	if (_map == _rc->minimum(_rc->getRoot()))
+				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
+						_map = _rc->getNull();
+			}
 			mapitrev(const mapitrev & src)
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapitrev & operator=(mapitrev const & rhs)
