@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/12 16:49:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:10:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,30 +125,45 @@ TEST_CASE("iterator rev map")
 	SMAP	sm;
 	FMAP	fm;
 
-	for (char i = 'a'; i <= 'z'; i++)
+	for (char i = 'a'; i <= 'z'; ++i)
 	{
-		sm[i] = 33;
-		fm[i] = 33;
+		sm[i] = 77;
+		fm[i] = 77;
 	}
+	
+//	SMAP::iterator sit = sm.begin();
+//	SMAP::iterator site = sm.end();
+//	while (sit != site)
+//		cout << (sit++)->first << " ";
+//	cout << endl;
+
 	SMAP::reverse_iterator rsit = sm.rbegin();
 	SMAP::reverse_iterator rsite = sm.rend();
+	FMAP::reverse_iterator rfit = fm.rbegin();
+	FMAP::reverse_iterator rfite = fm.rend();
 
-	rsit--;
-
-	cout << "ori rsit: " << rsit->first << endl;
-	cout << "ori rsite: " << rsite->first << endl;
-//	while (rsit != rsite)
-//		cout << (rsite--)->first << " ";
-//	cout << endl;
-
-//	FMAP::reverse_iterator rfit = fm.rbegin();
-//	FMAP::reverse_iterator rfite = fm.rend();
-	
-//	cout << "ori rfit: " << rfit->first << endl;
-//	cout << "ori rfite: " << rfite->first << endl;
-//	while (rfit != rfite)
-//		cout << (rfite--)->first << " ";
-//	cout << endl;
+	while (rfit != rfite && rsit != rsite)
+		CHECK((rfit++)->first == (rsit++)->first);
+	rsit = sm.rbegin();
+	rfit = fm.rbegin();
+	while (rfit != rfite && rsit != rsite)
+	{ rfite--; rsite--;}
+	rfite = fm.rend();
+	rsite = sm.rend();
+	while (++rfit != rfite && ++rsit != rsite)
+		CHECK((rfit)->first == (rsit)->first);
+	rsit = sm.rbegin();
+	rfit = fm.rbegin();
+	while (--rfite != rfit && --rsite != rsit);
+	rfite = fm.rend();
+	rsite = sm.rend();
+	while (rfit != rfite && rsit != rsite)
+	{
+		CHECK((rfit != rfite) == (rsit != rsite));
+		rfit++; rfite--;
+		rsit++; rsite--;
+	}
+	CHECK((rfit == rfite) == (rsit == rsite));
 }
 
 void	ft_test(void)
