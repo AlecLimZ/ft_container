@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/12 16:46:24 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:29:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ namespace	ft
 
 			reverse_iterator rend()
 			{
-				return (reverse_iterator(begin()));
+				return (++reverse_iterator(begin()));
 			}
 
 			/*** ELEMENT ACCESS ***/
@@ -463,7 +463,7 @@ namespace	ft
 					while (p != nullptr && _compare(_map->data.first, p->data.first))
 						p = p->parent;
 					if (p == nullptr)
-						_map = nullNode;
+						_map = nullptr;
 					else
 						_map = p;
 				}
@@ -486,7 +486,7 @@ namespace	ft
 					while (p != nullptr && _compare(_map->data.first, p->data.first))
 						p = p->parent;
 					if (p == nullptr)
-						_map = nullNode;
+						_map = nullptr;
 					else
 						_map = p;
 				}
@@ -518,24 +518,39 @@ namespace	ft
 			typedef typename ft::iterator_traits<iterator>::iterator_category
 				iterator_category;
 		protected:
-			iterator	_it;
+			RBTclass	*_rc;
+			NodePtr		_map;
+			key_compare	_compare;
 
 		public:
-			mapitrev(void): _it(nullptr){}
+			mapitrev(void)
+			: _rc(nullptr), _map(nullptr), _compare(){}
 			~mapitrev(void){}
-			mapitrev(iterator it): _it(it){}
-			mapitrev(const mapitrev & src): _it(src._it){}
+			mapitrev(iterator it)
+			: _rc(it._rc), _map(it._map), _compare(it._compare){}
+			mapitrev(const mapitrev & src)
+			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapitrev & operator=(mapitrev const & rhs)
 			{
 				if (this != &rhs)
-					_it = rhs._it;
+				{
+					_rc = rhs._rc;
+					_map = rhs._map;
+					_compare = rhs._compare;
+				}
 				return (*this);
+			}
+
+			iterator_type base() const
+			{
+			//mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
+				return (++iterator(_rc, _map));
 			}
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapitrev<X> & lhs, const mapitrev<Y> & rhs)
 			{
-				return (lhs._it == rhs._it);
+				return (lhs._map->data.first == rhs._map->data.first);
 			}
 
 			template<typename X, typename Y>
@@ -546,36 +561,114 @@ namespace	ft
 
 			mapitrev & operator++()
 			{
-				_it--;
+				NodePtr nullNode = _rc->getNull();
+				if (_rc->getSize() == 0)
+					_map = nullNode;
+//				else if (_map == nullNode && _rc->getSize() >= 1)
+//					_map = _rc->maximum(_rc->getRoot());
+				else if (_map->left != nullNode)
+					_map = _rc->maximum(_map->left);
+				else
+				{
+					NodePtr p = _map->parent;
+					while (p != nullptr && _compare(_map->data.first, p->data.first))
+						p = p->parent;
+					if (p == nullptr)
+						_map = nullNode;
+					else
+						_map = p;
+				}
+//				_it--;
 				return (*this);
 			}
 
 			mapitrev operator++(int)
 			{
-				mapitrev old(_it--);
+				mapitrev old(*this);
+				NodePtr nullNode = _rc->getNull();
+				if (_rc->getSize() == 0)
+					_map = nullNode;
+//				else if (_map == nullNode && _rc->getSize() >= 1)
+//					_map = _rc->maximum(_rc->getRoot());
+				else if (_map->left != nullNode)
+					_map = _rc->maximum(_map->left);
+				else
+				{
+					NodePtr p = _map->parent;
+					while (p != nullptr && _compare(_map->data.first, p->data.first))
+						p = p->parent;
+					if (p == nullptr)
+						_map = nullNode;
+					else
+						_map = p;
+				}
 				return (old);
 			}
 
 			mapitrev & operator--()
 			{
-				_it++;
+		//		_it++;
+				NodePtr nullNode = _rc->getNull();
+				if (_rc->getSize() == 0)
+					_map = nullNode;
+				else if (_map == nullNode && _rc->getSize() >= 1)
+					_map = _rc->minimum(_rc->getRoot());
+				else if (((_map->left == nullNode || _map->right == nullNode)
+						&& _map->parent == nullptr) || _map->parent == nullNode)
+					_map = nullNode;
+				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
+					_map = _map->parent;
+				else if (_map->right != nullNode)
+					_map = _rc->minimum(_map->right);
+				else
+				{
+					NodePtr p = _map->parent;
+					while (p != nullptr && _compare(p->data.first, _map->data.first))
+						p = p->parent;
+					if (p == nullptr)
+						_map = nullptr;
+					else
+						_map = p;
+				}
 				return (*this);
 			}
 
 			mapitrev operator--(int)
 			{
-				mapitrev old(_it++);
+				mapitrev old(*this);
+				NodePtr nullNode = _rc->getNull();
+				if (_rc->getSize() == 0)
+					_map = nullNode;
+				else if (_map == nullNode && _rc->getSize() >= 1)
+					_map = _rc->minimum(_rc->getRoot());
+				else if (((_map->left == nullNode || _map->right == nullNode)
+						&& _map->parent == nullptr) || _map->parent == nullNode)
+					_map = nullNode;
+				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
+					_map = _map->parent;
+				else if (_map->right != nullNode)
+					_map = _rc->minimum(_map->right);
+				else
+				{
+					NodePtr p = _map->parent;
+					while (p != nullptr && _compare(p->data.first, _map->data.first))
+						p = p->parent;
+					if (p == nullptr)
+						_map = nullptr;
+					else
+						_map = p;
+				}
 				return (old);
 			}
 
 			reference operator*() const
 			{
-				return (*_it.map);
+				return (*_map->data);
 			}
 
 			pointer operator->() const
 			{
-				return (&_it._map->data);
+				return (&_map->data);
 			}
 	};
 }

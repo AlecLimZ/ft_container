@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 11:05:44 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:29:37 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -539,6 +539,12 @@ namespace	ft
 					_compare = rhs._compare;
 				}
 				return (*this);
+			}
+
+			iterator_type base() const
+			{
+			//mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
+				return (++iterator(_rc, _map));
 			}
 
 			template<typename X, typename Y>

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 11:10:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:34:27 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,12 +131,6 @@ TEST_CASE("iterator rev map")
 		fm[i] = 77;
 	}
 	
-//	SMAP::iterator sit = sm.begin();
-//	SMAP::iterator site = sm.end();
-//	while (sit != site)
-//		cout << (sit++)->first << " ";
-//	cout << endl;
-
 	SMAP::reverse_iterator rsit = sm.rbegin();
 	SMAP::reverse_iterator rsite = sm.rend();
 	FMAP::reverse_iterator rfit = fm.rbegin();
@@ -167,8 +161,7 @@ TEST_CASE("iterator rev map")
 }
 
 void	ft_test(void)
-{
-}
+{}
 
 int main(int argc, char **argv)
 {
