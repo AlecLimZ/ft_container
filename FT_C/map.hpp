@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 16:07:52 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 18:51:46 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ namespace	ft
 				std::allocator<char> tmp;
 				if (sizeof(value_type) == 2)
 					return (tmp.max_size() / 32);
+				if (sizeof(value_type) == 12) // lol dont know why 12 return different size
+					return (tmp.max_size() / (28 + sizeof(value_type)));
 				return (tmp.max_size() / (32 + sizeof(value_type)));
 			}
 			/*** MODIFIERS ***/
@@ -212,6 +214,7 @@ namespace	ft
 			key_compare	_compare;
 			friend class	mapiter<const V>;
 			friend class	mapitrev<iterator>;
+			friend class	mapitrev<const iterator>;
 
 		public:
 			mapiter(void): _map(nullptr)
@@ -349,7 +352,7 @@ namespace	ft
 			}
 
 			reference operator*() const
-			{ return (*_map->data); }
+			{ return (_map->data); }
 
 			pointer operator->() const
 			{
@@ -506,7 +509,7 @@ namespace	ft
 			}
 
 			const_reference operator*() const
-			{ return (*_map->data); }
+			{ return (_map->data); }
 			
 			const_pointer operator->() const
 			{ return (&_map->data); }
@@ -681,7 +684,7 @@ namespace	ft
 
 			reference operator*() const
 			{
-				return (*_map->data);
+				return (_map->data);
 			}
 
 			pointer operator->() const
@@ -856,7 +859,7 @@ namespace	ft
 
 			const_reference operator*() const
 			{
-				return (*_map->data);
+				return (_map->data);
 			}
 
 			const_pointer operator->() const
