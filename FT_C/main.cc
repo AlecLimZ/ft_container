@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 16:08:27 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/13 16:09:51 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ TEST_CASE("iterator rev map")
 	}
 	
 	SMAP::reverse_iterator rsit = sm.rbegin();
-	SMAP::reverse_iterator rsite = sm.rend();
+	SMAP::const_reverse_iterator rsite = sm.rend();
 	FMAP::reverse_iterator rfit = fm.rbegin();
 	FMAP::const_reverse_iterator rfite = fm.rend();
 
