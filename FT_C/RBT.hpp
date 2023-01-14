@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 14:17:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:42:08 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,7 +311,7 @@ class RedBlackTree
 				{
 					delete node;
 					ret = ft::make_pair(x, 0);
-					return (x);
+					return (ret);
 				}
 				if (_cmp(node->data.first, x->data.first))
 					x = x->left;
@@ -340,6 +340,59 @@ class RedBlackTree
 
 			insertFix(node);
 			return (ret);
+		}
+		
+		NodePtr	insert3(NodePtr itn, Key key, M value)
+		{
+			NodePtr	node = new NodeM(key);
+			node->parent = nullptr;
+			//node->data = ft::make_pair(key, 0);
+			node->left = nullNode;
+			node->right = nullNode;
+			node->color = 1;
+
+			NodePtr	y = nullptr;
+			NodePtr x;
+			if (_cmp(root->data.first, key) && _cmp(itn->data.first, key))
+				x = this->root;
+			else
+				x = itn;
+			while (x != nullNode)
+			{
+				y = x;
+				//if (node->data < x->data)
+				if (node->data.first == x->data.first)
+				{
+					delete node;
+					return (x);
+				}
+				if (_cmp(node->data.first, x->data.first))
+					x = x->left;
+				else
+					x = x->right;
+			}
+			_size++;
+			node->data.second = value;
+			node->parent = y;
+			if (y == nullptr)
+				root = node;
+			//else if (node->data < y->data)
+			else if (_cmp(node->data.first, y->data.first))
+				y->left = node;
+			else
+				y->right = node;
+
+			if (node->parent == nullptr)
+			{
+				node->color = 0;
+				return (node);
+			}
+
+			if (node->parent->parent == nullptr)
+				return (node);
+
+			insertFix(node);
+			return (node);
 		}
 
 		NodePtr	getRoot() const

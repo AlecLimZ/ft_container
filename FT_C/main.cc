@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 14:26:52 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:44:18 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,6 @@ TEST_CASE("Modifiers")
 		fm.insert(ft::pair<char, int>('a', 100));
 		fm.insert(ft::pair<char, int>('z', 200));
 
-		cout << fm['a'] << endl;
-		cout << fm['z'] << endl;
 		CHECK(sm['a'] == fm['a']);
 
 		std::pair<std::map<char, int>::iterator, bool> ret;
@@ -232,6 +230,28 @@ TEST_CASE("Modifiers")
 		fret = fm.insert(ft::pair<char, int>('z', 500));
 		CHECK(ret.second == fret.second);
 		CHECK(ret.first->second == fret.first->second);
+
+		// second insert
+		SMAP::iterator it = sm.begin();
+		SMAP::iterator ite = sm.end();
+		FMAP::iterator fit = fm.begin();
+		FMAP::iterator fite = fm.end();
+		sm.insert(it, std::pair<char, int>('b', 300));
+		sm.insert(it, std::pair<char, int>('c', 400));
+		sm.insert(it, std::pair<char, int>('k', 444));
+		
+
+		fm.insert(fit, ft::pair<char, int>('b', 300));
+		fm.insert(fit, ft::pair<char, int>('c', 400));
+		fm.insert(fit, ft::pair<char, int>('k', 444));
+
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 14:21:33 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:23:27 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,12 @@ namespace	ft
 				ret = ft::make_pair(iterator(&_rbtmap, box.first), box.second);
 				return (ret);
 			}
-			iterator insert(iterator position, const value_type & val);
+			iterator insert(iterator position, const value_type & val)
+			{
+				NodePtr pos = position._map;
+				_rbtmap.insert3(pos, val.first, val.second);
+				return (position);
+			}
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
 			/*** OBSERVERS ***/
@@ -243,7 +248,7 @@ namespace	ft
 	class map<K, T, C, A>::mapiter
 	{
 		public:
-			typedef map<K, T, C, A> 		MAP;
+			typedef map<K, T, C, A>			MAP;
 			typedef MAP::difference_type	difference_type;
 			typedef V						value_type;
 			typedef V&						reference;
@@ -257,6 +262,7 @@ namespace	ft
 			friend class	mapiter<const V>;
 			friend class	mapitrev<iterator>;
 			friend class	mapitrev<const iterator>;
+			friend class	map<K, T, C, A>;
 
 		public:
 			mapiter(void): _map(nullptr)
@@ -407,7 +413,7 @@ namespace	ft
 	class map<K, T, C, A>::mapiter<const V>
 	{
 		public:
-			typedef map<K, T, C, A> 		MAP;
+			typedef map<K, T, C, A>			MAP;
 			typedef MAP::difference_type	difference_type;
 			typedef V						value_type;
 			typedef const V&				const_reference;
