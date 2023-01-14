@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/11 12:37:37 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 11:51:49 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ struct Node
 	Node	*left;
 	Node	*right;
 	int		color;
-	Node(Key key):data(key)
-	{}
+	Node(Key key):data(key){}
 	Node(void):data(){}
 };
 
@@ -63,7 +62,7 @@ class RedBlackTree
 			}
 		}
 
-		NodePtr	searchTreeHelper(NodePtr node, Key key)
+		NodePtr	searchTreeHelper(NodePtr node, Key key) const
 		{
 			if (node == nullNode || key == node->data.first)
 				return node;
@@ -150,7 +149,10 @@ class RedBlackTree
 			nullNode->right = nullptr;
 			root = nullNode;
 		}
-
+//		NodePtr	root;
+//		NodePtr	nullNode;
+//		Compare	_cmp;
+//		size_type _size;
 		~RedBlackTree()
 		{	
 			freeNode(root);
@@ -171,7 +173,7 @@ class RedBlackTree
 			inOrderHelper(this->root);
 		}
 
-		NodePtr	searchTree(Key k)
+		NodePtr	searchTree(Key k) const
 		{
 			return searchTreeHelper(this->root, k);
 		}

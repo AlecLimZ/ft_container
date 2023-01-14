@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 19:41:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 11:49:06 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,13 @@ namespace	ft
 				}
 				_size = _rbtmap.getSize();
 			}
-			map(const map & x): _size(x._size), _myalloc(x._myalloc), _compare(x._compare)
+			map(const map & x): _size(x._size), _myalloc(x._myalloc), _rbtmap(), _compare(x._compare)
 			{
 				// _map need to deep copy
+				const_iterator it = x.begin();
+				const_iterator ite = x.end();
+			//	while (it != ite)
+					//insert
 			}
 			~map()
 			{
@@ -148,6 +152,22 @@ namespace	ft
 				NodePtr	check = _rbtmap.insert(k);
 		//		}
 				return (check->data.second);
+			}
+
+			mapped_type & at(const key_type & k)
+			{
+				NodePtr find = _rbtmap.searchTree(k);
+				if (find == _rbtmap.getNull())
+					throw(std::invalid_argument("ft::map::at: key not found\n"));
+				return (find->data.second);
+			}
+
+			const mapped_type & at(const key_type & k) const
+			{
+				NodePtr find = _rbtmap.searchTree(k);
+				if (find == _rbtmap.getNull())
+					throw(std::invalid_argument("ft::map::at: key not found\n"));
+				return (find->data.second);
 			}
 
 			/*** CAPACITY ***/

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/13 16:09:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 11:52:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,55 @@ TEST_CASE("iterator rev map")
 	CHECK((rfit == rfite) == (rsit == rsite));
 }
 
+TEST_CASE("Element Access")
+{
+	typedef std::map<std::string, int> SMAP;
+	typedef ft::map<std::string, int> FMAP;
+
+	SMAP mymap;
+	FMAP fmap;
+	mymap["alpha"] = 11;
+	mymap["beta"] = 22;
+	mymap["gamma"] = 33;
+	
+	fmap["alpha"] = 11;
+	fmap["beta"] = 22;
+	fmap["gamma"] = 33;
+
+	SMAP::iterator sit = mymap.begin();
+	SMAP::iterator site = mymap.end();
+	FMAP::iterator fit = fmap.begin();
+	FMAP::iterator fite = fmap.end();
+	while (sit != site && fit != fite)
+	{
+		CHECK(sit->first == fit->first);
+		CHECK(sit->second == fit->second);
+		sit++;
+		fit++;
+	}
+
+	mymap.at("alpha") = 10;
+	mymap.at("beta") = 20;
+	mymap.at("gamma") = 30;
+	
+	fmap.at("alpha") = 10;
+	fmap.at("beta") = 20;
+	fmap.at("gamma") = 30;
+  
+	sit = mymap.begin();
+	fit = fmap.begin();
+	while (sit != site && fit != fite)
+	{
+		CHECK(sit->first == fit->first);
+		CHECK(sit->second == fit->second);
+		sit++;
+		fit++;
+	}
+}
+
 void	ft_test(void)
-{}
+{
+}
 
 int main(int argc, char **argv)
 {
