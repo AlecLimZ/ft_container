@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 11:52:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:12:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,12 @@ TEST_CASE("iterator rev map")
 
 TEST_CASE("Element Access")
 {
-	typedef std::map<std::string, int> SMAP;
-	typedef ft::map<std::string, int> FMAP;
+	typedef std::map<std::string, char> SMAP;
+	typedef ft::map<std::string, char> FMAP;
 
 	SMAP mymap;
 	FMAP fmap;
+	
 	mymap["alpha"] = 11;
 	mymap["beta"] = 22;
 	mymap["gamma"] = 33;
@@ -174,7 +175,7 @@ TEST_CASE("Element Access")
 	fmap["alpha"] = 11;
 	fmap["beta"] = 22;
 	fmap["gamma"] = 33;
-
+	
 	SMAP::iterator sit = mymap.begin();
 	SMAP::iterator site = mymap.end();
 	FMAP::iterator fit = fmap.begin();

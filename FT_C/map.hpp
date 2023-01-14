@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 11:49:06 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:13:19 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,10 @@ namespace	ft
 				return (tmp.max_size() / (32 + sizeof(value_type)));
 			}
 			/*** MODIFIERS ***/
+			ft::pair<iterator, bool> insert(const value_type & val);
+			iterator insert(iterator position, const value_type & val);
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/
 			/*** ALLOCATOR ***/
