@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 12:13:19 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 14:21:33 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ namespace	ft
 			typedef mapitrev<const iterator> const_reverse_iterator;
 			typedef RedBlackTree<Key, mapped_type, value_type, key_compare> RBTclass;
 			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodePtr NodePtr;
+			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodeM NodeM;
 
 		protected:
 			size_type		_size;
@@ -213,7 +214,22 @@ namespace	ft
 				return (tmp.max_size() / (32 + sizeof(value_type)));
 			}
 			/*** MODIFIERS ***/
-			ft::pair<iterator, bool> insert(const value_type & val);
+			ft::pair<iterator, bool> insert(const value_type & val)
+			{
+				ft::pair<iterator, bool> ret;
+				ft::pair<NodePtr, bool> box;
+
+//				_rbtmap.insert2(val.first);
+				box = _rbtmap.insert2(val.first);
+//				value_type tmp = check->data;
+				if (box.second)
+					box.first->data.second = val.second;
+		//		else
+		//			cout << "FALSE!" << endl;
+//				check->data.second = val.second;
+				ret = ft::make_pair(iterator(&_rbtmap, box.first), box.second);
+				return (ret);
+			}
 			iterator insert(iterator position, const value_type & val);
 			template <class InputIterator>
 			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);

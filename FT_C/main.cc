@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 12:12:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 14:26:52 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,34 @@ TEST_CASE("Element Access")
 	}
 }
 
+TEST_CASE("Modifiers")
+{
+	typedef std::map<char, int>	SMAP;
+	typedef ft::map<char, int>	FMAP;
+
+	SUBCASE("insert")
+	{
+		SMAP 	sm;
+		FMAP	fm;
+
+		sm.insert(std::pair<char, int>('a', 100));
+		sm.insert(std::pair<char, int>('z', 200));
+		fm.insert(ft::pair<char, int>('a', 100));
+		fm.insert(ft::pair<char, int>('z', 200));
+
+		cout << fm['a'] << endl;
+		cout << fm['z'] << endl;
+		CHECK(sm['a'] == fm['a']);
+
+		std::pair<std::map<char, int>::iterator, bool> ret;
+		ret = sm.insert(std::pair<char, int>('z', 500));
+		ft::pair<ft::map<char, int>::iterator, bool> fret;
+		fret = fm.insert(ft::pair<char, int>('z', 500));
+		CHECK(ret.second == fret.second);
+		CHECK(ret.first->second == fret.first->second);
+	}
+}
+
 void	ft_test(void)
 {
 }
@@ -217,5 +245,4 @@ int main(int argc, char **argv)
 #ifdef noasan
 	system("leaks main");
 #endif
-	return (doc(&argc, argv));
-}
+	return (doc(&argc, argv));}

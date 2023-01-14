@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 11:51:49 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/14 14:17:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ class RedBlackTree
 			v->parent = u->parent;
 		}
 
+	public:
 		// For balancing the tree after insertion
 		void	insertFix(NodePtr k)
 		{
@@ -287,6 +288,58 @@ class RedBlackTree
 
 			insertFix(node);
 			return (node);
+		}
+		
+		ft::pair<NodePtr, bool>	insert2(Key key)
+		{
+			ft::pair<NodePtr, bool> ret;
+			NodePtr	node = new NodeM(key);
+			node->parent = nullptr;
+			//node->data = ft::make_pair(key, 0);
+			node->left = nullNode;
+			node->right = nullNode;
+			node->color = 1;
+
+			NodePtr	y = nullptr;
+			NodePtr	x = this->root;
+
+			while (x != nullNode)
+			{
+				y = x;
+				//if (node->data < x->data)
+				if (node->data.first == x->data.first)
+				{
+					delete node;
+					ret = ft::make_pair(x, 0);
+					return (x);
+				}
+				if (_cmp(node->data.first, x->data.first))
+					x = x->left;
+				else
+					x = x->right;
+			}
+			_size++;
+			ret = ft::make_pair(node, 1);
+			node->parent = y;
+			if (y == nullptr)
+				root = node;
+			//else if (node->data < y->data)
+			else if (_cmp(node->data.first, y->data.first))
+				y->left = node;
+			else
+				y->right = node;
+
+			if (node->parent == nullptr)
+			{
+				node->color = 0;
+				return (ret);
+			}
+
+			if (node->parent->parent == nullptr)
+				return (ret);
+
+			insertFix(node);
+			return (ret);
 		}
 
 		NodePtr	getRoot() const
