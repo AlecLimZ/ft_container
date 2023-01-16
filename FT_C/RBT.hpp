@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 14:18:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:27:02 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,24 @@ class RedBlackTree
 		{	
 			freeNode(root);
 			delete nullNode;
+		}
+
+		RedBlackTree & operator=(const RedBlackTree & rhs)
+		{
+			if (this != &rhs)
+			{
+				freeNode(root);
+				delete nullNode;
+				nullNode = new NodeM;
+				nullNode->color = 0;
+				nullNode->parent = nullptr;
+				nullNode->left = nullptr;
+				nullNode->right = nullptr;
+				root = nullNode;
+				_cmp = rhs._cmp;
+				_size = rhs._size;
+			}
+			return (*this);
 		}
 
 		void	freeNode(NodePtr t)

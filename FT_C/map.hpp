@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 14:35:02 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:34:10 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,19 @@ namespace	ft
 				// _map need to deep copy
 				const_iterator it = x.begin();
 				const_iterator ite = x.end();
-			//	while (it != ite)
-					//insert
+				insert(it, ite);
+			}
+			map & operator=(const map & rhs)
+			{
+				if (this != &rhs)
+				{
+					_size = rhs._size;
+					_myalloc = rhs._myalloc;
+					_rbtmap = rhs._rbtmap; // everything deep copy there except the pair
+					_compare = rhs._compare;
+					insert(rhs.begin(), rhs.end());
+				}
+				return (*this);
 			}
 			~map()
 			{
@@ -237,7 +248,21 @@ namespace	ft
 				return (position);
 			}
 			template <class InputIterator>
-			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
+			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
+			{
+				if (_size > max_size())
+					throw(std::length_error("ft::map::insert"));
+				NodePtr	check;
+				value_type tmp;
+				while (first != last)
+				{
+					check = _rbtmap.insert(first->first);
+					if (check->data.second == tmp.second)
+						check->data.second = first->second;
+					first++;
+				}
+				_size = _rbtmap.getSize();
+			}
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/
 			iterator find(const key_type & k)

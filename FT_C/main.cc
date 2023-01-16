@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 14:31:17 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:34:38 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,29 +255,68 @@ TEST_CASE("Modifiers")
 
 		// third insert function version
 		SMAP sa;
-		//FMAP fa;
+		FMAP fa;
 		sa.insert(sm.begin(), sm.find('c'));
-	//	fa.insert(fm.begin(), fm.find('c'));
+		fa.insert(fm.begin(), fm.find('c'));
 
 		it = sm.begin();
+		fit = fm.begin();
 		while (it != ite)
 		{
-	//		cout << it->first << " => " << it->second << endl;
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
 			it++;
+			fit++;
 		}
-	//	cout << "another" << endl;
 		it = sa.begin();
 		ite = sa.end();
-		while (it != ite)
+		fit = fa.begin();
+		fite = fa.end();
+		while (it != ite && fit != fite)
 		{
-	//		cout << it->first << " => " << it->second << endl;
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
 			it++;
+			fit++;
 		}
 
+		// operator copy & copy constructor
+		SMAP sc(sm);
+		FMAP fc(fm);
+
+		it = sc.begin();
+		ite = sc.end();
+		fit = fc.begin();
+		fite = fc.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+
+		SMAP so;
+		FMAP fo;
+
+		so = sc;
+		fo = fc;
+		
+		it = sc.begin();
+		ite = sc.end();
+		fit = fc.begin();
+		fite = fc.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
 	}
 }
 
-void	ft_test(void)
+TEST_CASE("Operations")
 {
 	typedef std::map<char, int> SMAP;
 	typedef ft::map<char, int> FMAP;
@@ -299,10 +338,13 @@ void	ft_test(void)
 	fm['d'] = 200;
 	
 	mit = sm.find('b');
-	cout << mit->first << "<=>" << mit->second << endl;
-	
 	fit = fm.find('b');
-	cout << fit->first << "<=>" << fit->second << endl;
+	CHECK(mit->first == fit->first);
+	CHECK(mit->second == fit->second);
+}
+
+void	ft_test(void)
+{
 }
 
 int main(int argc, char **argv)
