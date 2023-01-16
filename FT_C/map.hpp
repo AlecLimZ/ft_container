@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 14:19:27 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:35:02 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,22 @@ namespace	ft
 			void insert(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0);
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/
+			iterator find(const key_type & k)
+			{
+				NodePtr find = _rbtmap.searchTree(k);
+				if (find == _rbtmap.getNull())
+					throw(std::invalid_argument("ft::map::find: key not found\n"));
+				iterator ret(&_rbtmap, find);
+				return (ret);
+			}
+			const_iterator find(const key_type & k) const
+			{
+				NodePtr find = _rbtmap.searchTree(k);
+				if (find == _rbtmap.getNull())
+					throw(std::invalid_argument("ft::map::find: key not found\n"));
+				const_iterator ret(&_rbtmap, find);
+				return (ret);
+			}
 			/*** ALLOCATOR ***/
 	};
 

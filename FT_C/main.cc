@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 13:31:49 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:31:17 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,22 +255,22 @@ TEST_CASE("Modifiers")
 
 		// third insert function version
 		SMAP sa;
-		FMAP fa;
+		//FMAP fa;
 		sa.insert(sm.begin(), sm.find('c'));
-		//fa.insert(fm.begin(), fm.find('c'));
+	//	fa.insert(fm.begin(), fm.find('c'));
 
 		it = sm.begin();
 		while (it != ite)
 		{
-		//	cout << it->first << " => " << it->second << endl;
+	//		cout << it->first << " => " << it->second << endl;
 			it++;
 		}
-		//cout << "another" << endl;
+	//	cout << "another" << endl;
 		it = sa.begin();
 		ite = sa.end();
 		while (it != ite)
 		{
-		//	cout << it->first << " => " << it->second << endl;
+	//		cout << it->first << " => " << it->second << endl;
 			it++;
 		}
 
@@ -279,6 +279,30 @@ TEST_CASE("Modifiers")
 
 void	ft_test(void)
 {
+	typedef std::map<char, int> SMAP;
+	typedef ft::map<char, int> FMAP;
+
+	SMAP sm;
+	SMAP::iterator mit;
+	
+	FMAP fm;
+	FMAP::iterator fit;
+
+	sm['a'] = 50;
+	sm['b'] = 100;
+	sm['c'] = 150;
+	sm['d'] = 200;
+
+	fm['a'] = 50;
+	fm['b'] = 100;
+	fm['c'] = 150;
+	fm['d'] = 200;
+	
+	mit = sm.find('b');
+	cout << mit->first << "<=>" << mit->second << endl;
+	
+	fit = fm.find('b');
+	cout << fit->first << "<=>" << fit->second << endl;
 }
 
 int main(int argc, char **argv)
