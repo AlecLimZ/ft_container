@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 15:34:38 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:44:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,37 @@ TEST_CASE("Modifiers")
 			CHECK(it->second == fit->second);
 			it++;
 			fit++;
+		}
+	}
+
+	SUBCASE("erase")
+	{
+		typedef std::map<char, int> SMAP;
+		typedef ft::map<char, int> FMAP;
+
+		SMAP sm;
+		FMAP fm;
+		int k = 10;
+
+		for (char i = 'a'; i <= 'f'; ++i)
+		{
+			sm[i] = k;
+			fm[i] = k;
+			k += 10;
+		}
+
+		SMAP::iterator sit = sm.find('b'), site = sm.end();
+		sm.erase(sit);
+		sm.erase('c');
+		
+		sit = sm.find('e');
+		sm.erase(sit, sm.end());
+
+		sit = sm.begin();
+		while (sit != site)
+		{
+			cout << sit->first << "<=>" << sit->second << endl;
+			sit++;
 		}
 	}
 }
