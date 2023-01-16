@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 15:42:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:18:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,6 +146,7 @@ class RedBlackTree
 		{
 			nullNode = new NodeM;
 			nullNode->color = 0;
+			nullNode->parent = nullptr;
 			nullNode->left = nullptr;
 			nullNode->right = nullptr;
 			root = nullNode;
@@ -353,10 +354,23 @@ class RedBlackTree
 
 			NodePtr	y = nullptr;
 			NodePtr x;
-			if (_cmp(root->data.first, key) && _cmp(itn->data.first, key))
+	//		if (_cmp(root->data.first, key) && _cmp(itn->data.first, key))
+	//			x = this->root;
+	//		else
+	//			x = itn;
+			x = itn;
+			if (itn->parent == nullptr)
 				x = this->root;
+			else if (x->parent && _cmp(x->parent->data.first, key))
+			{
+				while (x->parent && _cmp(x->parent->data.first, key))
+					x = x->parent;
+			}
 			else
-				x = itn;
+			{
+				while (x->parent && _cmp(key, x->parent->data.first))
+					x = x->parent;
+			}
 			while (x != nullNode)
 			{
 				y = x;

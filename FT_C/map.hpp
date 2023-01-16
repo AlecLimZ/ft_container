@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 15:23:27 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 14:19:27 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,7 @@ namespace	ft
 			iterator insert(iterator position, const value_type & val)
 			{
 				NodePtr pos = position._map;
-				_rbtmap.insert3(pos, val.first, val.second);
+				position._map = _rbtmap.insert3(pos, val.first, val.second);
 				return (position);
 			}
 			template <class InputIterator>
@@ -306,7 +306,7 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 						_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first)
@@ -333,12 +333,12 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map == nullNode)
 						_map = nullNode;
-			//	else if (_map->parent && _compare(_map->data.first, _map->parent->data.first)
-			//			&& _map->right == nullNode)
-			//			_map = _map->parent;
+				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first)
+						&& _map->right == nullNode)
+						_map = _map->parent;
 				else if (_map->right != nullNode)
 					_map = _rc->minimum(_map->right);
 				else
@@ -465,7 +465,7 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
@@ -491,7 +491,7 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
@@ -693,7 +693,7 @@ namespace	ft
 					_map = nullNode;
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->minimum(_rc->getRoot());
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
@@ -721,7 +721,7 @@ namespace	ft
 					_map = nullNode;
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->minimum(_rc->getRoot());
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
@@ -877,7 +877,7 @@ namespace	ft
 					_map = nullNode;
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->minimum(_rc->getRoot());
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
@@ -905,7 +905,7 @@ namespace	ft
 					_map = nullNode;
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->minimum(_rc->getRoot());
-				else if (((_map->left == nullNode || _map->right == nullNode)
+				else if (((_map->left == nullNode && _map->right == nullNode)
 						&& _map->parent == nullptr) || _map->parent == nullNode)
 					_map = nullNode;
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)

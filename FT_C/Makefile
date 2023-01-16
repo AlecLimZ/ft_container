@@ -28,6 +28,11 @@ vectornoasan:		vector.hpp
 			$(CXX) $(CXXFLAGS) -c testvector.cc $(D)
 			$(CXX) $(CXXFLAGS) testvector.o -o $(NAME)
 
+test:		map.hpp
+			$(CXX) $(CXXFLAGS) -c test.cc
+			$(CXX) $(CXXFLAGS) test.o -o $(NAME) -fsanitize=address
+		
+
 clean:
 			rm -rf $(OBJ) *.o
 

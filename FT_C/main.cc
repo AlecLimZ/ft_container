@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/14 15:51:33 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/16 13:31:49 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,15 +262,15 @@ TEST_CASE("Modifiers")
 		it = sm.begin();
 		while (it != ite)
 		{
-			cout << it->first << " => " << it->second << endl;
+		//	cout << it->first << " => " << it->second << endl;
 			it++;
 		}
-		cout << "another" << endl;
+		//cout << "another" << endl;
 		it = sa.begin();
 		ite = sa.end();
 		while (it != ite)
 		{
-			cout << it->first << " => " << it->second << endl;
+		//	cout << it->first << " => " << it->second << endl;
 			it++;
 		}
 
