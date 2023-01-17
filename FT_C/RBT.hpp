@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 15:27:02 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:23:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,19 @@ class RedBlackTree
 				x->parent->left = y;
 			y->right = x;
 			x->parent = y;
+		}
+
+		void	remove(NodePtr del)
+		{
+			int oricolor = del->color;
+			(void)oricolor;
+
+			NodePtr x;
+			if (del->left == nullNode)
+				x = del->right;
+			x->parent = del->parent;
+			delete del;
+			del = x;
 		}
 
 		NodePtr	insert(Key key)

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 15:44:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:37:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,7 +341,7 @@ TEST_CASE("Modifiers")
 		sit = sm.begin();
 		while (sit != site)
 		{
-			cout << sit->first << "<=>" << sit->second << endl;
+			//cout << sit->first << "<=>" << sit->second << endl;
 			sit++;
 		}
 	}
@@ -376,6 +376,20 @@ TEST_CASE("Operations")
 
 void	ft_test(void)
 {
+	ft::map<int, int> lol;
+
+	for (int i = 0; i < 10; i++)
+		lol[i] = i * 2;
+	ft::map<int, int>::iterator it = lol.begin();
+	ft::map<int, int>::iterator ite = lol.end();
+
+	while (it != ite)
+	{
+		cout << it->first << endl;
+		it++;
+	}
+
+
 }
 
 int main(int argc, char **argv)
@@ -384,4 +398,5 @@ int main(int argc, char **argv)
 #ifdef noasan
 	system("leaks main");
 #endif
-	return (doc(&argc, argv));}
+	return (doc(&argc, argv));
+}

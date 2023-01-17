@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/16 15:48:43 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:33:29 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,7 +339,7 @@ namespace	ft
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
 			{
-				return (lhs._map->data.first == rhs._map->data.first);
+				return (lhs._map == rhs._map);
 			}
 			
 			template<typename X, typename Y>
@@ -499,7 +499,7 @@ namespace	ft
 
 			template<typename X, typename Y>
 			friend bool operator==(const mapiter<X> & lhs, const mapiter<Y> & rhs)
-			{ return (lhs._map->data.first == rhs._map->data.first); }
+			{ return (lhs._map == rhs._map); }
 			
 			template<typename X, typename Y>
 			friend bool operator!=(const mapiter<X> & lhs, const mapiter<Y> & rhs)
@@ -675,7 +675,7 @@ namespace	ft
 			template<typename X, typename Y>
 			friend bool operator==(const mapitrev<X> & lhs, const mapitrev<Y> & rhs)
 			{
-				return (lhs._map->data.first == rhs._map->data.first);
+				return (lhs._map == rhs._map);
 			}
 
 			template<typename X, typename Y>
@@ -859,7 +859,7 @@ namespace	ft
 			template<typename X, typename Y>
 			friend bool operator==(const mapitrev<X> & lhs, const mapitrev<Y> & rhs)
 			{
-				return (lhs._map->data.first == rhs._map->data.first);
+				return (lhs._map == rhs._map);
 			}
 
 			template<typename X, typename Y>
