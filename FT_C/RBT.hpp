@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 15:20:18 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:32:32 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,7 +250,7 @@ class RedBlackTree
 				nullNode->right = nullptr;
 				root = nullNode;
 				_cmp = rhs._cmp;
-				_size = rhs._size;
+				_size = 0; // coz insert is doing the _size thing in the map
 			}
 			return (*this);
 		}
@@ -340,6 +340,7 @@ class RedBlackTree
 		{
 			freeNode(root);
 			root = nullNode;
+			_size = 0;
 		}
 
 		void	swap(RedBlackTree & x)
