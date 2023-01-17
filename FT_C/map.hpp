@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 11:33:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 11:46:16 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,12 @@ namespace	ft
 			}
 
 			void		erase(iterator position);
-			size_type	erase(const key_type & k);
+			size_type	erase(const key_type & k)
+			{
+				NodePtr d = _rbtmap.searchTree(k);
+				_rbtmap.remove(d);
+				return (1);
+			}
 			void		erase(iterator first, iterator last);
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/

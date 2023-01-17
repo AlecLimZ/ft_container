@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 11:37:14 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:44:39 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,20 +376,6 @@ TEST_CASE("Operations")
 
 void	ft_test(void)
 {
-	ft::map<int, int> lol;
-
-	for (int i = 0; i < 10; i++)
-		lol[i] = i * 2;
-	ft::map<int, int>::iterator it = lol.begin();
-	ft::map<int, int>::iterator ite = lol.end();
-
-	while (it != ite)
-	{
-		cout << it->first << endl;
-		it++;
-	}
-
-
 }
 
 int main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 11:23:29 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:29:10 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,78 @@ class RedBlackTree
 			root->color = 0;
 		}
 
+		void	deleteFix(NodePtr x)
+		{
+			NodePtr	s;
+			while (x != root && x->color == 0)
+			{
+				if (x == x->parent->left)
+				{
+					s = x->parent->right;
+					if (s->color == 1)
+					{
+						s->color = 0;
+						x->parent->color = 1;
+						leftRotate(x->parent);
+						s = x->parent->right;
+					}
+					if (s->left->color == 0 && s->right->color == 0)
+					{
+						s->color = 1;
+						x = x->parent;
+					}
+					else
+					{
+						if (s->right->color == 0)
+						{
+							s->left->color = 0;
+							s->color = 1;
+							rightRotate(s);
+							s = x->parent->right;
+						}
+						s->color = x->parent->color;
+						x->parent->color = 0;
+						s->right->color = 0;
+						leftRotate(x->parent);
+						x = root;
+					}
+				}
+				else
+				{
+					s = x->parent->left;
+					if (s->color == 1)
+					{
+						s->color = 0;
+						x->parent->color = 1;
+						rightRotate(x->parent);
+						s = x->parent->left;
+					}
+
+					if (s->right->color == 0 && s->right->color == 0)
+					{
+						s->color = 1;
+						x = x->parent;
+					}
+					else
+					{
+						if (s->left->color == 0)
+						{
+							s->right->color = 0;
+							s->color = 1;
+							leftRotate(s);
+							s = x->parent->left;
+						}
+						s->color = x->parent->color;
+						x->parent->color = 0;
+						s->left->color = 0;
+						rightRotate(x->parent);
+						x = root;
+					}
+				}
+			}
+			x->color = 0;
+		}
+
 	public:
 		RedBlackTree(): _size(0)
 		{
@@ -262,15 +334,46 @@ class RedBlackTree
 
 		void	remove(NodePtr del)
 		{
-			int oricolor = del->color;
-			(void)oricolor;
-
 			NodePtr x;
+			NodePtr y;
+			if (del == nullNode)
+			{
+				cout << "del is nullNode" << endl;
+				return ;
+			}
+			y = del;
+			int y_original_color = y->color;
 			if (del->left == nullNode)
+			{
 				x = del->right;
-			x->parent = del->parent;
+				rbTransplant(del, del->right);
+			}
+			else if (del->right == nullNode)
+			{
+				x = del->left;
+				rbTransplant(del, del->left);
+			}
+			else
+			{
+				y = minimum(del->right);
+				y_original_color = y->color;
+				x = y->right;
+				if (y->parent == del)
+					x->parent = y;
+				else
+				{
+					rbTransplant(y, y->right);
+					y->right = del->right;
+					y->right->parent = y;
+				}
+				rbTransplant(del, y);
+				y->left = del->left;
+				y->left->parent = y;
+				y->color = del->color;
+			}
 			delete del;
-			del = x;
+			if (y_original_color == 0)
+				deleteFix(x);
 		}
 
 		NodePtr	insert(Key key)
