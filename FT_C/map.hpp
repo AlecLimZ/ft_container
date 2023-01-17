@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 16:15:30 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:43:31 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -330,18 +330,26 @@ namespace	ft
 			iterator find(const key_type & k)
 			{
 				NodePtr find = _rbtmap.searchTree(k);
-				if (find == _rbtmap.getNull())
-					throw(std::invalid_argument("ft::map::find: key not found\n"));
+			//	if (find == _rbtmap.getNull())
+			//		throw(std::invalid_argument("ft::map::find: key not found\n"));
 				iterator ret(&_rbtmap, find);
 				return (ret);
 			}
 			const_iterator find(const key_type & k) const
 			{
 				NodePtr find = _rbtmap.searchTree(k);
-				if (find == _rbtmap.getNull())
-					throw(std::invalid_argument("ft::map::find: key not found\n"));
+			//	if (find == _rbtmap.getNull())
+			//		throw(std::invalid_argument("ft::map::find: key not found\n"));
 				const_iterator ret(&_rbtmap, find);
 				return (ret);
+			}
+
+			size_type count (const key_type & k) const
+			{
+				NodePtr find = _rbtmap.searchTree(k);
+				if (find == _rbtmap.getNull())
+					return (0);
+				return (1);
 			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const

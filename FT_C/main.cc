@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 16:12:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:41:18 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,6 +468,25 @@ TEST_CASE("Operations")
 	fit = fm.find('b');
 	CHECK(mit->first == fit->first);
 	CHECK(mit->second == fit->second);
+
+	SUBCASE("count")
+	{
+		std::map<char, int> sm;
+		ft::map<char, int> fm;
+		char c;
+		char fc;
+
+		sm['a'] = 101;
+		sm['c'] = 202;
+		sm['f'] = 303;
+		
+		fm['a'] = 101;
+		fm['c'] = 202;
+		fm['f'] = 303;
+
+		for (c = 'a', fc = 'a'; c < 'h'; c++, fc++)
+			CHECK(sm.count(c) == fm.count(fc));
+	}
 }
 
 TEST_CASE("Observers")
