@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 14:41:08 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:10:26 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,6 +354,49 @@ TEST_CASE("Modifiers")
 			sit++;
 			fit++;
 		}
+	}
+
+	SUBCASE("Swap")
+	{
+		std::map<char, int> s1, s2;
+		ft::map<char, int> f1, f2;
+
+		s1['x'] = 100;
+		s1['y'] = 200;
+		s2['a'] = 11;
+		s2['b'] = 22;
+		s2['c'] = 33;
+		
+		f1['x'] = 100;
+		f1['y'] = 200;
+		f2['a'] = 11;
+		f2['b'] = 22;
+		f2['c'] = 33;
+
+		s1.swap(s2);
+		f1.swap(f2);
+
+		std::map<char, int>::iterator it = s1.begin(), ite = s1.end();
+		ft::map<char, int>::iterator fit = f1.begin(), fite = f1.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+		it = s2.begin();
+		ite = s2.end();
+		fit = f2.begin();
+		fite = f2.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 14:43:34 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:05:18 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,19 @@ namespace	ft
 				while (first != last)
 					_rbtmap.remove((first++)._map);
 				_size = _rbtmap.getSize();
+			}
+			void swap(map & x)
+			{
+				size_type 		s = _size;
+				allocator_type	a = _myalloc;
+				key_compare		c = _compare;
+				_size = x._size;
+				_myalloc = x._myalloc;
+				_compare = x._compare;
+				x._size = s;
+				x._myalloc = a;
+				x._compare = c;
+				_rbtmap.swap(x._rbtmap);
 			}
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/

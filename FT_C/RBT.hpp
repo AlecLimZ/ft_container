@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 14:43:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:08:06 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,6 +334,24 @@ class RedBlackTree
 				x->parent->left = y;
 			y->right = x;
 			x->parent = y;
+		}
+
+		void	swap(RedBlackTree & x)
+		{
+			NodePtr	rtmp = root;
+			NodePtr	rnull = nullNode;
+			Compare	c = _cmp;
+			size_type s = _size;
+
+			root = x.root;
+			nullNode = x.nullNode;
+			_cmp = x._cmp;
+			_size = x._size;
+
+			x.root = rtmp;
+			x.nullNode = rnull;
+			x._cmp = c;
+			x._size = s;
 		}
 
 		void	remove(NodePtr del)
