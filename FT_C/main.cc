@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 16:41:18 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:38:56 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "vector.hpp"
 #include "map.hpp"
 #include "doctest.hpp"
+#include <list>
 #include <map>
 
 using std::string;
@@ -486,6 +487,113 @@ TEST_CASE("Operations")
 
 		for (c = 'a', fc = 'a'; c < 'h'; c++, fc++)
 			CHECK(sm.count(c) == fm.count(fc));
+	}
+
+	SUBCASE("lower_bound")
+	{
+		std::map<char, int> sm;
+		std::map<char, int>::iterator itlow, itup;
+		ft::map<char, int> fm;
+		ft::map<char, int>::iterator fitlow, fitup;
+
+		int n = 20;
+		for (char i = 'a'; i <= 'e'; i++)
+		{
+			sm[i] = n;
+			fm[i] = n;
+			n += 20;
+		}
+
+		itlow = sm.lower_bound('b');
+		sm.erase(itlow);
+		itlow = sm.lower_bound('b');
+		sm.erase(itlow);
+		itlow = sm.lower_bound('b');
+		sm.erase(itlow);
+
+		fitlow = fm.lower_bound('b');
+		fm.erase(fitlow);
+		fitlow = fm.lower_bound('b');
+		fm.erase(fitlow);
+		fitlow = fm.lower_bound('b');
+		fm.erase(fitlow);
+
+		std::map<char, int>::iterator it = sm.begin(), ite = sm.end();
+		ft::map<char, int>::iterator fit = fm.begin(), fite = fm.end();
+		(void)ite;
+		while (fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+	}
+	SUBCASE("upper_bound")
+	{
+		std::map<char, int> sm;
+		std::map<char, int>::iterator itupper, itup;
+		ft::map<char, int> fm;
+		ft::map<char, int>::iterator fitupper, fitup;
+
+		int n = 20;
+		for (char i = 'a'; i <= 'h'; i++)
+		{
+			sm[i] = n;
+			fm[i] = n;
+			n += 20;
+		}
+
+		itupper = sm.upper_bound('b');
+		sm.erase(itupper);
+		itupper = sm.upper_bound('b');
+		sm.erase(itupper);
+		itupper = sm.upper_bound('b');
+		sm.erase(itupper);
+
+		fitupper = fm.upper_bound('b');
+		fm.erase(fitupper);
+		fitupper = fm.upper_bound('b');
+		fm.erase(fitupper);
+		fitupper = fm.upper_bound('b');
+		fm.erase(fitupper);
+
+		std::map<char, int>::iterator it = sm.begin(), ite = sm.end();
+		ft::map<char, int>::iterator fit = fm.begin(), fite = fm.end();
+		(void)ite;
+		while (fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+//			cout << "it: " << it->first << " => " << it->second << endl;
+//			cout << "fit: " << fit->first << " => " << fit->second << endl;
+			it++;
+			fit++;
+		}
+	}
+	SUBCASE("equal_range")
+	{
+		std::map<char, int> sm;
+		ft::map<char, int> fm;
+
+		sm['a'] = 10;
+		sm['b'] = 20;
+		sm['c'] = 30;
+		
+		fm['a'] = 10;
+		fm['b'] = 20;
+		fm['c'] = 30;
+
+		std::pair<std::map<char, int>::iterator, std::map<char, int>::iterator> ret;
+		ft::pair<ft::map<char, int>::iterator, ft::map<char, int>::iterator> fret;
+		ret = sm.equal_range('b');
+		fret = fm.equal_range('b');
+
+		CHECK(ret.first->first == fret.first->first);
+		CHECK(ret.first->second == fret.first->second);
+		
+		CHECK(ret.second->first == fret.second->first);
+		CHECK(ret.second->second == fret.second->second);
 	}
 }
 

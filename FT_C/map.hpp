@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 16:43:31 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:37:12 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -351,6 +351,80 @@ namespace	ft
 					return (0);
 				return (1);
 			}
+
+			iterator lower_bound(const key_type & k)
+			{
+				iterator it = begin();
+				iterator ite = end();
+				iterator prv = ite;
+				while (it != ite)
+				{
+					if (k == it->first)
+						return (it);
+					if (_compare(k, it->first))
+						return (it);
+					prv = it;
+					it++;
+				}
+				return (it);
+			}
+			const_iterator lower_bound(const key_type & k) const
+			{
+				const_iterator it = begin();
+				const_iterator ite = end();
+				const_iterator prv = ite;
+				while (it != ite)
+				{
+					if (k == it->first)
+						return (it);
+					if (_compare(k, it->first))
+						return (it);
+					prv = it;
+					it++;
+				}
+				return (it);
+			}
+			iterator upper_bound(const key_type & k)
+			{
+				iterator it = begin();
+				iterator ite = end();
+				iterator prv = ite;
+				while (it != ite)
+				{
+					if (_compare(k, it->first))
+						return (it);
+					prv = it;
+					it++;
+				}
+				return (it);
+			}
+			const_iterator upper_bound(const key_type & k) const
+			{
+				const_iterator it = begin();
+				const_iterator ite = end();
+				const_iterator prv = ite;
+				while (it != ite)
+				{
+					if (_compare(k, it->first))
+						return (it);
+					prv = it;
+					it++;
+				}
+				return (it);
+			}
+
+			pair<const_iterator, const_iterator> equal_range(const key_type & k) const
+			{
+				ft::pair<const_iterator, const_iterator> ret;
+				ret = ft::make_pair(lower_bound(k), upper_bound(k));
+				return (ret);
+			}
+			pair<iterator, iterator> equal_range(const key_type & k)
+			{
+				ft::pair<iterator, iterator> ret;
+				ret = ft::make_pair(lower_bound(k), upper_bound(k));
+				return (ret);
+			}
 			/*** ALLOCATOR ***/
 			allocator_type get_allocator() const
 			{
@@ -558,7 +632,7 @@ namespace	ft
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapiter & operator=(mapiter const & rhs)
 			{
-				if (this != rhs)
+				if (this != &rhs)
 				{
 					_rc = rhs._rc;
 					_map = rhs._map;
