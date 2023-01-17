@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 15:08:06 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:20:18 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -334,6 +334,12 @@ class RedBlackTree
 				x->parent->left = y;
 			y->right = x;
 			x->parent = y;
+		}
+
+		void	clear()
+		{
+			freeNode(root);
+			root = nullNode;
 		}
 
 		void	swap(RedBlackTree & x)

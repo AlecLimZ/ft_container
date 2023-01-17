@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 15:10:26 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 15:21:36 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,7 +396,50 @@ TEST_CASE("Modifiers")
 			it++;
 			fit++;
 		}
+	}
 
+	SUBCASE("clear")
+	{
+		std::map<char, int> sm;
+		ft::map<char, int> fm;
+
+		sm['x'] = 100;
+		sm['y'] = 200;
+		sm['z'] = 300;
+		
+		fm['x'] = 100;
+		fm['y'] = 200;
+		fm['z'] = 300;
+
+		std::map<char, int>::iterator it = sm.begin(), ite = sm.end();
+		ft::map<char, int>::iterator fit = fm.begin(), fite = fm.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+
+		sm.clear();
+		fm.clear();
+		sm['a'] = 1101;
+		sm['b'] = 2202;
+		
+		fm['a'] = 1101;
+		fm['b'] = 2202;
+
+		it = sm.begin();
+		ite = sm.end();
+		fit = fm.begin();
+		fite = fm.end();
+		while (it != ite && fit != fite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
 	}
 }
 
