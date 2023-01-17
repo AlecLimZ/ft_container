@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 11:46:16 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 14:43:34 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,14 +264,26 @@ namespace	ft
 				_size = _rbtmap.getSize();
 			}
 
-			void		erase(iterator position);
+			void		erase(iterator position)
+			{
+				_rbtmap.remove(position._map);
+				_size = _rbtmap.getSize();
+			}
 			size_type	erase(const key_type & k)
 			{
 				NodePtr d = _rbtmap.searchTree(k);
+				if (d == _rbtmap.getNull())
+					return (0);
 				_rbtmap.remove(d);
+				_size = _rbtmap.getSize();
 				return (1);
 			}
-			void		erase(iterator first, iterator last);
+			void		erase(iterator first, iterator last)
+			{
+				while (first != last)
+					_rbtmap.remove((first++)._map);
+				_size = _rbtmap.getSize();
+			}
 			/*** OBSERVERS ***/
 			/*** OPERATIONS ***/
 			iterator find(const key_type & k)

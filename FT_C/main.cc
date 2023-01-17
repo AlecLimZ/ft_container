@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 12:44:39 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 14:41:08 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,17 +332,27 @@ TEST_CASE("Modifiers")
 		}
 
 		SMAP::iterator sit = sm.find('b'), site = sm.end();
+		FMAP::iterator fit = fm.find('b'), fite = fm.end();
 		sm.erase(sit);
 		sm.erase('c');
 		
+		fm.erase(fit);
+		fm.erase('c');
+		
 		sit = sm.find('e');
+		fit = fm.find('e');
+
 		sm.erase(sit, sm.end());
+		fm.erase(fit, fm.end());
 
 		sit = sm.begin();
-		while (sit != site)
+		fit = fm.begin();
+		while (sit != site && fit != fite)
 		{
-			//cout << sit->first << "<=>" << sit->second << endl;
+			CHECK(sit->first == fit->first);
+			CHECK(sit->second == fit->second);
 			sit++;
+			fit++;
 		}
 	}
 }

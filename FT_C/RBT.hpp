@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 12:29:10 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 14:43:12 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,12 +143,13 @@ class RedBlackTree
 
 		void	deleteFix(NodePtr x)
 		{
-			NodePtr	s;
-			while (x != root && x->color == 0)
+			NodePtr s;
+		    while (x != root && x->color == 0)
 			{
 				if (x == x->parent->left)
 				{
 					s = x->parent->right;
+					
 					if (s->color == 1)
 					{
 						s->color = 0;
@@ -156,7 +157,8 @@ class RedBlackTree
 						leftRotate(x->parent);
 						s = x->parent->right;
 					}
-					if (s->left->color == 0 && s->right->color == 0)
+					
+					if (s == nullNode || (s->left->color == 0 && s->right->color == 0))
 					{
 						s->color = 1;
 						x = x->parent;
@@ -170,6 +172,7 @@ class RedBlackTree
 							rightRotate(s);
 							s = x->parent->right;
 						}
+					
 						s->color = x->parent->color;
 						x->parent->color = 0;
 						s->right->color = 0;
@@ -187,7 +190,7 @@ class RedBlackTree
 						rightRotate(x->parent);
 						s = x->parent->left;
 					}
-
+					
 					if (s->right->color == 0 && s->right->color == 0)
 					{
 						s->color = 1;
@@ -202,6 +205,7 @@ class RedBlackTree
 							leftRotate(s);
 							s = x->parent->left;
 						}
+					
 						s->color = x->parent->color;
 						x->parent->color = 0;
 						s->left->color = 0;
@@ -337,10 +341,8 @@ class RedBlackTree
 			NodePtr x;
 			NodePtr y;
 			if (del == nullNode)
-			{
-				cout << "del is nullNode" << endl;
 				return ;
-			}
+			_size--;
 			y = del;
 			int y_original_color = y->color;
 			if (del->left == nullNode)
