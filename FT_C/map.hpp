@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 15:31:48 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:12:14 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@
 
 namespace	ft
 {
+	template <typename P, typename Cmp>
+	struct ftcmp : std::binary_function<P, P, bool>
+	{
+		Cmp compare;
+		bool operator()(P a, P b) const
+		{
+			return (compare(a.first,b.first));
+		}
+	};
+
 	template<
 		class Key,
 		class T,
@@ -51,6 +61,7 @@ namespace	ft
 			typedef RedBlackTree<Key, mapped_type, value_type, key_compare> RBTclass;
 			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodePtr NodePtr;
 			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodeM NodeM;
+			typedef ftcmp<value_type, key_compare>	value_compare;
 
 		protected:
 			size_type		_size;
@@ -305,6 +316,16 @@ namespace	ft
 				_size = _rbtmap.getSize();
 			}
 			/*** OBSERVERS ***/
+			key_compare	key_comp() const
+			{
+				return (_compare);
+			}
+
+			value_compare value_comp() const
+			{
+				value_compare lol;
+				return (lol);
+			}
 			/*** OPERATIONS ***/
 			iterator find(const key_type & k)
 			{

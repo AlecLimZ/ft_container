@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 15:21:36 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/17 16:12:51 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,6 +468,65 @@ TEST_CASE("Operations")
 	fit = fm.find('b');
 	CHECK(mit->first == fit->first);
 	CHECK(mit->second == fit->second);
+}
+
+TEST_CASE("Observers")
+{
+	SUBCASE("key_comp")
+	{
+		std::map<char, int> sm;
+		std::map<char, int>::key_compare mycomp = sm.key_comp();
+		
+		ft::map<char, int> fm;
+		ft::map<char, int>::key_compare ftcomp = fm.key_comp();
+
+		sm['a'] = 100;
+		sm['b'] = 200;
+		sm['c'] = 300;
+		fm['a'] = 100;
+		fm['b'] = 200;
+		fm['c'] = 300;
+
+		char highest = sm.rbegin()->first;
+		char fhighest = fm.rbegin()->first;
+
+		std::map<char, int>::iterator it = sm.begin();
+		ft::map<char, int>::iterator fit = fm.begin();
+		do
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+		} while (mycomp((*it++).first, highest)
+				&& ftcomp((*fit++).first, fhighest));
+		cout << endl;
+	}
+
+	SUBCASE("value_compare")
+	{
+		std::map<char, int> sm;
+		ft::map<char, int> fm;
+
+		sm['x'] = 1001;
+		sm['y'] = 2002;
+		sm['z'] = 3003;
+		
+		fm['x'] = 1001;
+		fm['y'] = 2002;
+		fm['z'] = 3003;
+
+		std::pair<char, int> highest = *sm.rbegin(); // last element
+		ft::pair<char, int> fhighest = *fm.rbegin(); // last element
+		
+		std::map<char, int>::iterator it = sm.begin();
+		ft::map<char, int>::iterator fit = fm.begin();
+		do
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+		}
+		while (sm.value_comp()(*it++, highest)
+				&& fm.value_comp()(*fit++, fhighest));
+	}
 }
 
 void	ft_test(void)
