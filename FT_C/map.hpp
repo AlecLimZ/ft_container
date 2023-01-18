@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 16:46:51 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:24:43 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -700,6 +700,8 @@ namespace	ft
 			typedef V						value_type;
 			typedef const V&				const_reference;
 			typedef const V*				const_pointer;
+			typedef V&						reference;
+			typedef V*						pointer;
 			typedef std::bidirectional_iterator_tag	iterator_category;
 
 		protected:

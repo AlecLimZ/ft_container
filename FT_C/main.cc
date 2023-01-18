@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 11:43:54 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:13:48 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -711,6 +711,16 @@ TEST_CASE("Non-member fucntions")
 
 void	ft_test(void)
 {
+	ft::map<char, int> fm;
+
+	fm['a'] = 3;
+	fm['b'] = 1;
+	fm['c'] = 4;
+
+	ft::map<char, int>::const_iterator it = fm.begin();
+	//ft::map<char, int>::iterator it = fm.begin();
+	std::advance(it, 2);
+	cout << it->first << "=>" << it->second << endl;
 }
 
 int main(int argc, char **argv)
