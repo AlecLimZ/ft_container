@@ -28,6 +28,14 @@ vectornoasan:		vector.hpp
 			$(CXX) $(CXXFLAGS) -c testvector.cc $(D)
 			$(CXX) $(CXXFLAGS) testvector.o -o $(NAME)
 
+map:		map.hpp
+			$(CXX) $(CXXFLAGS) -c testmap.cc
+			$(CXX) $(CXXFLAGS) testmap.o -o $(NAME) -fsanitize=address
+
+mapnoasan:		map.hpp
+			$(CXX) $(CXXFLAGS) -c testmap.cc $(D)
+			$(CXX) $(CXXFLAGS) testmap.o -o $(NAME)
+
 test:		map.hpp
 			$(CXX) $(CXXFLAGS) -c test.cc
 			$(CXX) $(CXXFLAGS) test.o -o $(NAME) -fsanitize=address
