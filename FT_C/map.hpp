@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 11:44:23 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:49:21 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,7 +481,14 @@ namespace	ft
 			{
 				return (!(lhs < rhs));
 			}
+
+			template<class KK, class TT, class CC, class AA>
+			friend void swap(ft::map<KK, TT, CC, AA> & lhs, ft::map<KK, TT, CC, AA> & rhs)
+			{
+				lhs.swap(rhs);
+			}
 	};
+
 
 	// iterator for map
 	template<typename K, typename T, typename C, typename A>
