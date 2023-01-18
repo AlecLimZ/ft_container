@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 13:08:07 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:15:15 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,6 @@ class RedBlackTree
 				if (x == x->parent->left)
 				{
 					s = x->parent->right;
-					
 					if (s->color == 1)
 					{
 						s->color = 0;
@@ -158,6 +157,8 @@ class RedBlackTree
 						s = x->parent->right;
 					}
 					
+					if (s == nullptr) // MARK
+						s = nullNode;
 					if (s == nullNode || (s->left->color == 0 && s->right->color == 0))
 					{
 						s->color = 1;
@@ -191,7 +192,7 @@ class RedBlackTree
 						s = x->parent->left;
 					}
 					
-					if (s->right->color == 0 && s->right->color == 0)
+					if (s == nullNode || (s->right->color == 0 && s->right->color == 0))
 					{
 						s->color = 1;
 						x = x->parent;
@@ -306,7 +307,7 @@ class RedBlackTree
 		{
 			NodePtr	y = x->right;
 			x->right = y->left;
-			if (y->left != nullNode)
+			if (y->left != nullNode && y->left != nullptr)
 				y->left->parent = x;
 			y->parent = x->parent;
 			if (x->parent == nullptr)
@@ -323,7 +324,7 @@ class RedBlackTree
 		{
 			NodePtr	y = x->left;
 			x->left = y->right;
-			if (y->right != nullNode)
+			if (y->right != nullNode && y->right != nullptr)
 				y->right->parent = x;
 			y->parent = x->parent;
 			if (x->parent == nullptr)
@@ -370,6 +371,8 @@ class RedBlackTree
 			_size--;
 			y = del;
 			int y_original_color = y->color;
+			if (del->right == nullptr) // MARK
+				del->right = nullNode;
 			if (del->left == nullNode)
 			{
 				x = del->right;
@@ -377,6 +380,7 @@ class RedBlackTree
 			}
 			else if (del->right == nullNode)
 			{
+
 				x = del->left;
 				rbTransplant(del, del->left);
 			}
