@@ -1,32 +1,14 @@
-############### [0] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [1] ###############
-eq: 1 | ne: 0
-lt: 0 | le: 1
-gt: 0 | ge: 1
-############### [2] ###############
-eq: 0 | ne: 1
-lt: 1 | le: 1
-gt: 0 | ge: 0
-############### [3] ###############
-eq: 0 | ne: 1
-lt: 0 | le: 0
-gt: 1 | ge: 1
-############### [4] ###############
-eq: 0 | ne: 1
-lt: 0 | le: 0
-gt: 1 | ge: 1
-############### [5] ###############
-eq: 0 | ne: 1
-lt: 1 | le: 1
-gt: 0 | ge: 0
-############### [6] ###############
-eq: 0 | ne: 1
-lt: 1 | le: 1
-gt: 0 | ge: 0
-############### [7] ###############
-eq: 0 | ne: 1
-lt: 0 | le: 0
-gt: 1 | ge: 1
+Out of range exception 6 (file: tests/map/at.cpp, line: 28)
+At: 64 (file: tests/map/at.cpp, line: 41)
+At: World (file: tests/map/at.cpp, line: 56)
+Out of range exception  (file: tests/map/at.cpp, line: 71)
+Out of range exception 6 (file: tests/map/at.cpp, line: 84)
+At: 64 (file: tests/map/at.cpp, line: 99)
+At: World (file: tests/map/at.cpp, line: 116)
+Out of range exception  (file: tests/map/at.cpp, line: 131)
+========================================
+No leak detected
+========================================
+========================================
+Every objects destroyed
+========================================

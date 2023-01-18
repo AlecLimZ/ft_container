@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 11:49:21 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 13:15:30 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ namespace	ft
 			{
 				NodePtr find = _rbtmap.searchTree(k);
 				if (find == _rbtmap.getNull())
-					throw(std::invalid_argument("ft::map::at: key not found\n"));
+					throw(std::out_of_range("ft::map::at: key not found\n"));
 				return (find->data.second);
 			}
 
@@ -190,7 +190,7 @@ namespace	ft
 			{
 				NodePtr find = _rbtmap.searchTree(k);
 				if (find == _rbtmap.getNull())
-					throw(std::invalid_argument("ft::map::at: key not found\n"));
+					throw(std::out_of_range("ft::map::at: key not found\n"));
 				return (find->data.second);
 			}
 
@@ -251,12 +251,14 @@ namespace	ft
 		//			cout << "FALSE!" << endl;
 //				check->data.second = val.second;
 				ret = ft::make_pair(iterator(&_rbtmap, box.first), box.second);
+				_size = _rbtmap.getSize();
 				return (ret);
 			}
 			iterator insert(iterator position, const value_type & val)
 			{
 				NodePtr pos = position._map;
 				position._map = _rbtmap.insert3(pos, val.first, val.second);
+				_size = _rbtmap.getSize();
 				return (position);
 			}
 			template <class InputIterator>
@@ -483,11 +485,14 @@ namespace	ft
 			}
 
 			template<class KK, class TT, class CC, class AA>
-			friend void swap(ft::map<KK, TT, CC, AA> & lhs, ft::map<KK, TT, CC, AA> & rhs)
-			{
-				lhs.swap(rhs);
-			}
+			friend void swap(ft::map<KK, TT, CC, AA> & lhs, ft::map<KK, TT, CC, AA> & rhs);
 	};
+
+	template<class KK, class TT, class CC, class AA>
+	void swap(ft::map<KK, TT, CC, AA> & lhs, ft::map<KK, TT, CC, AA> & rhs)
+	{
+		lhs.swap(rhs);
+	}
 
 
 	// iterator for map
