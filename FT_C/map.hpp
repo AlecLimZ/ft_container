@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 13:15:30 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:58:41 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -566,7 +566,12 @@ namespace	ft
 						&& _map->right == nullNode)
 						_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 						NodePtr p = _map->parent;
@@ -593,7 +598,12 @@ namespace	ft
 						&& _map->right == nullNode)
 						_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 						NodePtr p = _map->parent;
@@ -615,7 +625,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -638,7 +653,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -725,7 +745,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -751,7 +776,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -773,7 +803,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -796,7 +831,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -901,7 +941,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -925,7 +970,12 @@ namespace	ft
 				else if (_map == nullNode && _rc->getSize() >= 1)
 					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -953,7 +1003,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -981,7 +1036,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -1085,7 +1145,12 @@ namespace	ft
 //				else if (_map == nullNode && _rc->getSize() >= 1)
 //					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -1109,7 +1174,12 @@ namespace	ft
 //				else if (_map == nullNode && _rc->getSize() >= 1)
 //					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
-					_map = _rc->maximum(_map->left);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->maximum(_map->left);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -1137,7 +1207,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
@@ -1165,7 +1240,12 @@ namespace	ft
 				else if (_map->parent && _compare(_map->data.first, _map->parent->data.first) && _map->right == nullNode)
 					_map = _map->parent;
 				else if (_map->right != nullNode)
-					_map = _rc->minimum(_map->right);
+				{
+					if (_rc->getSize() == 1)
+						_map = _rc->getRoot();
+					else
+						_map = _rc->minimum(_map->right);
+				}
 				else
 				{
 					NodePtr p = _map->parent;
