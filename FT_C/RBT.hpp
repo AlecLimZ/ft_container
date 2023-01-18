@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 14:49:47 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:58:44 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,8 @@ class RedBlackTree
 				if (x == x->parent->left)
 				{
 					s = x->parent->right;
+					if (s == nullptr) // MARK
+						s = nullNode;
 					if (s->color == 1)
 					{
 						s->color = 0;
@@ -191,7 +193,6 @@ class RedBlackTree
 						rightRotate(x->parent);
 						s = x->parent->left;
 					}
-					
 					if (s == nullNode || (s->right->color == 0 && s->right->color == 0))
 					{
 						s->color = 1;
@@ -306,6 +307,8 @@ class RedBlackTree
 		void leftRotate(NodePtr x)
 		{
 			NodePtr	y = x->right;
+			if (y == nullNode)
+				return ;
 			x->right = y->left;
 			if (y->left != nullNode && y->left != nullptr)
 				y->left->parent = x;
@@ -323,6 +326,8 @@ class RedBlackTree
 		void	rightRotate(NodePtr x)
 		{
 			NodePtr	y = x->left;
+			if (y == nullNode)
+				return ;
 			x->left = y->right;
 			if (y->right != nullNode && y->right != nullptr)
 				y->right->parent = x;
@@ -405,12 +410,12 @@ class RedBlackTree
 				y->color = del->color;
 			}
 			delete del;
-			if (y_original_color == 0)
-				deleteFix(x);
 			if (x != nullNode && x->left == nullptr)
 				x->left = nullNode;
 			if (x != nullNode && x->right == nullptr)
 				x->right = nullNode;
+			if (y_original_color == 0)
+				deleteFix(x);
 		}
 
 		NodePtr	insert(Key key)
@@ -542,7 +547,7 @@ class RedBlackTree
 				while (x->parent && _cmp(key, x->parent->data.first))
 					x = x->parent;
 			}
-			while (x != nullNode)
+			while (x != nullNode && _size != 0)
 			{
 				y = x;
 				//if (node->data < x->data)

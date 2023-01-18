@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 14:58:41 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:46:51 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,11 @@ namespace	ft
 			}
 			void		erase(iterator first, iterator last)
 			{
+			//	if (first == begin() && last == end())
+			//	{
+			//		clear();
+			//		return ;
+			//	}
 				while (first != last)
 					_rbtmap.remove((first++)._map);
 				_size = _rbtmap.getSize();
@@ -569,6 +574,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+					else if (_map->right == nullptr)
+						_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -601,6 +608,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+					else if (_map->right == nullptr)
+						_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -748,6 +757,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+			//		else if (_map->right == nullptr)
+			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -779,6 +790,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+			//		else if (_map->right == nullptr)
+			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -1006,6 +1019,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+			//		else if (_map->right == nullptr)
+			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -1039,6 +1054,8 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
+		//			else if (_map->right == nullptr)
+		//				_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
