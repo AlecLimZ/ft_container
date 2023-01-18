@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 18:38:56 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:43:54 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -653,6 +653,59 @@ TEST_CASE("Observers")
 		}
 		while (sm.value_comp()(*it++, highest)
 				&& fm.value_comp()(*fit++, fhighest));
+	}
+}
+
+TEST_CASE("Non-member fucntions")
+{
+	SUBCASE("Operator")
+	{
+		typedef std::map<int, char> SM;
+		typedef ft::map<int, char> FM;
+
+		SM salice, sbob, seve;
+		FM falice, fbob, feve;
+
+		for (int i = 1; i <= 3; i++)
+		{
+			sbob[i] = 96 + i;
+			seve[i] = 96 + i;
+			fbob[i] = 96 + i;
+			feve[i] = 96 + i;
+		}
+		for (int i = 7; i <= 10; i++)
+		{
+			salice[i] = 123 - i;
+			falice[i] = 123 - i;
+		}
+		SM::iterator it = salice.begin(), ite = salice.end();
+		FM::iterator fit = falice.begin(), fite = falice.end();
+		while (it != ite)
+		{
+			CHECK(it->first == fit->first);
+			CHECK(it->second == fit->second);
+			it++;
+			fit++;
+		}
+		
+		(++(++salice.begin()))->second = 42;
+		(++(++falice.begin()))->second = 42;
+
+		cout << std::boolalpha;
+		CHECK((salice == sbob) == (falice == fbob));
+		CHECK((salice != sbob) == (falice != fbob));
+		CHECK((salice < sbob) == (falice < fbob));
+		CHECK((salice <= sbob) == (falice <= fbob));
+		CHECK((salice > sbob) == (falice > fbob));
+		CHECK((salice >= sbob) == (falice >= fbob));
+		
+		cout << "\n" << endl;
+		CHECK((salice == seve) == (falice == feve));
+		CHECK((salice != seve) == (falice != feve));
+		CHECK((salice < seve) == (falice < feve));
+		CHECK((salice <= seve) == (falice <= feve));
+		CHECK((salice > seve) == (falice > feve));
+		CHECK((salice >= seve) == (falice >= feve));
 	}
 }
 

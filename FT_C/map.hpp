@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/17 18:37:12 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:44:23 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -430,8 +430,60 @@ namespace	ft
 			{
 				return (allocator_type(_myalloc));
 			}
+
+			/*** Non-member functions ***/
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator==(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				typedef typename ft::map<KK, TT, CC, AA>::const_iterator ftiter;
+				if (lhs.size() != rhs.size())
+					return (false);
+				ftiter L1 = lhs.begin(), L2 = lhs.end();
+				ftiter R1 = rhs.begin(), R2 = rhs.end();
+				while (L1 != L2 && R1 != R2)
+				{
+					if (L1->first != R1->first || L1->second != R1->second)
+						return (false);
+					L1++;
+					R1++;
+				}
+				if (L1->first != R1->first || L1->second != R1->second)
+					return (false);
+				return (true);
+			}
+			
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator!=(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				return (!(lhs == rhs));
+			}
+
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator<(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+			}
+
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator<=(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				return (!(rhs < lhs));
+			}
+
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator>(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				return (rhs < lhs);
+			}
+
+			template<class KK, class TT, class CC, class AA>
+			friend bool operator>=(const ft::map<KK, TT, CC, AA> & lhs, const ft::map<KK, TT, CC, AA> & rhs)
+			{
+				return (!(lhs < rhs));
+			}
 	};
 
+	// iterator for map
 	template<typename K, typename T, typename C, typename A>
 	template <typename V>
 	class map<K, T, C, A>::mapiter
@@ -467,7 +519,7 @@ namespace	ft
 			}
 			mapiter(RBTclass *rc, NodePtr n): _rc(rc), _map(n)
 			{}
-			mapiter(const mapiter & src)
+			mapiter(const mapiter<typename std::remove_const<V>::type> & src)
 			: _rc(src._rc), _map(src._map), _compare(src._compare){}
 			mapiter & operator=(mapiter const & rhs)
 			{
@@ -615,6 +667,7 @@ namespace	ft
 			key_compare	_compare;
 			template <typename Iter>
 			friend class mapitrev;
+			friend class mapiter<V>;
 
 		public:
 			mapiter(void): _map(nullptr)

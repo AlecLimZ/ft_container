@@ -6,15 +6,19 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 15:49:38 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/12 16:07:59 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/18 11:42:22 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MYITERATOR_HPP
 # define MYITERATOR_HPP
 
+#include <iostream>
+
 using std::ptrdiff_t;
 using std::random_access_iterator_tag;
+using std::cout;
+using std::endl;
 
 namespace ft
 {
