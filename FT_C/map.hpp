@@ -6,16 +6,14 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/19 15:49:44 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:39:21 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include <iterator>
 # include "util.hpp"
-# include "lib.hpp"
 # include "RBT.hpp"
 
 namespace	ft
@@ -72,9 +70,7 @@ namespace	ft
 		public:
 			/***CONSTRUCTOR & DESTRUCTOR***/
 			explicit map(const Compare & comp = key_compare(), const allocator_type & alloc = Allocator())
-				:_size(0), _myalloc(alloc), _compare(comp){
-			//		cout << "constructor map default" << endl;
-				}
+				:_size(0), _myalloc(alloc), _compare(comp){}
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last, const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::value_type* = 0)
 			: _size(0), _myalloc(alloc), _compare(comp)
@@ -94,7 +90,6 @@ namespace	ft
 			}
 			map(const map & x): _size(x._size), _myalloc(x._myalloc), _rbtmap(), _compare(x._compare)
 			{
-				// _map need to deep copy
 				const_iterator it = x.begin();
 				const_iterator ite = x.end();
 				insert(it, ite);
@@ -106,19 +101,14 @@ namespace	ft
 				{
 					_size = rhs._size;
 					_myalloc = rhs._myalloc;
-					_rbtmap = rhs._rbtmap; // everything deep copy there except the pair
+					_rbtmap = rhs._rbtmap;
 					_compare = rhs._compare;
 					insert(rhs.begin(), rhs.end());
 				}
 				return (*this);
 			}
 			~map()
-			{
-			//	for (size_type i = 0; i < _capacity; ++i)
-			//		_myalloc.destroy(_map + i);
-			//	_myalloc.deallocate(_map, _capacity);
-		//		cout << "destructor map" << endl;
-			}
+			{}
 
 			//test
 			void	print(void)
@@ -128,14 +118,11 @@ namespace	ft
 			/*** ITERATOR ***/
 			iterator begin()
 			{
-		//		NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
-		//		return (iterator(start));
 				return (iterator(&_rbtmap));
 			}
 			
 			const_iterator begin() const
 			{
-			//	return (const_iterator(_rbtmap.minimum(_rbtmap.getRoot())));
 				return (const_iterator(&_rbtmap));
 			}
 
@@ -157,24 +144,18 @@ namespace	ft
 
 			reverse_iterator rend()
 			{
-				//return (++reverse_iterator(begin()));
 				return (reverse_iterator(begin()));
 			}
 
 			const_reverse_iterator rend() const
 			{
-				//return (++const_reverse_iterator(begin()));
 				return (const_reverse_iterator(begin()));
 			}
 
 			/*** ELEMENT ACCESS ***/
 			mapped_type & operator[](const key_type & k)
 			{
-		//		NodePtr check = _rbtmap.searchTree(k);
-		//		if (check == _rbtmap.getNull())
-		//		{
 				NodePtr	check = _rbtmap.insert(k);
-		//		}
 				return (check->data.second);
 			}
 
@@ -207,32 +188,10 @@ namespace	ft
 
 			size_type max_size() const
 			{
-//				if (sizeof(key_type) == sizeof(std::string)
-//						&& sizeof(mapped_type) == sizeof(std::string))
-//					return (230584300921369395);
-//				if (sizeof(key_type) == sizeof(std::string)
-//						|| sizeof(mapped_type) == sizeof(std::string))
-//					return (_myalloc.max_size() / 2);
-//				if (ft::is_same<char, key_type>::value
-//					&& ft::is_same<char, mapped_type>::value)
-//					return (_myalloc.max_size() / 16);
-//				if ((sizeof(key_type) == sizeof(short)
-//						&& sizeof(key_type) >= sizeof(mapped_type))
-//						||
-//						(sizeof(mapped_type) == sizeof(short)
-//						 && sizeof(mapped_type) >= sizeof(key_type)))
-//					return (_myalloc.max_size() / 8);
-//				if ((sizeof(key_type) == sizeof(wchar_t)
-//						&& sizeof(key_type) >= sizeof(mapped_type))
-//						||
-//						(sizeof(mapped_type) == sizeof(wchar_t)
-//						 && sizeof(mapped_type) >= sizeof(key_type)))
-//					return (_myalloc.max_size() / 5);
-//				return (_myalloc.max_size() / 3);
 				std::allocator<char> tmp;
 				if (sizeof(value_type) == 2)
 					return (tmp.max_size() / 32);
-				if (sizeof(value_type) == 12) // lol dont know why 12 return different size
+				if (sizeof(value_type) == 12)
 					return (tmp.max_size() / (28 + sizeof(value_type)));
 				return (tmp.max_size() / (32 + sizeof(value_type)));
 			}
@@ -242,14 +201,9 @@ namespace	ft
 				ft::pair<iterator, bool> ret;
 				ft::pair<NodePtr, bool> box;
 
-//				_rbtmap.insert2(val.first);
 				box = _rbtmap.insert2(val.first);
-//				value_type tmp = check->data;
 				if (box.second)
 					box.first->data.second = val.second;
-		//		else
-		//			cout << "FALSE!" << endl;
-//				check->data.second = val.second;
 				ret = ft::make_pair(iterator(&_rbtmap, box.first), box.second);
 				_size = _rbtmap.getSize();
 				return (ret);
@@ -294,11 +248,6 @@ namespace	ft
 			}
 			void		erase(iterator first, iterator last)
 			{
-			//	if (first == begin() && last == end())
-			//	{
-			//		clear();
-			//		return ;
-			//	}
 				while (first != last)
 					_rbtmap.remove((first++)._map);
 				_size = _rbtmap.getSize();
@@ -337,16 +286,12 @@ namespace	ft
 			iterator find(const key_type & k)
 			{
 				NodePtr find = _rbtmap.searchTree(k);
-			//	if (find == _rbtmap.getNull())
-			//		throw(std::invalid_argument("ft::map::find: key not found\n"));
 				iterator ret(&_rbtmap, find);
 				return (ret);
 			}
 			const_iterator find(const key_type & k) const
 			{
 				NodePtr find = _rbtmap.searchTree(k);
-			//	if (find == _rbtmap.getNull())
-			//		throw(std::invalid_argument("ft::map::find: key not found\n"));
 				const_iterator ret(&_rbtmap, find);
 				return (ret);
 			}
@@ -538,7 +483,6 @@ namespace	ft
 			mapiter(void): _map(nullptr)
 			{}
 			~mapiter(void){}
-		//		NodePtr start = _rbtmap.minimum(_rbtmap.getRoot());
 			mapiter(RBTclass *rc): _rc(rc)
 			{
 				if (_rc->getSize() == 0)
@@ -771,8 +715,6 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
-			//		else if (_map->right == nullptr)
-			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -804,8 +746,6 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
-			//		else if (_map->right == nullptr)
-			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -915,15 +855,9 @@ namespace	ft
 			mapitrev(reverse_iterator it)
 			: _rc(it._rc), _map(it._map), _compare(it._compare)
 			{}
-	//		mapitrev(const_iterator it)
-	//		: _rc(it._rc), _map(it._map), _compare(it._compare){}
 			mapitrev(iterator it)
 			: _rc(it._rc), _map(it._map), _compare(it._compare)
 			{
-		//		if (_map == nullptr)
-		//			cout << "pass" << endl;
-		//		else if (_map == _rc->getNull())
-		//			cout << "null" << endl;
 				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
 						_map = _rc->getNull();
 			}
@@ -942,7 +876,6 @@ namespace	ft
 
 			iterator_type base() const
 			{
-			//mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
 				mapitrev tmp(*this);
 				--tmp;
 				return (iterator(_rc, tmp._map));
@@ -984,7 +917,6 @@ namespace	ft
 					else
 						_map = p;
 				}
-//				_it--;
 				return (*this);
 			}
 
@@ -1018,7 +950,6 @@ namespace	ft
 
 			mapitrev & operator--()
 			{
-		//		_it++;
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
@@ -1033,8 +964,6 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
-			//		else if (_map->right == nullptr)
-			//			_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -1068,8 +997,6 @@ namespace	ft
 				{
 					if (_rc->getSize() == 1)
 						_map = _rc->getRoot();
-		//			else if (_map->right == nullptr)
-		//				_map = _rc->minimum(_rc->getRoot());
 					else
 						_map = _rc->minimum(_map->right);
 				}
@@ -1126,14 +1053,12 @@ namespace	ft
 			mapitrev(const_iterator it)
 			: _rc(it._rc), _map(it._map), _compare(it._compare)
 			{
-			//	if (_map == _rc->minimum(_rc->getRoot()))
 				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
 						_map = _rc->getNull();
 			}
 			mapitrev(iterator it)
 			: _rc(it._rc), _map(it._map), _compare(it._compare)
 			{
-			//	if (_map == _rc->minimum(_rc->getRoot()))
 				if (_rc->getSize() >= 1 && _map == _rc->minimum(_rc->getRoot()))
 						_map = _rc->getNull();
 			}
@@ -1152,7 +1077,6 @@ namespace	ft
 			
 			iterator_type base() const
 			{
-			//mapiter(const RBTclass *rc, NodePtr n): _rc(rc), _map(n){}
 				return (++iterator(_rc, _map));
 			}
 
@@ -1173,8 +1097,6 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-//				else if (_map == nullNode && _rc->getSize() >= 1)
-//					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
 				{
 					if (_rc->getSize() == 1)
@@ -1192,7 +1114,6 @@ namespace	ft
 					else
 						_map = p;
 				}
-//				_it--;
 				return (*this);
 			}
 
@@ -1202,8 +1123,6 @@ namespace	ft
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;
-//				else if (_map == nullNode && _rc->getSize() >= 1)
-//					_map = _rc->maximum(_rc->getRoot());
 				else if (_map->left != nullNode)
 				{
 					if (_rc->getSize() == 1)
@@ -1226,7 +1145,6 @@ namespace	ft
 
 			mapitrev & operator--()
 			{
-		//		_it++;
 				NodePtr nullNode = _rc->getNull();
 				if (_rc->getSize() == 0)
 					_map = nullNode;

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:56:45 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/03 12:08:56 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:32:15 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,9 +323,7 @@ namespace	ft
 					pointer tmp = _vec;
 					if (_capacity)
 						_myalloc.deallocate(tmp, _capacity);
-		//			_capacity = _capacity == 0 ? n : _capacity * 2;
-		//			if (_capacity < n)
-						_capacity = n;
+					_capacity = n;
 					if (_capacity)
 						_vec = _myalloc.allocate(_capacity);
 					_size = 0;
@@ -407,10 +405,6 @@ namespace	ft
 					_myalloc.construct(_vec + max, *last);
 					_size++;
 					iterator ite = end();
-		//			while (ite != position)
-		//				_vec[max--] = *(--ite - 1);
-		//			*position = val;
-		//			ret = position;
 					ret = position;
 					value_type holder = *position;
 					value_type holder2;
@@ -463,18 +457,8 @@ namespace	ft
 				{
 					_size += n;
 					int i = _size - 1;
-					int d = ft::distance(position, itmpe); // get d before new construct
+					int d = ft::distance(position, itmpe);
 					int nn = n;
-				//	while (n-- && --itmpe != itmp)
-				//		_myalloc.construct(_vec + i--, *itmpe);
-				//	if (itmpe != position)
-				//	{
-				//		while (--itmpe != position)
-				//			_vec[i--] = *itmpe;
-				//	}
-				//	_vec[i--] = *position;
-				//	while (nn--)
-				//		_vec[i--] = val;
 					while (n--)
 						_myalloc.construct(_vec + i--, val);
 					iterator copy = end() - (nn + 1);
@@ -557,17 +541,6 @@ namespace	ft
 					else
 						while (first1 != last1)
 							*position++ = *first1++;
-	//				_size += n;
-	//				iterator ite = end() - 1;
-	//				int max = _size + n - 1;
-	//				for (size_type i = 0; i < n; ++i)
-	//					_myalloc.construct(_vec + max--, *ite--);
-	//				while (ite != position)
-	//					_vec[max--] = *ite--;
-	//				_vec[max--] = *ite--;
-	//				while (last != first)
-	//					_vec[max--] = *--last;
-	//				_size += n;
 				}
 			}
 
@@ -942,9 +915,6 @@ namespace	ft
 		
 		myiterev(value_type *vec) :_data(vec){}
 		
-		//myiterev(typename vector<T, B>::const_reverse_iterator other)
-		//: _data(other._data){}
-		
 		myiterev(myiterev<const typename std::remove_const<Iter>::type> other)
 		: _data(other._data){}
 
@@ -1078,16 +1048,8 @@ namespace	ft
 		public:
 		myiterev(): _data(nullptr){}
 
-//		typedef myiter<const value_type>	const_iterator;
-//
 		explicit myiterev(vector<T, B>::const_iterator x)
 		: _data(x._data - 1){}
-
-//		explicit myiterev(vector<T, B>:myiter<const value_type> x)
-//		: _data(x._data - 1){}
-		
-//		explicit myiterev(typename vector<T, B>::myiter<typename std::remove_const<typename vector<T, B>::template myiter<const value_type> >::type> x)
-//		: _data(x._data - 1){}
 
 		explicit myiterev(const iterator_type & x): _data(x._data - 1){}
 		
@@ -1098,9 +1060,6 @@ namespace	ft
 
 		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
 		: _data(other._data){}
-
-//		myiterev(const myiterev <typename std::remove_const<Iter>::type>& other)
-//			: _data(other._data){}
 
 		~myiterev(){}
 

@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 13:30:29 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/19 16:08:15 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:36:53 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ class RedBlackTree
 			node->color = 0;
 		}
 
-		// Inorder
 		void	inOrderHelper(NodePtr node)
 		{
 			if (node != nullNode)
@@ -68,7 +67,6 @@ class RedBlackTree
 		{
 			if (node == nullNode || key == node->data.first)
 				return node;
-		//	if (key < node->data)
 			if (_cmp(key, node->data.first))
 				return searchTreeHelper(node->left, key);
 			return searchTreeHelper(node->right, key);
@@ -224,7 +222,6 @@ class RedBlackTree
 	public:
 		RedBlackTree(): _size(0), _alloc(RAlloc())
 		{
-			//nullNode = new NodeM;
 			nullNode = _alloc.allocate(1); // MARK
 			nullNode->color = 0;
 			nullNode->parent = nullptr;
@@ -232,14 +229,9 @@ class RedBlackTree
 			nullNode->right = nullptr;
 			root = nullNode;
 		}
-//		NodePtr	root;
-//		NodePtr	nullNode;
-//		Compare	_cmp;
-//		size_type _size;
 		~RedBlackTree()
 		{	
 			freeNode(root);
-			//delete nullNode;
 			_alloc.deallocate(nullNode, 1);
 		}
 
@@ -248,9 +240,7 @@ class RedBlackTree
 			if (this != &rhs)
 			{
 				freeNode(root);
-				//delete nullNode;
 				_alloc.deallocate(nullNode, 1);
-				//nullNode = new NodeM;
 				nullNode = _alloc.allocate(1); // MARK
 				nullNode->color = 0;
 				nullNode->parent = nullptr;
@@ -270,7 +260,6 @@ class RedBlackTree
 				return ;
 			freeNode(t->left);
 			freeNode(t->right);
-			//delete t;
 			_alloc.destroy(t);
 			_alloc.deallocate(t, 1);
 		}
@@ -418,7 +407,6 @@ class RedBlackTree
 				y->left->parent = y;
 				y->color = del->color;
 			}
-			//delete del;
 			if (del != nullNode)
 				_alloc.destroy(del);
 			_alloc.deallocate(del, 1);
@@ -432,11 +420,9 @@ class RedBlackTree
 
 		NodePtr	insert(Key key)
 		{
-			//NodePtr	node = new NodeM(key);
 			NodePtr node = _alloc.allocate(1); // MARK
 			_alloc.construct(node, NodeM(key)); // MARK
 			node->parent = nullptr;
-			//node->data = ft::make_pair(key, 0);
 			node->left = nullNode;
 			node->right = nullNode;
 			node->color = 1;
@@ -447,10 +433,8 @@ class RedBlackTree
 			while (x != nullNode)
 			{
 				y = x;
-				//if (node->data < x->data)
 				if (node->data.first == x->data.first)
 				{
-					//delete node;
 					_alloc.destroy(node);
 					_alloc.deallocate(node, 1);
 					return (x);
@@ -464,7 +448,6 @@ class RedBlackTree
 			node->parent = y;
 			if (y == nullptr)
 				root = node;
-			//else if (node->data < y->data)
 			else if (_cmp(node->data.first, y->data.first))
 				y->left = node;
 			else
@@ -486,11 +469,9 @@ class RedBlackTree
 		ft::pair<NodePtr, bool>	insert2(Key key)
 		{
 			ft::pair<NodePtr, bool> ret;
-			//NodePtr	node = new NodeM(key);
 			NodePtr node = _alloc.allocate(1); // MARK
 			_alloc.construct(node, NodeM(key)); // MARK
 			node->parent = nullptr;
-			//node->data = ft::make_pair(key, 0);
 			node->left = nullNode;
 			node->right = nullNode;
 			node->color = 1;
@@ -501,10 +482,8 @@ class RedBlackTree
 			while (x != nullNode)
 			{
 				y = x;
-				//if (node->data < x->data)
 				if (node->data.first == x->data.first)
 				{
-					//delete node;
 					_alloc.destroy(node);
 					_alloc.deallocate(node, 1);
 					ret = ft::make_pair(x, 0);
@@ -520,7 +499,6 @@ class RedBlackTree
 			node->parent = y;
 			if (y == nullptr)
 				root = node;
-			//else if (node->data < y->data)
 			else if (_cmp(node->data.first, y->data.first))
 				y->left = node;
 			else
@@ -541,21 +519,15 @@ class RedBlackTree
 		
 		NodePtr	insert3(NodePtr itn, Key key, M value)
 		{
-			//NodePtr	node = new NodeM(key);
 			NodePtr node = _alloc.allocate(1); // MARK
 			_alloc.construct(node, NodeM(key)); // MARK
 			node->parent = nullptr;
-			//node->data = ft::make_pair(key, 0);
 			node->left = nullNode;
 			node->right = nullNode;
 			node->color = 1;
 
 			NodePtr	y = nullptr;
 			NodePtr x;
-	//		if (_cmp(root->data.first, key) && _cmp(itn->data.first, key))
-	//			x = this->root;
-	//		else
-	//			x = itn;
 			x = itn;
 			if (itn->parent == nullptr)
 				x = this->root;
@@ -572,10 +544,8 @@ class RedBlackTree
 			while (x != nullNode && _size != 0)
 			{
 				y = x;
-				//if (node->data < x->data)
 				if (node->data.first == x->data.first)
 				{
-					//delete node;
 					_alloc.destroy(node);
 					_alloc.deallocate(node, 1);
 					return (x);
@@ -590,7 +560,6 @@ class RedBlackTree
 			node->parent = y;
 			if (y == nullptr)
 				root = node;
-			//else if (node->data < y->data)
 			else if (_cmp(node->data.first, y->data.first))
 				y->left = node;
 			else
