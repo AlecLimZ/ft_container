@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/19 15:29:03 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:49:44 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ namespace	ft
 			typedef mapiter<const value_type> const_iterator;
 			typedef mapitrev<iterator>	reverse_iterator;
 			typedef mapitrev<const iterator> const_reverse_iterator;
-			typedef RedBlackTree<Key, mapped_type, value_type, key_compare> RBTclass;
-			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodePtr NodePtr;
-			typedef typename RedBlackTree<Key, mapped_type, value_type, key_compare>::NodeM NodeM;
+			typedef RedBlackTree<Key, mapped_type, value_type, allocator_type, key_compare> RBTclass;
+			typedef typename RedBlackTree<Key, mapped_type, value_type, allocator_type, key_compare>::NodePtr NodePtr;
+			typedef typename RedBlackTree<Key, mapped_type, value_type, allocator_type, key_compare>::NodeM NodeM;
 			typedef ftcmp<value_type, key_compare>	value_compare;
 
 		protected:
