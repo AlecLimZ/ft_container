@@ -6,7 +6,7 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/26 14:24:13 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/18 17:24:43 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:29:03 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,14 +363,17 @@ namespace	ft
 			{
 				iterator it = begin();
 				iterator ite = end();
-				iterator prv = ite;
+				reverse_iterator rit = rbegin();
+				if (_compare(k, it->first))
+					return (it);
+				if (_compare(rit->first, k))
+					return (ite);
 				while (it != ite)
 				{
 					if (k == it->first)
 						return (it);
 					if (_compare(k, it->first))
 						return (it);
-					prv = it;
 					it++;
 				}
 				return (it);
@@ -379,14 +382,17 @@ namespace	ft
 			{
 				const_iterator it = begin();
 				const_iterator ite = end();
-				const_iterator prv = ite;
+				const_reverse_iterator rit = rbegin();
+				if (_compare(k, it->first))
+					return (it);
+				if (_compare(rit->first, k))
+					return (ite);
 				while (it != ite)
 				{
 					if (k == it->first)
 						return (it);
 					if (_compare(k, it->first))
 						return (it);
-					prv = it;
 					it++;
 				}
 				return (it);
@@ -395,12 +401,15 @@ namespace	ft
 			{
 				iterator it = begin();
 				iterator ite = end();
-				iterator prv = ite;
+				reverse_iterator rit = rbegin();
+				if (_compare(k, it->first))
+					return (it);
+				if (_compare(rit->first, k))
+					return (ite);
 				while (it != ite)
 				{
 					if (_compare(k, it->first))
 						return (it);
-					prv = it;
 					it++;
 				}
 				return (it);
@@ -409,12 +418,15 @@ namespace	ft
 			{
 				const_iterator it = begin();
 				const_iterator ite = end();
-				const_iterator prv = ite;
+				const_reverse_iterator rit = rbegin();
+				if (_compare(k, it->first))
+					return (it);
+				if (_compare(rit->first, k))
+					return (ite);
 				while (it != ite)
 				{
 					if (_compare(k, it->first))
 						return (it);
-					prv = it;
 					it++;
 				}
 				return (it);
