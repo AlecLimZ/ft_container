@@ -6,14 +6,14 @@
 /*   By: leng-chu <-chu@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/14 13:51:20 by leng-chu          #+#    #+#             */
-/*   Updated: 2023/01/19 14:41:24 by leng-chu         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:28:20 by leng-chu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define DOCTEST_CONFIG_IMPLEMENT
 #include "lib.hpp"
 #include "vector.hpp"
-#include "map.hpp"
+#include "stack.hpp"
 #include "doctest.hpp"
 #include <list>
 #include <map>
@@ -37,6 +37,9 @@ int	doc(int *ac, char **av)
 
 void	ft_test()
 {
+	std::deque<int> mydeque(3, 100);
+	ft::stack<int> first;
+	ft::stack<int> second(mydeque);
 }
 
 int main(int argc, char **argv)
