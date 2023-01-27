@@ -1,5 +1,0 @@
-.vscode/
-test/*.o
-test/test_all*
-a.out*
-vgcore.*
